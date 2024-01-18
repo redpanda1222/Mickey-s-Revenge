@@ -1,5 +1,8 @@
 /** Global Parameters Object */
-const params = { };
+const PARAMS = {
+    WIDTH: 1024,
+    HEIGHT: 768
+}
 
 /**
  * @param {Number} n
@@ -57,3 +60,20 @@ window.requestAnimFrame = (() => {
 const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
+
+/**
+ * Returns whether mouse is within a region
+ * @param {*} mouse game.mouse or click
+ * @param {Number} x position
+ * @param {Number} y position
+ * @param {Number} w width of region
+ * @param {Number} h height of region
+ * @returns 
+ */
+const mouseOver = (mouse, x, y, w, h) => {
+    return mouse.x > x && mouse.x < x + w && mouse.y > y && mouse.y < y + h;
+}
+
+const centerRect = (ctx, x, y, w, h) => {
+    ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+}
