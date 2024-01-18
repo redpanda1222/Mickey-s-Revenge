@@ -32,15 +32,19 @@ class SceneManager {
             credits: false
         };
 
+        this.game.background = new Background(this, 0, 0, [], 0, 0, false);
         this.loadScene(levelOne, 0, 0, false);
     };
 
     loadScene(level, x, y, isTransition) {
         if (isTransition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y));
-        } else {
-            // levels go here
-
+        } else if (this.isInMenu == false) {
+            // load levels go here
+            if (level.tileGrid) {
+                console.log("loaded");
+                this.game.background.updateTileGrid(level.tileGrid, 64, 1, true);
+            }
         }
     }
 
