@@ -38,9 +38,10 @@ class SceneManager {
     loadScene(level, x, y, isTransition) {
         if (isTransition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y));
+            //this.game.addEntity(new Bird(this.game));
         } else {
             // levels go here
-
+            this.game.addEntity(new Bird(this.game));
         }
     }
 
