@@ -42,6 +42,7 @@ class SceneManager {
         } else {
             // levels go here
             this.game.addEntity(new Bird(this.game));
+            this.game.addEntity(new Huskydog(this.game));
         }
     }
 
