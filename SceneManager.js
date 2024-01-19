@@ -39,7 +39,7 @@ class SceneManager {
         if (isTransition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y));
             //this.game.addEntity(new Bird(this.game));
-        } else {
+        } else if (this.isInMenu == false){
             // levels go here
             this.game.addEntity(new Bird(this.game));
             this.game.addEntity(new Huskydog(this.game));
