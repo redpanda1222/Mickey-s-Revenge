@@ -1,3 +1,23 @@
+const menuButtonDimensions = {
+    w: 80,
+    h: 20
+}
+
+const creditsButtonPos = {
+    x: PARAMS.WIDTH / 2,
+    y: PARAMS.HEIGHT / 2 + 15
+}
+
+const creditsBackButtonPos = {
+    x: PARAMS.WIDTH / 2,
+    y: PARAMS.HEIGHT - 40
+}
+
+const startButtonPos = {
+    x: PARAMS.WIDTH / 2,
+    y: PARAMS.HEIGHT / 2 - 15
+}
+
 class MenuScreen {
     constructor(game, sceneManager) {
         this.game = game;
