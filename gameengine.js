@@ -8,6 +8,7 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
+        this.background = null;
 
         // Information on the input
         this.click = null;
@@ -83,6 +84,10 @@ class GameEngine {
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+        if (this.background) {
+            this.background.draw(this.ctx);
+        }
 
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
