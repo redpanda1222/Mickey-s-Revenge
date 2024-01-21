@@ -17,8 +17,10 @@ class SceneManager {
         } else if (this.menu.isInMenu == false) {
             // load level stuff
             if (level.tileGrid) {
-                console.log("loaded");
                 this.game.background.updateTileGrid(level.tileGrid, 64, 1, true);
+
+                this.game.addEntity(new Bird(this.game));
+                this.game.addEntity(new Huskydog(this.game));
             }
         }
     }

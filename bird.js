@@ -1,7 +1,7 @@
 class Bird {
     constructor(game) {
         this.game = game;
-        this.animator = new Animator(ASSET_MANAGER.getAsset("./bird.png"), 0, 160, 159, 160, 7, 0.1);
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/enemy/bird.png"), 0, 160, 159, 160, 7, 0.1);
 
         this.x = 0;
         this.y = 50;

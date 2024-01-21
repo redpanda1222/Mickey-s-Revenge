@@ -28,9 +28,6 @@ for (let i = 0; i < imageQueue.length; i++) {
 	ASSET_MANAGER.queueDownload(imageQueue[i]);
 }
 
-ASSET_MANAGER.queueDownload("./bird.png");
-ASSET_MANAGER.queueDownload("./huskydog.png");
-
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");

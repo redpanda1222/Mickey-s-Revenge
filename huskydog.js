@@ -1,7 +1,7 @@
 class Huskydog {
     constructor(game) {
         this.game = game;
-        this.animator = new Animator(ASSET_MANAGER.getAsset("./huskydog.png"), 0, 61, 91, 60, 5, 0.1);
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), 0, 61, 91, 60, 5, 0.1);
 
         this.x = 0;
         this.y = 720;
