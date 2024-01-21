@@ -48,6 +48,8 @@ class MenuScreen {
                     console.log("Clicked on start");
                     this.isInMenu = false;
                     this.sceneManager.loadScene(levelOne, 0, 0, true);
+                    // this.game.addEntity(new Bird(this.game));
+                    // this.game.addEntity(new Huskydog(this.game));
                 }
                 if (this.menuSelect.credits || 
                         mouseOver(this.game.click, creditsButtonPos.x - menuButtonDimensions.w / 2, 
