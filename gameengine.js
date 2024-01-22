@@ -15,7 +15,11 @@ class GameEngine {
         this.mouse = null;
         this.wheel = null;
         this.keys = {};
-        
+        this.left = false;
+        this.right = false;
+        this.down = false;
+        this.up = false;
+
         // Options and the Details
         this.options = options || {
             debugging: false,
@@ -38,43 +42,84 @@ class GameEngine {
     };
 
     startInput() {
-        const getXandY = e => ({
-            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
-        });
-        
-        this.ctx.canvas.addEventListener("mousemove", e => {
-            if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
-            }
-            this.mouse = getXandY(e);
-        });
+        this.keyboardActive = false;
+        var that = this;
 
-        this.ctx.canvas.addEventListener("click", e => {
-            if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
-            }
-            this.click = getXandY(e);
-        });
+        var getXandY = function (e) {
+            var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+            var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
 
-        this.ctx.canvas.addEventListener("wheel", e => {
-            if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
-            }
+            return { x: x, y: y, radius: 0 };
+        }
+        function mouseListener (e) {
+            that.mouse = getXandY(e);
+        }
+        function mouseClickListener (e) {
+            that.click = getXandY(e);
+            if (PARAMS.DEBUG) console.log(that.click);
+        }
+        function wheelListener (e) {
             e.preventDefault(); // Prevent Scrolling
-            this.wheel = e;
-        });
-
-        this.ctx.canvas.addEventListener("contextmenu", e => {
-            if (this.options.debugging) {
-                console.log("RIGHT_CLICK", getXandY(e));
+            that.wheel = e.deltaY;
+        }
+        function keydownListener (e) {
+            that.keyboardActive = true;
+            switch (e.code) {
+                case "ArrowLeft":
+                case "KeyA":
+                    that.left = true;
+                    break;
+                case "ArrowRight":
+                case "KeyD":
+                    that.right = true;
+                    break;
+                case "ArrowUp":
+                case "KeyW":
+                    that.up = true;
+                    break;
+                case "ArrowDown":
+                case "KeyS":
+                    that.down = true;
+                    break;
             }
-            e.preventDefault(); // Prevent Context Menu
-            this.rightclick = getXandY(e);
-        });
+        }
+        function keyUpListener (e) {
+            that.keyboardActive = false;
+            switch (e.code) {
+                case "ArrowLeft":
+                case "KeyA":
+                    that.left = false;
+                    break;
+                case "ArrowRight":
+                case "KeyD":
+                    that.right = false;
+                    break;
+                case "ArrowUp":
+                case "KeyW":
+                    that.up = false;
+                    break;
+                case "ArrowDown":
+                case "KeyS":
+                    that.down = false;
+                    break;
+            }
+        }
 
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        that.mousemove = mouseListener;
+        that.leftclick = mouseClickListener;
+        that.wheelscroll = wheelListener;
+        that.keydown = keydownListener;
+        that.keyup = keyUpListener;
+
+        this.ctx.canvas.addEventListener("mousemove", that.mousemove, false);
+
+        this.ctx.canvas.addEventListener("click", that.leftclick, false);
+
+        this.ctx.canvas.addEventListener("wheel", that.wheelscroll, false);
+
+        this.ctx.canvas.addEventListener("keydown", that.keydown, false);
+
+        this.ctx.canvas.addEventListener("keyup", that.keyup, false);
     };
 
     addEntity(entity) {
