@@ -15,6 +15,12 @@ class SceneManager {
         if (isTransition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y));
         } else if (this.menu.isInMenu == false) {
+
+            //load music
+            if(level.music && !this.title){
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset(level.music);
+            }
             // load level stuff
             if (level.tileGrid) {
                 this.game.background.updateTileGrid(level.tileGrid, 64, 1, true);
@@ -25,6 +31,12 @@ class SceneManager {
         }
     }
 
+    updateAudio(){
+        var mute = document.getElementById("mute").ariaChecked;
+        var volume = document.getElementById("volume").value;
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    };
     update() {
         if (this.menu.isInMenu) {
             this.menu.update();
