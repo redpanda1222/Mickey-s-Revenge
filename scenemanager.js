@@ -21,6 +21,8 @@ class SceneManager {
 
                 this.game.addEntity(new Bird(this.game));
                 this.game.addEntity(new Huskydog(this.game));
+                this.game.addEntity(new Skeleton(this.game));
+                this.game.addEntity(new Mickey(this.game));
             }
         }
     }
