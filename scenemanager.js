@@ -15,7 +15,6 @@ class SceneManager {
         if (isTransition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y));
         } else if (this.menu.isInMenu == false) {
-
             //load music
             if(level.music && !this.title){
                 ASSET_MANAGER.pauseBackgroundMusic();
@@ -76,12 +75,12 @@ class SceneManager {
     update() {
         if (this.menu.isInMenu) {
             this.menu.update();
-        };
+        }
     };
 
     draw(ctx) {
         if (this.menu.isInMenu) {
             this.menu.draw(ctx);
-        };
+        }
     };
 };
