@@ -1,5 +1,5 @@
 var levelOne = {
-    music: "./audio/kitchen.mp3",
+    music: "./audio/escape.mp3",
     tileGrid: [[0, 0, 0, 0, 0, 0, 0],
                [0, 0, 0, 0, 0, 0, 0], 
                [0, 0, 0, 0, 0, 0, 0], 
