@@ -24,7 +24,7 @@ class SceneManager {
             // load level stuff
             if (level.tileGrid) {
                 this.game.background.updateTileGrid(level.tileGrid, 64, 1, true);
-
+            };
             // load background
             this.game.background.updateTileGrid(level.tileGrid, 64, 2, true);
             let i;
@@ -62,7 +62,8 @@ class SceneManager {
             // here for testing, later we may want to spawn them randomly or something
             this.game.addEntity(new Bird(this.game));
             this.game.addEntity(new Huskydog(this.game));
-        }
+            this.game.addEntity(new Skeleton(this.game));
+        };
     };
 
     updateAudio(){
@@ -75,12 +76,12 @@ class SceneManager {
     update() {
         if (this.menu.isInMenu) {
             this.menu.update();
-        }
+        };
     };
 
     draw(ctx) {
         if (this.menu.isInMenu) {
             this.menu.draw(ctx);
-        }
+        };
     };
 };

@@ -1,15 +1,7 @@
 var levelOne = {
-<<<<<<< HEAD
-    music: "./audio/escape.mp3",
-    tileGrid: [[0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0], 
-               [0, 0, 0, 0, 0, 0, 0], 
-               [0, 0, 0, 0, 0, 0, 0], 
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0]],
-=======
     // background (entities walk on)
+    music: "./audio/kitchen.mp3",
+    
     tileGrid: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -34,6 +26,5 @@ var levelOne = {
     destroyeddeserttowers: [{x: 500, y: 400}],
 
     walmartstonehenge: [{x: 220, y: 313}]
->>>>>>> main
 }
 

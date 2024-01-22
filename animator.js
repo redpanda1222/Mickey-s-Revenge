@@ -27,7 +27,6 @@ class Animator {
             }else{
                 xPos = this.xStart + this.width*frame;
             };
-            console.log(xPos);
             ctx.drawImage(this.spritesheet,
                 xPos, this.yStart,
                 this.width, this.height,
