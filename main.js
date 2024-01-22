@@ -4,7 +4,7 @@ const gameEngine = new GameEngine();
 const imageQueue = [
 	"./assets/background/sand.png",
 	"./assets/background/sandtile.png",
-	"./assets/background/barbedwire.png",
+	"./assets/background/barbedwire1.png",
 	"./assets/background/deadbodies.png",
 	"./assets/background/deadtree.png",
 	"./assets/background/desertsand.png",
@@ -21,7 +21,7 @@ const imageQueue = [
 	"./assets/enemy/skeleton.png",
 	"./assets/enemy/skeletonknight.png",
 	"./assets/enemy/skeletonmage.png",
-	"./assets/miscellaneous/gems.png"
+	"./assets/miscellaneous/gems.png",
 ];
 
 for (let i = 0; i < imageQueue.length; i++) {

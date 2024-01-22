@@ -1,3 +1,6 @@
+const scales = {
+
+}
 class Background {
     constructor(game, x, y, tileGrid, tileSize, scale, show) {
         Object.assign(this, { game, x, y, tileGrid, tileSize, scale, show });
