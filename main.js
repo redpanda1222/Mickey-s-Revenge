@@ -25,6 +25,7 @@ const imageQueue = [
 	"./assets/enemy/skeletonknight.png",
 	"./assets/enemy/skeletonmage.png",
 	"./assets/miscellaneous/gems.png",
+	"./audio/kitchen.mp3"
 ];
 
 for (let i = 0; i < imageQueue.length; i++) {

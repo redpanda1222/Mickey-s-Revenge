@@ -50,9 +50,25 @@ class SceneManager {
             }
             // here for testing, later we may want to spawn them randomly or something
             this.game.addEntity(new Bird(this.game));
+            this.game.addEntity(new Skeleton(this.game));
             this.game.addEntity(new Huskydog(this.game));
+
+
+             //load music
+             if(level.music && !this.title){
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset(level.music);
+            }
         }
     }
+
+    updateAudio(){
+        var mute = document.getElementById("mute").ariaChecked;
+        var volume = document.getElementById("volume").value;
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    };
+
 
     update() {
         if (this.menu.isInMenu) {

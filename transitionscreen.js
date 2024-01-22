@@ -1,18 +1,20 @@
 class TransitionScreen {
     constructor(game, scene, x, y) {
         Object.assign(this, { game, scene, x, y });
-
+        this.message = "Mickey lost Minnie to those damn monsters";
         this.elapsed = 0;
     };
 
     update() {
         this.elapsed += this.game.clockTick;
 
-        if (this.elapsed > 2) {
+        if (this.elapsed > 4) {
             this.game.entities.length -= 1;
             console.log("Start Gaming");
             this.game.camera.loadScene(this.scene, this.x, this.y, false);
-        }
+        }else if (this.elapsed > 2) {
+            this.message = "Now he's seeking revenge!!!";
+        };
     };
 
     draw(ctx) {
@@ -22,6 +24,6 @@ class TransitionScreen {
         ctx.fillStyle = "White";
         ctx.textAlign = "center";
         ctx.font ='40px Arial';
-        ctx.fillText("SICK TRANSITION", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
+        ctx.fillText(this.message, PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
     };
 };

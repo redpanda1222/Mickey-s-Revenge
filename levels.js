@@ -1,5 +1,7 @@
 var levelOne = {
     // background (entities walk on)
+    music: "./audio/kitchen.mp3",
+    
     tileGrid: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
