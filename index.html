@@ -1,10 +1,10 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Mickey's Revenge</title>
-  
+
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./timer.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
@@ -22,7 +22,18 @@
     <script type="text/javascript" src="./mickey.js"></script>
     <script type="text/javascript" src="./main.js"></script>
 </head>
+
 <body>
-    <canvas id="gameWorld" width="1024" height="768" style="background: white; border: 1px solid black" tabindex="0" autofocus></canvas>
+    <div>
+        Mickey's Revenge <br>
+    </div>
+    <canvas id="gameWorld" width="1024" height="768" style="background: white; border: 1px solid black" tabindex="0"
+        autofocus></canvas>
+
+    <div>
+        <input type="checkbox" id="mute"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step=".05">
+        Volume
+    </div>
 </body>
+
 </html>

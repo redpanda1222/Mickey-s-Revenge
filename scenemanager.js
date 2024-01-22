@@ -15,10 +15,21 @@ class SceneManager {
         if (isTransition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y));
         } else if (this.menu.isInMenu == false) {
+
+            //load music
+            if(level.music && !this.title){
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset(level.music);
+            }
+            // load level stuff
+            if (level.tileGrid) {
+                this.game.background.updateTileGrid(level.tileGrid, 64, 1, true);
+
             // load background
             this.game.background.updateTileGrid(level.tileGrid, 64, 2, true);
             let i;
             let obj;
+
 
             this.game.addEntity(new Mickey(this.game));
 
@@ -52,8 +63,15 @@ class SceneManager {
             this.game.addEntity(new Bird(this.game));
             this.game.addEntity(new Huskydog(this.game));
         }
-    }
+    };
 
+    updateAudio(){
+        var mute = document.getElementById("mute").ariaChecked;
+        var volume = document.getElementById("volume").value;
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    };
+    
     update() {
         if (this.menu.isInMenu) {
             this.menu.update();
