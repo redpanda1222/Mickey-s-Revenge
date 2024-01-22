@@ -20,6 +20,8 @@ class SceneManager {
             let i;
             let obj;
 
+            this.game.addEntity(new Mickey(this.game));
+
             // barbedwires
             for (i = 0; i < level.barbedwires.length; i++) {
                 obj = level.barbedwires[i];
@@ -46,8 +48,6 @@ class SceneManager {
                 obj = level.walmartstonehenge[i];
                 this.game.addEntity(new BackgroundObject(obj.x, obj.y, 446, 370, 0.5, "./assets/background/walmartStoneHenge.png"));
             }
-
-            this.game.addEntity(new Mickey(this.game));
             // here for testing, later we may want to spawn them randomly or something
             this.game.addEntity(new Bird(this.game));
             this.game.addEntity(new Huskydog(this.game));
