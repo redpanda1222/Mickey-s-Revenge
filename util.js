@@ -74,6 +74,14 @@ const mouseOver = (mouse, x, y, w, h) => {
     return mouse.x > x && mouse.x < x + w && mouse.y > y && mouse.y < y + h;
 }
 
-const centerRect = (ctx, x, y, w, h) => {
-    ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+const centerRect = (ctx, x, y, w, h, fill, border) => {
+    if (border) {
+        ctx.fillStyle = fill;
+        ctx.fillRect(x - w / 2, y - h / 2, w, h);
+        ctx.fillStyle = border;
+        ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+    } else {
+        if (fill) ctx.fillRect(x - w / 2, y - h / 2, w, h);
+        else      ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+    }
 }
