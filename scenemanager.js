@@ -69,10 +69,7 @@ class SceneManager {
             // here for testing, later we may want to spawn them randomly or something
             this.game.addEntity(new Bird(this.game, mickey, 1000, 50));
             this.game.addEntity(new Huskydog(this.game, mickey, 0, 720));
-            this.game.addEntity(new Skeleton(this.game, mickey, 0, 0));
-
-            // add mickey
-            this.game.addEntity(mickey);
+            this.game.addEntity(new Skeleton(this.game, mickey, 1000, 720));
         };
     };
 
