@@ -30,38 +30,49 @@ class SceneManager {
             let obj;
 
             let mickey = new Mickey(this.game);
-            this.game.addEntity(mickey);
 
             // barbedwires
             for (i = 0; i < level.barbedwires.length; i++) {
                 obj = level.barbedwires[i];
-                this.game.addEntity(new BackgroundObject(obj.x, obj.y, 83, 56, 1, "./assets/background/barbedwire1.png"));
+                this.game.addBackgroundEntity(new BarbedWire(obj.x, obj.y, 83, 56, 1));
             }
             // deadtrees
             for (i = 0; i < level.deadtrees.length; i++) {
                 obj = level.deadtrees[i];
-                this.game.addEntity(new BackgroundObject(obj.x, obj.y, 1920, 1920, 0.05, "./assets/background/deadtree.png"));
+                this.game.addBackgroundEntity(new DeadTree(obj.x, obj.y, 1920, 1920, 0.05));
             }
             // deserttowers
             for (i = 0; i < level.deserttowers.length; i++) {
                 obj = level.deserttowers[i];
-                this.game.addEntity(new BackgroundObject(obj.x, obj.y, 311, 324, 0.5, "./assets/background/deserttower.png"));
+                this.game.addBackgroundEntity(new DesertTower(obj.x, obj.y, 311, 324, 0.5));
             }
             // destroyeddeserttowers
             for (i = 0; i < level.destroyeddeserttowers.length; i++) {
                 obj = level.destroyeddeserttowers[i];
-                this.game.addEntity(new BackgroundObject(obj.x, obj.y, 393, 399, 0.5, "./assets/background/destroyedDesertTower.png"));
+                this.game.addBackgroundEntity(new DestroyedDesertTower(obj.x, obj.y, 393, 399, 0.5));
             }
-
-            // walmartstonehenge
-            for (i = 0; i < level.walmartstonehenge.length; i++) {
-                obj = level.walmartstonehenge[i];
-                this.game.addEntity(new BackgroundObject(obj.x, obj.y, 446, 370, 0.5, "./assets/background/walmartStoneHenge.png"));
+            // walmartstonehenges
+            for (i = 0; i < level.walmartstonehenges.length; i++) {
+                obj = level.walmartstonehenges[i];
+                this.game.addBackgroundEntity(new WallmartStoneHenge(obj.x, obj.y, 446, 370, 0.5));
+            }
+            // deadbodies
+            for (i = 0; i < level.deadbodies.length; i++) {
+                obj = level.deadbodies[i];
+                this.game.addBackgroundEntity(new DeadBody(obj.x, obj.y, 64, 34, 1));
+            }
+            // emptybarrels
+            for (i = 0; i < level.emptybarrels.length; i++) {
+                obj = level.emptybarrels[i];
+                this.game.addBackgroundEntity(new EmptyBarrel(obj.x, obj.y, 72, 64, 1));
             }
             // here for testing, later we may want to spawn them randomly or something
             this.game.addEntity(new Bird(this.game, mickey, 1000, 50));
             this.game.addEntity(new Huskydog(this.game, mickey, 0, 720));
             this.game.addEntity(new Skeleton(this.game, mickey, 0, 0));
+
+            // add mickey
+            this.game.addEntity(mickey);
         };
     };
 
