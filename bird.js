@@ -23,6 +23,12 @@ class Bird {
         
         this.flip = 0;
 
+        //Rectangle 
+        this.xRect = this.x;
+        this.yRect = this.y;
+        this.wRect = this.w;
+        this.hRect = this.h;
+
     };
 
     update() {
@@ -45,6 +51,9 @@ class Bird {
         if (this.mickey.y > this.y) {
             this.y += this.speed * this.game.clockTick;
         }
+
+        this.xRect = this.x;
+        this.yRect = this.y;
     };
 
     draw(ctx) {
@@ -67,7 +76,7 @@ class Bird {
         }
 
         ctx.beginPath();
-        ctx.rect(this.x, this.y, this.w, this.h);
+        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
         ctx.strokeStyle = "red";
         ctx.lineWidth = 2;
         ctx.stroke();

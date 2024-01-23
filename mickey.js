@@ -8,6 +8,12 @@ class Mickey {
         this.movementSpeed = 2.5;
         this.animations = [];
         this.loadAnimations();
+    
+        //Rectangle 
+        this.xRect = this.x + 3;
+        this.yRect = this.y - 2;
+        this.wRect = 50;
+        this.hRect = 50;
 	};
 
     loadAnimations() 
@@ -40,6 +46,9 @@ class Mickey {
             this.y += this.movementSpeed;
             this.status = 1;
         };
+
+        this.xRect = this.x + 3;
+        this.yRect = this.y - 2;
 	};
 
 	draw(ctx)
@@ -53,6 +62,13 @@ class Mickey {
         }else if (this.status == 1 && this.facing == 1){
             this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, 50,50);
         };
+
+        ctx.beginPath();
+        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();
 	};
     
 }
