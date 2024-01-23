@@ -15,6 +15,10 @@ class Mickey {
         this.yRect = this.y - 2;
         this.wRect = 90;
         this.hRect = 90;
+        this.left = this.xRect;
+        this.top = this.yRect;
+        this.right = this.left + this.wRect;
+        this.bottom = this.top + this.hRect;
 	};
 
     loadAnimations() 
@@ -50,6 +54,10 @@ class Mickey {
 
         this.xRect = this.x + 3;
         this.yRect = this.y - 2;
+        this.left = this.xRect;
+        this.top = this.yRect;
+        this.right = this.left + this.wRect;
+        this.bottom = this.top + this.hRect;
 	};
 
 	draw(ctx)

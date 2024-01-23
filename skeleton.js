@@ -27,7 +27,16 @@ class Skeleton {
         this.yRect = this.y + 2;
         this.wRect = this.w - 30;
         this.hRect = this.h - 15;
+        this.left = this.xRect;
+        this.top = this.yRect;
+        this.right = this.left + this.wRect;
+        this.bottom = this.top + this.hRect;
     };
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
+    }
 
     update() {
         if (this.mickey.x < this.x) {
@@ -55,6 +64,14 @@ class Skeleton {
 
         this.xRect = this.x + 15;
         this.yRect = this.y + 2;
+        this.left = this.xRect;
+        this.top = this.yRect;
+        this.right = this.left + this.wRect;
+        this.bottom = this.top + this.hRect;
+
+        if (this.collide(this.mickey)) {
+            console.log("Skeleton!!");
+        }
     };
 
     draw(ctx) {
