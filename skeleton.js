@@ -33,11 +33,6 @@ class Skeleton {
         this.bottom = this.top + this.hRect;
     };
 
-    collide(oth) {
-        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
-        return false;
-    }
-
     update() {
         if (this.mickey.x < this.x) {
             this.x -= this.speed * this.game.clockTick;
@@ -69,7 +64,7 @@ class Skeleton {
         this.right = this.left + this.wRect;
         this.bottom = this.top + this.hRect;
 
-        if (this.collide(this.mickey)) {
+        if (collide(this, this.mickey)) {
             console.log("Skeleton!!");
         }
     };

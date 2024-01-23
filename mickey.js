@@ -5,20 +5,15 @@ class Mickey {
         this.status = 0;
 		this.x = 0;
 		this.y = 0;
+        this.width = 100;
+        this.height = 100;
         this.movementSpeed = 2.5;
         this.animations = [];
         this.layer = 1;
         this.loadAnimations();
     
-        //Rectangle 
-        this.xRect = this.x + 3;
-        this.yRect = this.y - 2;
-        this.wRect = 90;
-        this.hRect = 90;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        //Rectangle bounding box
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
 	};
 
     loadAnimations() 
@@ -52,32 +47,25 @@ class Mickey {
             this.status = 1;
         };
 
-        this.xRect = this.x + 3;
-        this.yRect = this.y - 2;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        // update bounding box
+        this.BB.x = this.x;
+        this.BB.y = this.y;
 	};
 
 	draw(ctx)
 	{
         if (this.status == 0 && this.facing == 0){
-            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         }else if (this.status == 0 && this.facing == 1){
-            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         }else if (this.status == 1 && this.facing == 0){
-            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         }else if (this.status == 1 && this.facing == 1){
-            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         };
 
-        ctx.beginPath();
-        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.closePath();
+        // draws bounding box
+        this.BB.draw(ctx);
 	};
     
 }
