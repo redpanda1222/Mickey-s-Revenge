@@ -1,28 +1,24 @@
-class BackgroundObject {
-    constructor(x, y, width, height, scale, filepath) {
-        Object.assign(this, { x, y, width, height , scale});
-        this.spritesheet = ASSET_MANAGER.getAsset(filepath);
-        // this.BB = new BoundingBox(x, y, width, height);
-    };
-
-    update() {
-
-    }
-
-    draw(ctx) {
-        ctx.drawImage(this.spritesheet, 0, 0, this.width, this.height, this.x, this.y, this.width * this.scale, this.height * this.scale);
-    }
-}
-
 class BarbedWire {
-    constructor(x, y, width, height, scale) {
-        Object.assign(this, { x, y, width, height , scale});
+    constructor(x, y, width, height, scale, mickey) {
+        Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/barbedwire1.png");
         this.BB = new BoundingBox(x, y, width * scale, height * scale);
+
+        this.left = this.BB.x;
+        this.top = this.BB.y;
+        this.right = this.left + this.BB.width;
+        this.bottom = this.top + this.BB.height;
+    }
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
     }
 
     update() {
-
+        if (this.collide(this.mickey)) {
+            console.log("Barbed Wire!!!");
+        }
     }
 
     draw(ctx) {
@@ -34,14 +30,26 @@ class BarbedWire {
 }
 
 class DesertTower {
-    constructor(x, y, width, height, scale) {
-        Object.assign(this, { x, y, width, height , scale});
+    constructor(x, y, width, height, scale, mickey) {
+        Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/deserttower.png");
         this.BB = new BoundingBox(x, y, width * scale, height * scale);
+
+        this.left = this.BB.x;
+        this.top = this.BB.y;
+        this.right = this.left + this.BB.width;
+        this.bottom = this.top + this.BB.height;
+    }
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
     }
 
     update() {
-
+        if (this.collide(this.mickey)) {
+            console.log("Desert Tower!!!");
+        }
     }
 
     draw(ctx) {
@@ -53,14 +61,26 @@ class DesertTower {
 }
 
 class DeadTree {
-    constructor(x, y, width, height, scale) {
-        Object.assign(this, { x, y, width, height , scale});
+    constructor(x, y, width, height, scale, mickey) {
+        Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/deadtree.png");
         this.BB = new BoundingBox(x, y, width * scale, height * scale);
+
+        this.left = this.BB.x;
+        this.top = this.BB.y;
+        this.right = this.left + this.BB.width;
+        this.bottom = this.top + this.BB.height;
+    }
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
     }
 
     update() {
-
+        if (this.collide(this.mickey)) {
+            console.log("Dead Tree!!!");
+        }
     }
 
     draw(ctx) {
@@ -72,14 +92,26 @@ class DeadTree {
 }
 
 class DeadBody {
-    constructor(x, y, width, height, scale) {
-        Object.assign(this, { x, y, width, height , scale});
+    constructor(x, y, width, height, scale, mickey) {
+        Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/deadbodies1.png");
         this.BB = new BoundingBox(x, y, width * scale, height * scale);
+
+        this.left = this.BB.x;
+        this.top = this.BB.y;
+        this.right = this.left + this.BB.width;
+        this.bottom = this.top + this.BB.height;
+    }
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
     }
 
     update() {
-
+        if (this.collide(this.mickey)) {
+            console.log("Dead body!!!");
+        }
     }
 
     draw(ctx) {
@@ -91,14 +123,26 @@ class DeadBody {
 }
 
 class EmptyBarrel {
-    constructor(x, y, width, height, scale) {
-        Object.assign(this, { x, y, width, height , scale});
+    constructor(x, y, width, height, scale, mickey) {
+        Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/emptybarrel1.png");
         this.BB = new BoundingBox(x, y, width * scale, height * scale);
+
+        this.left = this.BB.x;
+        this.top = this.BB.y;
+        this.right = this.left + this.BB.width;
+        this.bottom = this.top + this.BB.height;
+    }
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
     }
 
     update() {
-
+        if (this.collide(this.mickey)) {
+            console.log("Barrel!!!");
+        }
     }
 
     draw(ctx) {
@@ -110,14 +154,26 @@ class EmptyBarrel {
 }
 
 class DestroyedDesertTower {
-    constructor(x, y, width, height, scale) {
-        Object.assign(this, { x, y, width, height , scale});
+    constructor(x, y, width, height, scale, mickey) {
+        Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/destroyedDesertTower.png");
         this.BB = new BoundingBox(x, y, width * scale, height * scale);
+
+        this.left = this.BB.x;
+        this.top = this.BB.y;
+        this.right = this.left + this.BB.width;
+        this.bottom = this.top + this.BB.height;
+    }
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
     }
 
     update() {
-
+        if (this.collide(this.mickey)) {
+            console.log("Destroyed Tower!!!");
+        }
     }
 
     draw(ctx) {
@@ -129,14 +185,26 @@ class DestroyedDesertTower {
 }
 
 class WallmartStoneHenge {
-    constructor(x, y, width, height, scale) {
-        Object.assign(this, { x, y, width, height , scale});
+    constructor(x, y, width, height, scale, mickey) {
+        Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/walmartStoneHenge.png");
         this.BB = new BoundingBox(x, y, width * scale, height * scale);
+
+        this.left = this.BB.x;
+        this.top = this.BB.y;
+        this.right = this.left + this.BB.width;
+        this.bottom = this.top + this.BB.height;
+    }
+
+    collide(oth) {
+        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+        return false;
     }
 
     update() {
-
+        if (this.collide(this.mickey)) {
+            console.log("Stone Henge!!!");
+        }
     }
 
     draw(ctx) {
