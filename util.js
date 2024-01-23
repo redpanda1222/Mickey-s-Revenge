@@ -85,3 +85,8 @@ const centerRect = (ctx, x, y, w, h, fill, border) => {
         else      ctx.strokeRect(x - w / 2, y - h / 2, w, h);
     }
 }
+
+// const collide = (oth) => {
+//     if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+//     return false;
+// }

@@ -8,7 +8,6 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
-        this.backgroundEntities = [];
         this.background = null;
 
         // Information on the input
@@ -127,10 +126,6 @@ class GameEngine {
         this.entities.push(entity);
     };
 
-    addBackgroundEntity(entity) {
-        this.backgroundEntities.push(entity);
-    };
-
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -144,28 +139,15 @@ class GameEngine {
             this.entities[i].draw(this.ctx, this);
         }
 
-        for (let i = this.backgroundEntities.length - 1; i >= 0; i--) {
-            this.backgroundEntities[i].draw(this.ctx, this);
-        }
-
         this.camera.draw(this.ctx);
     };
 
     update() {
         let entitiesCount = this.entities.length;
-        let backgroundEntitiesCount = this.backgroundEntities.length;
         let i;
 
         for (i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
-
-            if (!entity.removeFromWorld) {
-                entity.update();
-            }
-        }
-
-        for (i = 0; i < backgroundEntitiesCount; i++) {
-            let entity = this.backgroundEntities[i];
 
             if (!entity.removeFromWorld) {
                 entity.update();
@@ -179,12 +161,6 @@ class GameEngine {
                 this.entities.splice(i, 1);
             }
         }
-
-        // for (i = backgroundEntitiesCount - 1; i >= 0; --i) {
-        //     if (this.backgroundEntities[i].removeFromWorld) {
-        //         this.backgroundEntities.splice(i, 1);
-        //     }
-        // }
     };
 
     loop() {
