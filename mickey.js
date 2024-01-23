@@ -13,7 +13,8 @@ class Mickey {
         this.loadAnimations();
     
         //Rectangle bounding box
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+        this.offsetBB = {x: 18, y: 3, w: -26, h: -10};
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 
     loadAnimations() 
@@ -48,8 +49,8 @@ class Mickey {
         };
 
         // update bounding box
-        this.BB.x = this.x;
-        this.BB.y = this.y;
+        this.BB.x = this.x + this.offsetBB.x;
+        this.BB.y = this.y + this.offsetBB.y;
 	};
 
 	draw(ctx)
