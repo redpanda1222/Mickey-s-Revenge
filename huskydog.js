@@ -23,15 +23,8 @@ class Huskydog {
         
         this.flip = 0;
 
-        // Rectangle 
-        this.xRect = this.x + 3;
-        this.yRect = this.y + 3;
-        this.wRect = this.w - 3
-        this.hRect = this.h - 3;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        //Rectangle bounding box
+        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
     };
 
     update() {
@@ -54,14 +47,12 @@ class Huskydog {
         if (this.mickey.y > this.y) {
             this.y += this.speed * this.game.clockTick;
         }
-        this.xRect = this.x + 3;
-        this.yRect = this.y + 3;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        
+        // update bounding box
+        this.BB.x = this.x;
+        this.BB.y = this.y;
 
-        if (collide(this, this.mickey)) {
+        if (this.BB.collideBB(this.mickey.BB)) {
             console.log("Dog!!!");
         }
     };
@@ -84,13 +75,8 @@ class Huskydog {
                 this.x, this.y,
                 this.w, this.h);
         }
-
-        ctx.beginPath();
-        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.closePath();
+        // draws bounding box
+        this.BB.draw(ctx);
     };
 
     currentFrame() {
