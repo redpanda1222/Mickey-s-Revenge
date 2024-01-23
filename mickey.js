@@ -3,8 +3,8 @@ class Mickey {
 		this.game = game;
         this.facing = 0;
         this.status = 0;
-		this.x = 0;
-		this.y = 0;
+		this.x = 1024 / 2 - 5;
+		this.y = 768 / 2 - 5;
         this.movementSpeed = 2.5;
         this.animations = [];
         this.loadAnimations();

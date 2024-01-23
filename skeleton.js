@@ -1,12 +1,13 @@
 class Skeleton {
-    constructor(game) {
+    constructor(game, mickey, x, y) {
         this.game = game;
+        this.mickey = mickey;
 
-        this.x = 0;
-        this.y = 150;
+        this.x = x;
+        this.y = y;
         this.w = 60;
         this.h = 60;
-        this.speed = 50;
+        this.speed = 30;
 
         this.elapsedTime = 0;
         this.frameCount = 8;
@@ -20,27 +21,40 @@ class Skeleton {
         this.height = 68;
         
         this.flip = 0;
+
+        //rectangle box 
+        this.xRect = this.x + 15;
+        this.yRect = this.y + 2;
+        this.wRect = this.w - 30;
+        this.hRect = this.h - 15;
     };
 
     update() {
-        if (this.flip == 0) {
-            this.x += this.speed * this.game.clockTick;
-            if(this.x > 973) {
-                this.flip = 1; 
-                this.x = 985;
-                this.xStart = 515;
-                this.yStart = 73;
-            }
-        }
-        else if (this.flip == 1) {
+        if (this.mickey.x < this.x) {
             this.x -= this.speed * this.game.clockTick;
-            if (this.x < -10) {
-                this.flip = 0; 
-                this.x = 0;
-                this.xStart = 0;
-                this.yStart = 204
-            }
+            this.flip = 1; // Flip the sprite if moving left
+            this.xStart = 515;
+            this.yStart = 73;
+        } 
+        if (this.mickey.x > this.x) {
+            this.x += this.speed * this.game.clockTick;
+            this.flip = 0; // Do not flip the sprite if moving right
+            this.xStart = 0;
+            this.yStart = 204;
+        } 
+        if (this.mickey.x == this.x) {
+            this.x += this.speed * this.game.clockTick;
+            this.flip = 1;
         }
+        if (this.mickey.y < this.y) {
+            this.y -= this.speed * this.game.clockTick;
+        } 
+        if (this.mickey.y > this.y) {
+            this.y += this.speed * this.game.clockTick;
+        }
+
+        this.xRect = this.x + 15;
+        this.yRect = this.y + 2;
     };
 
     draw(ctx) {
@@ -61,6 +75,13 @@ class Skeleton {
                 this.x, this.y,
                 this.w, this.h);
         }
+
+        /*ctx.beginPath();
+        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();*/
     };
 
     currentFrame() {

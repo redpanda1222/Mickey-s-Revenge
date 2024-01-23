@@ -30,8 +30,8 @@ class SceneManager {
             let i;
             let obj;
 
-
-            this.game.addEntity(new Mickey(this.game));
+            let mickey = new Mickey(this.game);
+            this.game.addEntity(mickey);
 
             // barbedwires
             for (i = 0; i < level.barbedwires.length; i++) {
@@ -60,9 +60,9 @@ class SceneManager {
                 this.game.addEntity(new BackgroundObject(obj.x, obj.y, 446, 370, 0.5, "./assets/background/walmartStoneHenge.png"));
             }
             // here for testing, later we may want to spawn them randomly or something
-            this.game.addEntity(new Bird(this.game));
-            this.game.addEntity(new Huskydog(this.game));
-            this.game.addEntity(new Skeleton(this.game));
+            this.game.addEntity(new Bird(this.game, mickey, 1000, 50));
+            this.game.addEntity(new Huskydog(this.game, mickey, 0, 720));
+            this.game.addEntity(new Skeleton(this.game, mickey, 0, 0));
         };
     };
 
