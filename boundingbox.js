@@ -25,4 +25,8 @@ class BoundingBox {
 
         return {x: ox, y: oy};
     };
+
+    draw(ctx) {
+        centerRect(ctx, this.x, this.y, this.width, this.height);
+    }
 };
