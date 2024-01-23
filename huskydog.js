@@ -22,6 +22,12 @@ class Huskydog {
         this.height = 60;
         
         this.flip = 0;
+
+        // Rectangle 
+        this.xRect = this.x + 3;
+        this.yRect = this.y + 3;
+        this.wRect = this.w - 3
+        this.hRect = this.h - 3;
     };
 
     update() {
@@ -44,6 +50,8 @@ class Huskydog {
         if (this.mickey.y > this.y) {
             this.y += this.speed * this.game.clockTick;
         }
+        this.xRect = this.x + 3;
+        this.yRect = this.y + 3;
     };
 
     draw(ctx) {
@@ -64,6 +72,13 @@ class Huskydog {
                 this.x, this.y,
                 this.w, this.h);
         }
+
+        ctx.beginPath();
+        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();
     };
 
     currentFrame() {

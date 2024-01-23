@@ -22,25 +22,10 @@ class Bird {
         this.height = 160;
         
         this.flip = 0;
+
     };
 
     update() {
-        /*if (this.flip == 0) {
-            this.x += this.speed * this.game.clockTick;
-            if(this.x > 963) {
-                this.flip = 1; 
-                this.x = 970;
-                this.xStart = 1120;
-            }
-        }
-        else if (this.flip == 1) {
-            this.x -= this.speed * this.game.clockTick;
-            if (this.x < 0) {
-                this.flip = 0; 
-                this.x = 0;
-                this.xStart = 0;
-            }
-        }*/
         if (this.mickey.x < this.x) {
             this.x -= this.speed * this.game.clockTick;
             this.flip = 1; // Flip the sprite if moving left
@@ -80,6 +65,13 @@ class Bird {
                 this.x, this.y,
                 this.w, this.h);
         }
+
+        ctx.beginPath();
+        ctx.rect(this.x, this.y, this.w, this.h);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();
     };
 
     currentFrame() {

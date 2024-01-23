@@ -76,12 +76,12 @@ class Skeleton {
                 this.w, this.h);
         }
 
-        /*ctx.beginPath();
+        ctx.beginPath();
         ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
         ctx.strokeStyle = "red";
         ctx.lineWidth = 2;
         ctx.stroke();
-        ctx.closePath();*/
+        ctx.closePath();
     };
 
     currentFrame() {
