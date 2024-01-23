@@ -33,11 +33,19 @@ class Animator {
                 x, y,
                 w, h);
         }else{
-           ctx.drawImage(this.spritesheet,
+            if (this.reverse) {
+                ctx.drawImage(this.spritesheet,
+                    this.xStart - this.width*frame, this.yStart,
+                    this.width, this.height,
+                    x, y,
+                    w, h);
+            }else{
+                ctx.drawImage(this.spritesheet,
                     this.xStart + this.width*frame, this.yStart,
                     this.width, this.height,
                     x, y,
                     w, h);
+            }
         }
     };
 
