@@ -24,7 +24,8 @@ class Huskydog {
         this.flip = 0;
 
         //Rectangle bounding box
-        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
+        this.offsetBB = {x: 3, y: 3, w: -3, h: -3};
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
     update() {
@@ -49,8 +50,8 @@ class Huskydog {
         }
         
         // update bounding box
-        this.BB.x = this.x;
-        this.BB.y = this.y;
+        this.BB.x = this.x + this.offsetBB.x;
+        this.BB.y = this.y + this.offsetBB.y;
 
         if (this.BB.collideBB(this.mickey.BB)) {
             console.log("Dog!!!");
