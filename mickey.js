@@ -5,7 +5,7 @@ class Mickey {
         this.status = 0;
 		this.x = 0;
 		this.y = 0;
-        this.movementSpeed = 0.5;
+        this.movementSpeed = 2.5;
         this.animations = [];
         this.layer = 1;
         this.loadAnimations();
@@ -13,8 +13,8 @@ class Mickey {
         //Rectangle 
         this.xRect = this.x + 3;
         this.yRect = this.y - 2;
-        this.wRect = 50;
-        this.hRect = 50;
+        this.wRect = 90;
+        this.hRect = 90;
 	};
 
     loadAnimations() 
