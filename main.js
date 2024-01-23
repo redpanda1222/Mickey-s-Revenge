@@ -34,6 +34,12 @@ for (let i = 0; i < imageQueue.length; i++) {
 	ASSET_MANAGER.queueDownload(imageQueue[i]);
 }
 
+// https://www.fontspace.com/darkmode-font-f73936
+var titleFont = new FontFace('titleFont', 'url(./assets/fonts/cusfont.ttf)');
+titleFont.load().then(function(font) {
+	document.fonts.add(font);
+});
+
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");
