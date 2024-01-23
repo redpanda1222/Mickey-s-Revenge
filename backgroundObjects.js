@@ -157,7 +157,7 @@ class DestroyedDesertTower {
     constructor(x, y, width, height, scale, mickey) {
         Object.assign(this, { x, y, width, height , scale, mickey});
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/background/destroyedDesertTower.png");
-        this.BB = new BoundingBox(x, y, width * scale, height * scale);
+        this.BB = new BoundingBox(x, y+80, width * scale, (height* scale)-90);
 
         this.left = this.BB.x;
         this.top = this.BB.y;

@@ -7,19 +7,16 @@ class Mickey {
 		this.y = 0;
         this.movementSpeed = 2.5;
         this.animations = [];
-        this.layer = 1;
+        this.width = 100;
+        this.height = 100;
         this.loadAnimations();
-    
-        //Rectangle 
-        this.xRect = this.x + 3;
-        this.yRect = this.y - 2;
-        this.wRect = 90;
-        this.hRect = 90;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        this.updateBB();
 	};
+
+    updateBB(){
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, 100,100);
+    };
 
     loadAnimations() 
     {
@@ -52,12 +49,54 @@ class Mickey {
             this.status = 1;
         };
 
-        this.xRect = this.x + 3;
-        this.yRect = this.y - 2;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        this.updateBB();
+
+        var that = this;
+        this.game.entities.forEach(function(entity){
+            if (entity.BB && that.BB.collide(entity.BB)){
+                if ((entity instanceof DesertTower || entity instanceof DestroyedDesertTower || entity instanceof DeadTree || entity instanceof BarbedWire || entity instanceof DeadBody || entity instanceof WallmartStoneHenge || entity instanceof EmptyBarrel)){
+                    let overlap = that.BB.overlap(entity.BB);
+                    console.log("Xdif " + overlap.x + " Ydif " + overlap.y);
+                    if (that.lastBB.right >= entity.BB.left && that.lastBB.left < entity.BB.left){
+                        if (overlap.x < 5) {
+                            that.x = entity.left - that.width;
+                        }
+                        if (that.lastBB.bottom >= entity.BB.top && that.lastBB.bottom < entity.BB.bottom){
+                            if (overlap.y < 5){
+                                that.y = entity.BB.top - that.height;
+                            }            
+                        }
+                        if (that.lastBB.top <= entity.BB.bottom && that.lastBB.bottom > entity.BB.bottom) {
+                            if (overlap.y < 5){
+                                that.y = entity.BB.bottom;
+                            }
+
+                        }
+                    }
+                    else if (that.lastBB.left <= entity.BB.right && that.lastBB.right > entity.BB.right){
+                        if (overlap.x < 5) {
+                            that.x = entity.BB.right;
+                        }
+                        if (that.lastBB.bottom >= entity.BB.top && that.lastBB.bottom < entity.BB.bottom){
+                            if (overlap.y < 5){
+                                that.y = entity.BB.top - that.height;
+                            }            
+                        }
+                        if (that.lastBB.top <= entity.BB.bottom && that.lastBB.bottom > entity.BB.bottom) {
+                            if (overlap.y < 5){
+                                that.y = entity.BB.bottom;
+                            }
+
+                        }
+                    }else if (that.lastBB.bottom >= entity.BB.top && that.BB.bottom < entity.BB.bottom) {
+                        that.y = entity.BB.top - that.height;
+                    }else if (that.lastBB.top <= entity.BB.bottom) {
+                        that.y = entity.BB.bottom;
+                    };
+                };
+                 
+            };
+        });
 	};
 
 	draw(ctx)
@@ -72,12 +111,9 @@ class Mickey {
             this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
         };
 
-        ctx.beginPath();
-        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
         ctx.strokeStyle = "red";
         ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.closePath();
+        ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
 	};
     
 }
