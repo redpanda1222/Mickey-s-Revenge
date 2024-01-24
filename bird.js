@@ -23,22 +23,9 @@ class Bird {
         
         this.flip = 0;
 
-        //Rectangle 
-        this.xRect = this.x;
-        this.yRect = this.y;
-        this.wRect = this.w;
-        this.hRect = this.h;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
-
+        //Rectangle bounding box
+        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
     };
-
-    collide(oth) {
-        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
-        return false;
-    }
 
     update() {
         if (this.mickey.x < this.x) {
@@ -61,14 +48,11 @@ class Bird {
             this.y += this.speed * this.game.clockTick;
         }
 
-        this.xRect = this.x;
-        this.yRect = this.y;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        // update bounding box
+        this.BB.x = this.x;
+        this.BB.y = this.y;
 
-        if (this.collide(this.mickey)) {
+        if (this.BB.collideBB(this.mickey.BB)) {
             console.log("Bird!!!");
         }
     };
@@ -91,13 +75,8 @@ class Bird {
                 this.x, this.y,
                 this.w, this.h);
         }
-
-        ctx.beginPath();
-        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.closePath();
+        // draws bounding box
+        this.BB.draw(ctx);
     };
 
     currentFrame() {

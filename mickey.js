@@ -5,12 +5,17 @@ class Mickey {
         this.status = 0;
 		this.x = 0;
 		this.y = 0;
+        this.width = 100;
+        this.height = 100;
         this.movementSpeed = 2.5;
         this.animations = [];
         this.width = 100;
         this.height = 100;
         this.loadAnimations();
-        this.updateBB();
+    
+        //Rectangle bounding box
+        this.offsetBB = {x: 18, y: 3, w: -26, h: -10};
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 
     updateBB(){
@@ -49,71 +54,25 @@ class Mickey {
             this.status = 1;
         };
 
-        this.updateBB();
-
-        var that = this;
-        this.game.entities.forEach(function(entity){
-            if (entity.BB && that.BB.collide(entity.BB)){
-                if ((entity instanceof DesertTower || entity instanceof DestroyedDesertTower || entity instanceof DeadTree || entity instanceof BarbedWire || entity instanceof DeadBody || entity instanceof WallmartStoneHenge || entity instanceof EmptyBarrel)){
-                    let overlap = that.BB.overlap(entity.BB);
-                    console.log("Xdif " + overlap.x + " Ydif " + overlap.y);
-                    if (that.lastBB.right >= entity.BB.left && that.lastBB.left < entity.BB.left){
-                        if (overlap.x < 5) {
-                            that.x = entity.left - that.width;
-                        }
-                        if (that.lastBB.bottom >= entity.BB.top && that.lastBB.bottom < entity.BB.bottom){
-                            if (overlap.y < 5){
-                                that.y = entity.BB.top - that.height;
-                            }            
-                        }
-                        if (that.lastBB.top <= entity.BB.bottom && that.lastBB.bottom > entity.BB.bottom) {
-                            if (overlap.y < 5){
-                                that.y = entity.BB.bottom;
-                            }
-
-                        }
-                    }
-                    else if (that.lastBB.left <= entity.BB.right && that.lastBB.right > entity.BB.right){
-                        if (overlap.x < 5) {
-                            that.x = entity.BB.right;
-                        }
-                        if (that.lastBB.bottom >= entity.BB.top && that.lastBB.bottom < entity.BB.bottom){
-                            if (overlap.y < 5){
-                                that.y = entity.BB.top - that.height;
-                            }            
-                        }
-                        if (that.lastBB.top <= entity.BB.bottom && that.lastBB.bottom > entity.BB.bottom) {
-                            if (overlap.y < 5){
-                                that.y = entity.BB.bottom;
-                            }
-
-                        }
-                    }else if (that.lastBB.bottom >= entity.BB.top && that.BB.bottom < entity.BB.bottom) {
-                        that.y = entity.BB.top - that.height;
-                    }else if (that.lastBB.top <= entity.BB.bottom) {
-                        that.y = entity.BB.bottom;
-                    };
-                };
-                 
-            };
-        });
+        // update bounding box
+        this.BB.x = this.x + this.offsetBB.x;
+        this.BB.y = this.y + this.offsetBB.y;
 	};
 
 	draw(ctx)
 	{
         if (this.status == 0 && this.facing == 0){
-            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         }else if (this.status == 0 && this.facing == 1){
-            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         }else if (this.status == 1 && this.facing == 0){
-            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         }else if (this.status == 1 && this.facing == 1){
-            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, 100,100);
+            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         };
 
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 2;
-        ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        // draws bounding box
+        this.BB.draw(ctx);
 	};
     
 }

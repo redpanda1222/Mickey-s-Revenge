@@ -22,21 +22,10 @@ class Skeleton {
         
         this.flip = 0;
 
-        //rectangle box 
-        this.xRect = this.x + 15;
-        this.yRect = this.y + 2;
-        this.wRect = this.w - 30;
-        this.hRect = this.h - 15;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        //Rectangle bounding box
+        this.offsetBB = {x: 15, y: 2, w: -30, h: -15};
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
-
-    collide(oth) {
-        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
-        return false;
-    }
 
     update() {
         if (this.mickey.x < this.x) {
@@ -62,15 +51,12 @@ class Skeleton {
             this.y += this.speed * this.game.clockTick;
         }
 
-        this.xRect = this.x + 15;
-        this.yRect = this.y + 2;
-        this.left = this.xRect;
-        this.top = this.yRect;
-        this.right = this.left + this.wRect;
-        this.bottom = this.top + this.hRect;
+        // update bounding box
+        this.BB.x = this.x + this.offsetBB.x;
+        this.BB.y = this.y + this.offsetBB.y;
 
-        if (this.collide(this.mickey)) {
-            console.log("Skeleton!!");
+        if (this.BB.collideBB(this.mickey.BB)) {
+            console.log("Skeleton!!!");
         }
     };
 
@@ -92,13 +78,8 @@ class Skeleton {
                 this.x, this.y,
                 this.w, this.h);
         }
-
-        ctx.beginPath();
-        ctx.rect(this.xRect, this.yRect, this.wRect, this.hRect);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.closePath();
+        // draws bounding box
+        this.BB.draw(ctx);
     };
 
     currentFrame() {
