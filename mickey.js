@@ -12,7 +12,11 @@ class Mickey {
         this.width = 100;
         this.height = 100;
         this.loadAnimations();
-    
+ 
+        //CHARACTER STATS
+        this.MaxHP = 100;
+        this.currentHP = 100;
+
         //Rectangle bounding box
         this.offsetBB = {x: 18, y: 3, w: -26, h: -10};
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
@@ -52,6 +56,7 @@ class Mickey {
         if (this.game.down) {
             this.y += this.movementSpeed;
             this.status = 1;
+            //this.currentHP -= 0.1;  //<----TESTING HEALTH TRANSITION
         };
 
         // update bounding box
@@ -71,8 +76,26 @@ class Mickey {
             this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
         };
 
+        this.drawHealthBar(ctx);
+
         // draws bounding box
         this.BB.draw(ctx);
 	};
+
+    drawHealthBar(ctx){
+        //drawing health box
+        //--BACKGROUND FOR MAX HP
+        ctx.fillStyle = 'black';
+        ctx.fillRect(this.x + 15, this.y - 8, 80, 10);
+
+        //--Calculating Current HP and changing color with appropriate indicators for health percentage.
+        let healthRatio = this.currentHP/this.MaxHP;
+        let healthBarSize = 80 * healthRatio;
+        if (healthRatio > 0.75) ctx.fillStyle = 'green';
+        if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
+        if (healthRatio <= 0.50) ctx.fillStyle = 'red';
+        if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
+        ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10);
+    }
     
 }
