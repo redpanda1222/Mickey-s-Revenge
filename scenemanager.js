@@ -76,7 +76,7 @@ class SceneManager {
     };
 
     updateAudio(){
-        var mute = document.getElementById("mute").ariaChecked;
+        var mute = document.getElementById("mute").checked; 
         var volume = document.getElementById("volume").value;
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
@@ -86,6 +86,7 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.update();
         }
+        this.updateAudio();
     };
 
     draw(ctx) {
