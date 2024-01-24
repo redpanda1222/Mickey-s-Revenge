@@ -15,7 +15,6 @@ class SceneManager {
         if (isTransition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y));
         } else if (this.menu.isInMenu == false) {
-
             //load music
             if (level.music && !this.title) {
                 ASSET_MANAGER.pauseBackgroundMusic();
@@ -25,46 +24,56 @@ class SceneManager {
             // load level stuff
             if (level.tileGrid) {
                 this.game.background.updateTileGrid(level.tileGrid, 64, 1, true);
+            };
+            // load background
+            this.game.background.updateTileGrid(level.tileGrid, 64, 2, true);
+            let i;
+            let obj;
 
-                // load background
-                this.game.background.updateTileGrid(level.tileGrid, 64, 2, true);
-                let i;
-                let obj;
+            let mickey = new Mickey(this.game);
 
-
-                this.game.addEntity(new Mickey(this.game));
-
-                // barbedwires
-                for (i = 0; i < level.barbedwires.length; i++) {
-                    obj = level.barbedwires[i];
-                    this.game.addEntity(new BackgroundObject(obj.x, obj.y, 83, 56, 1, "./assets/background/barbedwire1.png"));
-                }
-                // deadtrees
-                for (i = 0; i < level.deadtrees.length; i++) {
-                    obj = level.deadtrees[i];
-                    this.game.addEntity(new BackgroundObject(obj.x, obj.y, 1920, 1920, 0.05, "./assets/background/deadtree.png"));
-                }
-                // deserttowers
-                for (i = 0; i < level.deserttowers.length; i++) {
-                    obj = level.deserttowers[i];
-                    this.game.addEntity(new BackgroundObject(obj.x, obj.y, 311, 324, 0.5, "./assets/background/deserttower.png"));
-                }
-                // destroyeddeserttowers
-                for (i = 0; i < level.destroyeddeserttowers.length; i++) {
-                    obj = level.destroyeddeserttowers[i];
-                    this.game.addEntity(new BackgroundObject(obj.x, obj.y, 393, 399, 0.5, "./assets/background/destroyedDesertTower.png"));
-                }
-
-                // walmartstonehenge
-                for (i = 0; i < level.walmartstonehenge.length; i++) {
-                    obj = level.walmartstonehenge[i];
-                    this.game.addEntity(new BackgroundObject(obj.x, obj.y, 446, 370, 0.5, "./assets/background/walmartStoneHenge.png"));
-                }
-                // here for testing, later we may want to spawn them randomly or something
-                this.game.addEntity(new Bird(this.game));
-                this.game.addEntity(new Huskydog(this.game));
+            // barbedwires
+            for (i = 0; i < level.barbedwires.length; i++) {
+                obj = level.barbedwires[i];
+                this.game.addEntity(new BarbedWire(obj.x, obj.y, 83, 56, 1, mickey));
             }
-        }
+            // deadtrees
+            for (i = 0; i < level.deadtrees.length; i++) {
+                obj = level.deadtrees[i];
+                this.game.addEntity(new DeadTree(obj.x, obj.y, 1920, 1920, 0.05, mickey));
+            }
+            // deserttowers
+            for (i = 0; i < level.deserttowers.length; i++) {
+                obj = level.deserttowers[i];
+                this.game.addEntity(new DesertTower(obj.x, obj.y, 311, 324, 0.5, mickey));
+            }
+            // destroyeddeserttowers
+            for (i = 0; i < level.destroyeddeserttowers.length; i++) {
+                obj = level.destroyeddeserttowers[i];
+                this.game.addEntity(new DestroyedDesertTower(obj.x, obj.y, 393, 399, 0.5, mickey));
+            }
+            // walmartstonehenges
+            for (i = 0; i < level.walmartstonehenges.length; i++) {
+                obj = level.walmartstonehenges[i];
+                this.game.addEntity(new WallmartStoneHenge(obj.x, obj.y, 446, 370, 0.5, mickey));
+            }
+            // deadbodies
+            for (i = 0; i < level.deadbodies.length; i++) {
+                obj = level.deadbodies[i];
+                this.game.addEntity(new DeadBody(obj.x, obj.y, 64, 34, 1, mickey));
+            }
+            // emptybarrels
+            for (i = 0; i < level.emptybarrels.length; i++) {
+                obj = level.emptybarrels[i];
+                this.game.addEntity(new EmptyBarrel(obj.x, obj.y, 72, 64, 1, mickey));
+            }
+            // here for testing, later we may want to spawn them randomly or something
+            // this.game.addEntity(new Bird(this.game, mickey, 1000, 50));
+            // this.game.addEntity(new Huskydog(this.game, mickey, 0, 720));
+            // this.game.addEntity(new Skeleton(this.game, mickey, 1000, 720));
+
+            this.game.addEntity(mickey);
+        };
     };
     updateAudio() {
         var mute = document.getElementById("mute").checked;

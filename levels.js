@@ -1,14 +1,7 @@
 var levelOne = {
-    music: "./audio/escape.mp3",
-    tileGrid: [[0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0], 
-               [0, 0, 0, 0, 0, 0, 0], 
-               [0, 0, 0, 0, 0, 0, 0], 
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0]],
-
     // background (entities walk on)
+    music: "./audio/kitchen.mp3",
+    
     tileGrid: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -22,17 +15,17 @@ var levelOne = {
     // overlay on top of background (these are collidable)
     barbedwires: [{x: 100, y: 392}],
 
-    deadbodies: [{x: 200, y: 102}],
+    deadbodies: [{x: 600, y: 102}],
 
     deadtrees: [{x: 410, y: 222}],
 
-    emptybarrels: [{x: 283, y: 392}],
+    emptybarrels: [{x: 283, y: 602}],
 
     deserttowers: [{x: 100, y: 100}],
 
     destroyeddeserttowers: [{x: 500, y: 400}],
 
-    walmartstonehenge: [{x: 220, y: 313}]
+    walmartstonehenges: [{x: 220, y: 313}]
 
 }
 

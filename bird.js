@@ -1,12 +1,13 @@
 class Bird {
-    constructor(game) {
+    constructor(game, mickey, x, y) {
         this.game = game;
+        this.mickey = mickey;
 
-        this.x = 0;
-        this.y = 50;
+        this.x = x;
+        this.y = y;
         this.w = 50;
         this.h = 50;
-        this.speed = 150;
+        this.speed = 50;
 
         this.elapsedTime = 0;
         this.frameCount = 7;
@@ -21,24 +22,38 @@ class Bird {
         this.height = 160;
         
         this.flip = 0;
+
+        //Rectangle bounding box
+        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
     };
 
     update() {
-        if (this.flip == 0) {
-            this.x += this.speed * this.game.clockTick;
-            if(this.x > 963) {
-                this.flip = 1; 
-                this.x = 970;
-                this.xStart = 1120;
-            }
-        }
-        else if (this.flip == 1) {
+        if (this.mickey.x < this.x) {
             this.x -= this.speed * this.game.clockTick;
-            if (this.x < 0) {
-                this.flip = 0; 
-                this.x = 0;
-                this.xStart = 0;
-            }
+            this.flip = 1; // Flip the sprite if moving left
+            this.xStart = 1120;
+        } 
+        if (this.mickey.x > this.x) {
+            this.x += this.speed * this.game.clockTick;
+            this.flip = 0; // Do not flip the sprite if moving right
+            this.xStart = 0;
+        } 
+        if (this.mickey.x == this.x) {
+            this.x += this.speed * this.game.clockTick;
+        }
+        if (this.mickey.y < this.y) {
+            this.y -= this.speed * this.game.clockTick;
+        } 
+        if (this.mickey.y > this.y) {
+            this.y += this.speed * this.game.clockTick;
+        }
+
+        // update bounding box
+        this.BB.x = this.x;
+        this.BB.y = this.y;
+
+        if (this.BB.collideBB(this.mickey.BB)) {
+            console.log("Bird!!!");
         }
     };
 
@@ -60,6 +75,8 @@ class Bird {
                 this.x, this.y,
                 this.w, this.h);
         }
+        // draws bounding box
+        this.BB.draw(ctx);
     };
 
     currentFrame() {

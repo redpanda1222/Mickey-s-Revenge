@@ -1,21 +1,24 @@
 const menuButtonDimensions = {
-    w: 80,
-    h: 20
+    w: 90,
+    h: 26
 }
 
-const creditsButtonPos = {
+const startButton = {
     x: PARAMS.WIDTH / 2,
-    y: PARAMS.HEIGHT / 2 + 15
+    y: PARAMS.HEIGHT / 2 + 40,
+    color: "white"
 }
 
-const creditsBackButtonPos = {
+const creditsButton = {
     x: PARAMS.WIDTH / 2,
-    y: PARAMS.HEIGHT - 40
+    y: PARAMS.HEIGHT / 2 + 80,
+    color: "white"
 }
 
-const startButtonPos = {
+const creditsBackButton = {
     x: PARAMS.WIDTH / 2,
-    y: PARAMS.HEIGHT / 2 - 15
+    y: PARAMS.HEIGHT - 40,
+    color: "white"
 }
 
 class MenuScreen {
@@ -33,32 +36,44 @@ class MenuScreen {
     }
 
     update() {
-        if (this.game.click) {
+        if (this.game.mouse) {
             if (this.isInCredits) {
-                if (mouseOver(this.game.click, creditsBackButtonPos.x - menuButtonDimensions.w / 2, 
-                                               creditsBackButtonPos.y - menuButtonDimensions.h / 2, 
+                creditsBackButton.color = "white";
+                if (mouseOver(this.game.mouse, creditsBackButton.x - menuButtonDimensions.w / 2, 
+                                               creditsBackButton.y - menuButtonDimensions.h / 2, 
                                                menuButtonDimensions.w, menuButtonDimensions.h)) {
-                    this.isInCredits = false;
+                    creditsBackButton.color = "gold";
+                    if (this.game.click) {
+                        this.isInCredits = false;
+                        this.game.click = null;
+                    }
                 }
             } else if (this.isInMenu) {
+                startButton.color = "white";
+                creditsButton.color = "white";
                 if (this.menuSelect.start || 
-                        mouseOver(this.game.click, startButtonPos.x - menuButtonDimensions.w / 2, 
-                                                   startButtonPos.y - menuButtonDimensions.h / 2, 
+                        mouseOver(this.game.mouse, startButton.x - menuButtonDimensions.w / 2, 
+                                                   startButton.y - menuButtonDimensions.h / 2, 
                                                    menuButtonDimensions.w, menuButtonDimensions.h)) {
-                    console.log("Clicked on start");
-                    this.isInMenu = false;
-                    this.sceneManager.loadScene(levelOne, 0, 0, true);
+                    startButton.color = "gold";
+                    if (this.game.click) {
+                        this.isInMenu = false;
+                        this.sceneManager.loadScene(levelOne, 0, 0, true);
+                        this.game.click = null;
+                    }
                 }
                 if (this.menuSelect.credits || 
-                        mouseOver(this.game.click, creditsButtonPos.x - menuButtonDimensions.w / 2, 
-                                                   creditsButtonPos.y - menuButtonDimensions.h / 2, 
+                        mouseOver(this.game.mouse, creditsButton.x - menuButtonDimensions.w / 2, 
+                                                   creditsButton.y - menuButtonDimensions.h / 2, 
                                                    menuButtonDimensions.w, menuButtonDimensions.h)) {
-                    console.log("Clicked on credits");
-                    this.isInCredits = true;
-                    this.menuSelect.credits = false;
+                    creditsButton.color = "gold";
+                    if (this.game.click) {
+                        this.isInCredits = true;
+                        this.menuSelect.credits = false;
+                        this.game.click = null;
+                    }
                 }
             }
-            this.game.click = null;
         }
     };
 
@@ -66,23 +81,34 @@ class MenuScreen {
         ctx.strokeStyle = "Black";
         ctx.textAlign = "center";
         if (this.isInCredits) {
-            centerRect(ctx, creditsBackButtonPos.x, creditsBackButtonPos.y, menuButtonDimensions.w, menuButtonDimensions.h);
+            centerRect(ctx, creditsBackButton.x, creditsBackButton.y, menuButtonDimensions.w, menuButtonDimensions.h, creditsBackButton.color, "black");
 
-            ctx.font = menuButtonDimensions.h + 'px Arial';
-            ctx.fillText("Back", creditsBackButtonPos.x, creditsBackButtonPos.y + menuButtonDimensions.h / 2 - 2);
+            ctx.font = (menuButtonDimensions.h - 4) + 'px Arial';
+            ctx.fillText("Back", creditsBackButton.x, creditsBackButton.y + menuButtonDimensions.h / 2 - 4);
 
-            ctx.font = '40px Arial';
-            ctx.fillText("Name", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
+            let creatorY = PARAMS.HEIGHT / 2  - 50;
+            let vertspacing = 30;
+
+            centerRect(ctx, PARAMS.WIDTH / 2, creatorY, 240, 290, "lightgray", "black");
+
+            ctx.font = (vertspacing * 2 / 3) + 'px Arial';
+            ctx.fillText("Creators:", PARAMS.WIDTH / 2, creatorY - vertspacing * 2.5);
+            ctx.fillText("Mark Rubio", PARAMS.WIDTH / 2, creatorY - vertspacing);
+            ctx.fillText("Soe Lin", PARAMS.WIDTH / 2, creatorY);
+            ctx.fillText("Yasin Ibrahim", PARAMS.WIDTH / 2, creatorY + vertspacing);
+            ctx.fillText("Bairu Li", PARAMS.WIDTH / 2, creatorY + vertspacing * 2);
+
         } else if (this.isInMenu) {
-            centerRect(ctx, startButtonPos.x, startButtonPos.y, menuButtonDimensions.w, menuButtonDimensions.h);
-            centerRect(ctx, creditsButtonPos.x, creditsButtonPos.y, menuButtonDimensions.w, menuButtonDimensions.h);
+            centerRect(ctx, startButton.x, startButton.y, menuButtonDimensions.w, menuButtonDimensions.h, startButton.color, "black");
+            centerRect(ctx, creditsButton.x, creditsButton.y, menuButtonDimensions.w, menuButtonDimensions.h, creditsButton.color, "black");
 
-            ctx.font = '40px Arial';
-            ctx.fillText("Cool Menu", PARAMS.WIDTH / 2, 40);
+            ctx.fillStyle = "black";
+            ctx.font = '120px titleFont';
+            ctx.fillText("Mickey's Revenge", PARAMS.WIDTH / 2, 150);
 
-            ctx.font = menuButtonDimensions.h + 'px Arial';
-            ctx.fillText("Start", startButtonPos.x, startButtonPos.y + menuButtonDimensions.h / 2 - 2);
-            ctx.fillText("Credits", creditsButtonPos.x, creditsButtonPos.y + menuButtonDimensions.h / 2 - 2);
+            ctx.font = (menuButtonDimensions.h - 4) + 'px Arial';
+            ctx.fillText("Start", startButton.x, startButton.y + menuButtonDimensions.h / 2 - 4);
+            ctx.fillText("Credits", creditsButton.x, creditsButton.y + menuButtonDimensions.h / 2 - 4);
         }
     };
 }
