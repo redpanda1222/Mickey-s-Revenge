@@ -45,7 +45,6 @@ class AssetManager {
                     break;
                 case 'wav':
                 case 'mp3':
-                case 'mp4':
                     var aud = new Audio();
                     aud.addEventListener("loadeddata", function () {
                         console.log("Loaded " + this.src);
@@ -69,6 +68,8 @@ class AssetManager {
 
                     this.cache[path] = aud;
                     break;
+                case 'mp4':
+                    
             }
         }
     };
@@ -81,13 +82,16 @@ class AssetManager {
         let audio = this.cache[path];
         audio.currentTime = 0;
         audio.play();
+        
     };
 
     muteAudio(mute) {
+        console.log("Muting audio: " + mute);
         for (var key in this.cache) {
             let asset = this.cache[key];
             if (asset instanceof Audio) {
                 asset.muted = mute;
+                console.log("Audio muted: " + asset.src);
             }
         }
     };
