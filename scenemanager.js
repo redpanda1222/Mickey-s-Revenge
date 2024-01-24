@@ -80,6 +80,7 @@ class SceneManager {
         var volume = document.getElementById("volume").value;
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
+        ASSET_MANAGER.autoRepeat("./audio/escape.mp3");
     };
     
     update() {
