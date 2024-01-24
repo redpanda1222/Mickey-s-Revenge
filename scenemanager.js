@@ -19,7 +19,7 @@ class SceneManager {
             if (level.music && !this.title) {
                 ASSET_MANAGER.pauseBackgroundMusic();
                 ASSET_MANAGER.playAsset(level.music);
-                this.updateAudio();
+                // this.updateAudio();
             }
             // load level stuff
             if (level.tileGrid) {
@@ -68,22 +68,26 @@ class SceneManager {
                 this.game.addEntity(new EmptyBarrel(obj.x, obj.y, 72, 64, 1, mickey));
             }
             // here for testing, later we may want to spawn them randomly or something
-            // this.game.addEntity(new Bird(this.game, mickey, 1000, 50));
-            // this.game.addEntity(new Huskydog(this.game, mickey, 0, 720));
-            // this.game.addEntity(new Skeleton(this.game, mickey, 1000, 720));
+            this.game.addEntity(new Bird(this.game, mickey, 1000, 50));
+            this.game.addEntity(new Huskydog(this.game, mickey, 0, 720));
+            this.game.addEntity(new Skeleton(this.game, mickey, 1000, 720));
+            this.game.addEntity(new skeletonmage(this.game));
 
             this.game.addEntity(mickey);
         };
     };
     updateAudio() {
-        var mute = document.getElementById("mute").checked;
-        console.log("Mute state: " + mute);
+        var muteCheckbox = document.getElementById("mute").checked;
+        console.log("Mute state: " + muteCheckbox);
+
         var volume = document.getElementById("volume").value;
-        ASSET_MANAGER.muteAudio(mute);
+        
+        ASSET_MANAGER.muteAudio(muteCheckbox);
         ASSET_MANAGER.adjustVolume(volume);
     };
 
     update() {
+        this.updateAudio();
         if (this.menu.isInMenu) {
             this.menu.update();
         }

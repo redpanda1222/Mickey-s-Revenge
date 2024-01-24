@@ -4,6 +4,7 @@ class AssetManager {
         this.errorCount = 0;
         this.cache = [];
         this.downloadQueue = [];
+  
     };
 
     queueDownload(path) {
@@ -46,7 +47,9 @@ class AssetManager {
                 case 'wav':
                 case 'mp3':
                     var aud = new Audio();
-                    aud.addEventListener("loadeddata", function () {
+
+                    aud.addEventListener("loadeddata", function (e) {
+                        console.log(e);
                         console.log("Loaded " + this.src);
                         that.successCount++;
                         if (that.isDone()) callback();
@@ -62,6 +65,7 @@ class AssetManager {
                         aud.pause();
                         aud.currentTime = 0;
                     });
+                  
 
                     aud.src = path;
                     aud.load();
