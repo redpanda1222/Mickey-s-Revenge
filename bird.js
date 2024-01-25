@@ -27,6 +27,17 @@ class Bird {
         this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
     };
 
+    handleCollision(entity) {
+        let overlap = this.BB.overlapBB(entity.BB);
+        let sig = { x: Math.sign(this.BB.x - entity.BB.x), y: Math.sign(this.BB.y - entity.BB.y) };
+
+        if (overlap.x < overlap.y) {
+            this.x += (overlap.x + 1) * sig.x;
+        } else {
+            this.y += (overlap.y + 1) * sig.y;
+        }
+    }
+
     update() {
         if (this.mickey.x + this.mickey.width / 4 < this.x) {
             this.x -= this.speed * this.game.clockTick;
@@ -52,9 +63,18 @@ class Bird {
         this.BB.x = this.x;
         this.BB.y = this.y;
 
-        if (this.BB.collideBB(this.mickey.BB)) {
-            console.log("Bird!!!");
-        }
+        // collision detection & resolution with background objects
+        this.game.backgroundEntities.forEach(backEntity => {
+            if (this.BB.collideBB(backEntity.BB)) {
+                this.handleCollision(backEntity); 
+            }
+        });
+        // collision detection & resolution with other enemmies
+        this.game.entities.forEach(entity => {
+            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
+                this.handleCollision(entity); 
+            }
+        });
     };
 
     draw(ctx) {

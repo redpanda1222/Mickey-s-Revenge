@@ -22,10 +22,17 @@ class Mickey {
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 
-    updateBB(){
-        this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 100,100);
-    };
+    handleCollision(entity) {
+        let overlap = this.BB.overlapBB(entity.BB);
+        let sig = { x: Math.sign(this.BB.x - entity.BB.x), y: Math.sign(this.BB.y - entity.BB.y) };
+        // console.log("[X: sig " + sig.x + ", dif " + overlap.x + "], [Y: sig " + sig.y + ", dif " + overlap.y + "]");
+
+        if (overlap.x < overlap.y) {
+            this.x += (overlap.x + 1) * sig.x;
+        } else {
+            this.y += (overlap.y + 1) * sig.y;
+        }
+    }
 
     loadAnimations() 
     {
@@ -62,6 +69,13 @@ class Mickey {
         // update bounding box
         this.BB.x = this.x + this.offsetBB.x;
         this.BB.y = this.y + this.offsetBB.y;
+
+        // mickey only collide with background objects
+        this.game.backgroundEntities.forEach(backEntity => {
+            if (this.BB.collideBB(backEntity.BB)) {
+                this.handleCollision(backEntity); 
+            }
+        });
 	};
 
 	draw(ctx)
