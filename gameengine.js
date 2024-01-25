@@ -166,13 +166,13 @@ class GameEngine {
             }
         }
 
-        for (i = 0; i < backEntitiesCount; i++) {
-            let entity = this.backgroundEntities[i];
+        // for (i = 0; i < backEntitiesCount; i++) {
+        //     let entity = this.backgroundEntities[i];
 
-            if (!entity.removeFromWorld) {
-                entity.update();
-            }
-        }
+        //     if (!entity.removeFromWorld) {
+        //         entity.update();
+        //     }
+        // }
 
         this.camera.update();
 
