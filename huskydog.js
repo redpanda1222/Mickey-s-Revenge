@@ -7,7 +7,7 @@ class Huskydog {
         this.y = y;
         this.w = 50;
         this.h = 50;
-        this.speed = 40;
+        this.speed = 1.5;
 
         this.elapsedTime = 0;
         this.frameCount = 5;
@@ -33,36 +33,29 @@ class Huskydog {
         let sig = { x: Math.sign(this.BB.x - entity.BB.x), y: Math.sign(this.BB.y - entity.BB.y) };
 
         if (overlap.x < overlap.y) {
-            this.x += (overlap.x + 1) * sig.x;
+            this.x += overlap.x * sig.x;
         } else {
-            this.y += (overlap.y + 1) * sig.y;
+            this.y += overlap.y * sig.y;
         }
     }
 
     update() {
-        if (this.mickey.x + this.mickey.width / 4  < this.x) {
-            this.x -= this.speed * this.game.clockTick;
+        // moves straight to center of mickey
+        let posDiff = {x: this.mickey.BB.center().x - this.BB.center().x, y: this.mickey.BB.center().y - this.BB.center().y};
+        let toMickey = Math.atan2(posDiff.y, posDiff.x);
+        this.x += Math.cos(toMickey) * this.speed;
+        this.y += Math.sin(toMickey) * this.speed;
+
+        if (Math.cos(toMickey) < 0) {
             this.flip = 1; // Flip the sprite if moving left
             this.xStart = 445;
-        } 
-        if (this.mickey.x + this.mickey.width / 4 > this.x) {
-            this.x += this.speed * this.game.clockTick;
+        } else {
             this.flip = 0; // Do not flip the sprite if moving right
             this.xStart = 0;
-        } 
-        if (this.mickey.x + this.mickey.width / 4 == this.x) {
-            this.x += this.speed * this.game.clockTick;
-        }
-        if (this.mickey.y + this.mickey.height / 4 < this.y) {
-            this.y -= this.speed * this.game.clockTick;
-        } 
-        if (this.mickey.y + this.mickey.height / 4 > this.y) {
-            this.y += this.speed * this.game.clockTick;
         }
         
         // update bounding box
-        this.BB.x = this.x + this.offsetBB.x;
-        this.BB.y = this.y + this.offsetBB.y;
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
         // collision detection & resolution with background objects
         this.game.backgroundEntities.forEach(backEntity => {

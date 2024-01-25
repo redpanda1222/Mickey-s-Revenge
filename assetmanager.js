@@ -90,12 +90,12 @@ class AssetManager {
     };
 
     muteAudio(mute) {
-        console.log("Muting audio: " + mute);
+        // console.log("Muting audio: " + mute);
         for (var key in this.cache) {
             let asset = this.cache[key];
             if (asset instanceof Audio) {
                 asset.muted = mute;
-                console.log("Audio muted: " + asset.src);
+                // console.log("Audio muted: " + asset.src);
             }
         }
     };

@@ -50,8 +50,7 @@ class SkeletonMage { //
         }
 
         // update bounding box
-        this.BB.x = this.x + this.offsetBB.x;
-        this.BB.y = this.y + this.offsetBB.y;
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
         if (this.BB.collideBB(this.mickey.BB)) {
             console.log("Skeleton mage!!!");

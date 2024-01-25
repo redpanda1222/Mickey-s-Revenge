@@ -67,8 +67,7 @@ class Mickey {
         };
 
         // update bounding box
-        this.BB.x = this.x + this.offsetBB.x;
-        this.BB.y = this.y + this.offsetBB.y;
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
         // mickey only collide with background objects
         this.game.backgroundEntities.forEach(backEntity => {
