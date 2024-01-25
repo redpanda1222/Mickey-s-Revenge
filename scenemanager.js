@@ -84,6 +84,7 @@ class SceneManager {
         
         ASSET_MANAGER.muteAudio(muteCheckbox);
         ASSET_MANAGER.adjustVolume(volume);
+        ASSET_MANAGER.autoRepeat("./audio/escape.mp3");
     };
 
     update() {
@@ -91,6 +92,7 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.update();
         }
+        this.updateAudio();
     };
 
     draw(ctx) {

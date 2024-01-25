@@ -28,23 +28,23 @@ class Bird {
     };
 
     update() {
-        if (this.mickey.x < this.x) {
+        if (this.mickey.x + this.mickey.width / 4 < this.x) {
             this.x -= this.speed * this.game.clockTick;
             this.flip = 1; // Flip the sprite if moving left
             this.xStart = 1120;
         } 
-        if (this.mickey.x > this.x) {
+        if (this.mickey.x + this.mickey.width / 4 > this.x) {
             this.x += this.speed * this.game.clockTick;
             this.flip = 0; // Do not flip the sprite if moving right
             this.xStart = 0;
         } 
-        if (this.mickey.x == this.x) {
+        if (this.mickey.x + this.mickey.width / 4 == this.x) {
             this.x += this.speed * this.game.clockTick;
         }
-        if (this.mickey.y < this.y) {
+        if (this.mickey.y + this.mickey.height / 4 < this.y) {
             this.y -= this.speed * this.game.clockTick;
         } 
-        if (this.mickey.y > this.y) {
+        if (this.mickey.y + this.mickey.height / 4 > this.y) {
             this.y += this.speed * this.game.clockTick;
         }
 
