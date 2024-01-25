@@ -124,8 +124,10 @@ class skeletonMage {
         // } else if (this.facing == 3) {
         //     this.animation[3].drawFrame(this.game.clockTick, ctx, this.x, this.y, this.width, this.height);
         // };
-        // draws bounding box
-        this.BB.draw(ctx);
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx);
+        }
     };
 
     currentFrame() {

@@ -25,8 +25,10 @@ class BackgroundObject {
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, 0, 0, this.width, this.height, this.x, this.y, this.width * this.scale, this.height * this.scale);
-        // draws bounding box
-        this.BB.draw(ctx);
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx);
+        }
     }
 }
 

@@ -78,8 +78,10 @@ class Mickey {
 
         this.drawHealthBar(ctx);
 
-        // draws bounding box
-        this.BB.draw(ctx);
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx);
+        }
 	};
 
     drawHealthBar(ctx){

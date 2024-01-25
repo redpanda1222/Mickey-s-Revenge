@@ -75,8 +75,10 @@ class Bird {
                 this.x, this.y,
                 this.w, this.h);
         }
-        // draws bounding box
-        this.BB.draw(ctx);
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx);
+        }
     };
 
     currentFrame() {
