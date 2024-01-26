@@ -85,3 +85,41 @@ const centerRect = (ctx, x, y, w, h, fill, border) => {
         else      ctx.strokeRect(x - w / 2, y - h / 2, w, h);
     }
 }
+
+/**
+ * Vector Math.
+ */
+class Vector2 {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    add(otherVector) {
+        return new Vector2(this.x + otherVector.x, this.y + otherVector.y);
+    }
+
+    sub(otherVector) {
+        return new Vector2(this.x - otherVector.x, this.y - otherVector.y);
+    }
+
+    mul(scalar) {
+        return new Vector2(this.x * scalar, this.y * scalar);
+    }
+
+    div(scalar) {
+        return new Vector2(this.x / scalar, this.y / scalar);
+    }
+
+    mag() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
+    invert() {
+        return this.mul(-1);
+    }
+
+    norm() {
+        return this.div(this.mag());
+    }
+}

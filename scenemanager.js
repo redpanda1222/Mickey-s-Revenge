@@ -90,7 +90,8 @@ class SceneManager {
         this.updateAudio();
         if (this.menu.isInMenu) {
             this.menu.update();
-        } else {
+        } 
+        else {
             this.spawnmanager.update();
         }
         this.updateAudio();

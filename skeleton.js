@@ -3,11 +3,13 @@ class Skeleton {
         this.game = game;
         this.mickey = mickey;
 
-        this.x = x;
-        this.y = y;
+        this.pos = new Vector2(x, y);
+        this.vel = new Vector2(0, 0);
+        this.acc = new Vector2(0, 0);
         this.w = 60;
         this.h = 60;
-        this.speed = 1;
+        this.speed = 2;
+        this.drag = -1 / (this.speed * this.speed);
 
         this.elapsedTime = 0;
         this.frameCount = 8;
@@ -19,33 +21,59 @@ class Skeleton {
         this.yStart = 204
         this.width = 64;
         this.height = 68;
-        
+
         this.flip = 0;
 
         //Rectangle bounding box
-        this.offsetBB = {x: 15, y: 2, w: -30, h: -15};
-        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        this.offsetBB = { x: 15, y: 2, w: -30, h: -15 };
+        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
-    handleCollision(entity) {
-        let overlap = this.BB.overlapBB(entity.BB);
-        let sig = { x: Math.sign(this.BB.x - entity.BB.x), y: Math.sign(this.BB.y - entity.BB.y) };
+    handleCollision(entity, scalarForce) {
+        // basically treats other entity like a repelling force field
+        let toEntityCenter = this.BB.center().sub(entity.BB.center()).norm().mul(scalarForce);
+        this.applyForce(toEntityCenter);
+    }
 
-        if (overlap.x < overlap.y) {
-            this.x += overlap.x * sig.x;
-        } else {
-            this.y += overlap.y * sig.y;
-        }
+    move() {
+        this.vel = this.vel.add(this.acc);
+        this.pos = this.pos.add(this.vel);
+        // update bounding box
+        this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
+        // reset net accel
+        this.acc = this.acc.mul(0);
+    }
+
+    applyForce(force) {
+        // assume mass is 1, F = A
+        this.acc = this.acc.add(force);
     }
 
     update() {
-        // moves straight to center of mickey
-        let posDiff = {x: this.mickey.BB.center().x - this.BB.center().x, y: this.mickey.BB.center().y - this.BB.center().y};
-        let toMickey = Math.atan2(posDiff.y, posDiff.x);
-        this.x += Math.cos(toMickey) * this.speed;
-        this.y += Math.sin(toMickey) * this.speed;
+        // applies force to move towards center of mickey
+        let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
+        this.applyForce(toMickey);
 
-        if (Math.cos(toMickey) < 0) {
+        // drag force to limit velocity
+        let v = this.vel.mag();
+        if (v !== 0) {
+            this.applyForce(this.vel.norm().mul(this.drag * v * v));
+        }
+
+        // collision detection & resolution with background objects
+        this.game.backgroundEntities.forEach(backEntity => {
+            if (this.BB.collideBB(backEntity.BB)) {
+                this.handleCollision(backEntity, this.speed);
+            }
+        });
+        // collision detection & resolution with other enemmies
+        this.game.entities.forEach(entity => {
+            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
+                this.handleCollision(entity, 1);
+            }
+        });
+
+        if (this.pos.x - this.mickey.x > 0) {
             this.flip = 1; // Flip the sprite if moving left
             this.xStart = 515;
             this.yStart = 73;
@@ -55,22 +83,8 @@ class Skeleton {
             this.yStart = 204;
         }
 
-        // update bounding box
-        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
-
-        // collision detection & resolution with background objects
-        this.game.backgroundEntities.forEach(backEntity => {
-            if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity); 
-            }
-        });
-
-        // collision detection & resolution with other enemmies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
-                this.handleCollision(entity); 
-            }
-        });
+        // this should be last thing to update
+        this.move();
     };
 
     draw(ctx) {
@@ -79,16 +93,16 @@ class Skeleton {
         if (this.elapsedTime > this.totalTime) this.elapsedTime -= this.totalTime;
         if (this.flip == 0) {
             ctx.drawImage(this.spritesheet,
-                this.xStart + this.width*frame, this.yStart,
+                this.xStart + this.width * frame, this.yStart,
                 this.width, this.height,
-                this.x, this.y,
+                this.pos.x, this.pos.y,
                 this.w, this.h);
         }
         else if (this.flip == 1) {
             ctx.drawImage(this.spritesheet,
-                this.xStart - this.width*frame, this.yStart,
+                this.xStart - this.width * frame, this.yStart,
                 this.width, this.height,
-                this.x, this.y,
+                this.pos.x, this.pos.y,
                 this.w, this.h);
         }
         if (PARAMS.DEBUG) {

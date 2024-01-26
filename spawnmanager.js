@@ -15,7 +15,7 @@ class SpawnManager {
 
         // randomly spawns every second
         if (Math.floor(this.elapsed) != Math.floor(oldElapsed)) {
-            switch(randomInt(4)) {
+            switch(randomInt(3)) {
                 case 0:
                     this.game.addEntity(new Bird(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
                     break;
