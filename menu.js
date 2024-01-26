@@ -45,9 +45,9 @@ class MenuScreen {
                     creditsBackButton.color = "gold";
                     if (this.game.click) {
                         this.isInCredits = false;
-                        this.game.click = null;
                     }
                 }
+                this.game.click = null;
             } else if (this.isInMenu) {
                 startButton.color = "white";
                 creditsButton.color = "white";
@@ -59,7 +59,6 @@ class MenuScreen {
                     if (this.game.click) {
                         this.isInMenu = false;
                         this.sceneManager.loadScene(levelOne, 0, 0, true);
-                        this.game.click = null;
                     }
                 }
                 if (this.menuSelect.credits || 
@@ -70,9 +69,9 @@ class MenuScreen {
                     if (this.game.click) {
                         this.isInCredits = true;
                         this.menuSelect.credits = false;
-                        this.game.click = null;
                     }
                 }
+                this.game.click = null;
             }
         }
     };
