@@ -72,10 +72,14 @@ class Bird {
             if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
                 this.handleCollision(entity, 1);
             }
+            // colliding with mickey and attacking mickey
+            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
+                this.mickey.currentHP -= 0.001;
+            }
         });
 
         // facing
-        if (this.pos.x - this.mickey.x > 0) {
+        if (this.pos.x - this.mickey.x - 35 > 0) {
             this.flip = 1; // Flip the sprite if moving left
             this.xStart = 1120;
         } else {

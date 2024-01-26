@@ -71,9 +71,13 @@ class Skeleton {
             if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
                 this.handleCollision(entity, 1);
             }
+            // colliding with mickey and attacking mickey
+            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
+                this.mickey.currentHP -= 0.001;
+            }
         });
 
-        if (this.pos.x - this.mickey.x > 0) {
+        if (this.pos.x - this.mickey.x - 30 > 0) {
             this.flip = 1; // Flip the sprite if moving left
             this.xStart = 515;
             this.yStart = 73;
