@@ -74,7 +74,7 @@ class Huskydog {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.currentHP -= 0.001;
+                this.mickey.currentHP -= 1;
             }
         });
 
