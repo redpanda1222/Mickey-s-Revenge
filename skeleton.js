@@ -8,8 +8,8 @@ class Skeleton {
         this.acc = new Vector2(0, 0);
         this.w = 60;
         this.h = 60;
-        this.speed = 2;
-        this.drag = -1 / (this.speed * this.speed);
+        this.speed = 1;
+        this.drag = -1 / (this.speed); // dont question
 
         this.elapsedTime = 0;
         this.frameCount = 8;
@@ -57,13 +57,13 @@ class Skeleton {
         // drag force to limit velocity
         let v = this.vel.mag();
         if (v !== 0) {
-            this.applyForce(this.vel.norm().mul(this.drag * v * v));
+            this.applyForce(this.vel.norm().mul(this.drag * v));
         }
 
         // collision detection & resolution with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed);
+                this.handleCollision(backEntity, this.speed + 1);
             }
         });
         // collision detection & resolution with other enemmies

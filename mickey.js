@@ -7,7 +7,7 @@ class Mickey {
 		this.y = 0;
         this.width = 100;
         this.height = 100;
-        this.movementSpeed = 2.5;
+        this.movementSpeed = 5;
         this.animations = [];
         this.width = 100;
         this.height = 100;
