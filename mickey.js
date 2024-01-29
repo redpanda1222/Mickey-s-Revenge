@@ -110,8 +110,8 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-	if (healthRatio >= 0){ ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10)}
-	else {ctx.fillRect(this.x + 15, this.y - 8, 0, 10)}
+        if (healthRatio >= 0){ ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10)}
+        else {ctx.fillRect(this.x + 15, this.y - 8, 0, 10)}
     }
     
 }
