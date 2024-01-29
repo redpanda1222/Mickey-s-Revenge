@@ -21,9 +21,18 @@ class BoundingBox {
         return {x: ox, y: oy};
     };
 
+    center() {
+        return new Vector2(this.x + this.width / 2, this.y + this.height / 2);
+    }
+
     collideBB (otherBB) {
         return this.x + this.width  > otherBB.x && this.x < otherBB.x + otherBB.width &&
                this.y + this.height > otherBB.y && this.y < otherBB.y + otherBB.height;
+    }
+
+    updateBB(x, y) {
+        this.x = x;
+        this.y = y;
     }
 
     draw(ctx) {

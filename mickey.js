@@ -7,7 +7,7 @@ class Mickey {
 		this.y = 0;
         this.width = 100;
         this.height = 100;
-        this.movementSpeed = 2.5;
+        this.movementSpeed = 5;
         this.animations = [];
         this.width = 100;
         this.height = 100;
@@ -22,10 +22,17 @@ class Mickey {
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 
-    updateBB(){
-        this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 100,100);
-    };
+    handleCollision(entity) {
+        let overlap = this.BB.overlapBB(entity.BB);
+        let sig = { x: Math.sign(this.BB.x - entity.BB.x), y: Math.sign(this.BB.y - entity.BB.y) };
+        // console.log("[X: sig " + sig.x + ", dif " + overlap.x + "], [Y: sig " + sig.y + ", dif " + overlap.y + "]");
+
+        if (overlap.x < overlap.y) {
+            this.x += (overlap.x + 1) * sig.x;
+        } else {
+            this.y += (overlap.y + 1) * sig.y;
+        }
+    }
 
     loadAnimations() 
     {
@@ -60,8 +67,14 @@ class Mickey {
         };
 
         // update bounding box
-        this.BB.x = this.x + this.offsetBB.x;
-        this.BB.y = this.y + this.offsetBB.y;
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+
+        // mickey only collide with background objects
+        this.game.backgroundEntities.forEach(backEntity => {
+            if (this.BB.collideBB(backEntity.BB)) {
+                this.handleCollision(backEntity); 
+            }
+        });
 	};
 
 	draw(ctx)
@@ -78,8 +91,10 @@ class Mickey {
 
         this.drawHealthBar(ctx);
 
-        // draws bounding box
-        this.BB.draw(ctx);
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx);
+        }
 	};
 
     drawHealthBar(ctx){
@@ -95,7 +110,8 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-        ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10);
+	if (healthRatio >= 0){ ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10)}
+	else {ctx.fillRect(this.x + 15, this.y - 8, 0, 10)}
     }
     
 }
