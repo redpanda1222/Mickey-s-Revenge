@@ -8,6 +8,7 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
+        this.projectileEntities = [];
         this.backgroundEntities = [];
         this.background = null;
 
@@ -127,6 +128,10 @@ class GameEngine {
         this.entities.push(entity);
     };
 
+    addProjectileEntity(entity) {
+        this.projectileEntities.push(entity);
+    };
+
     addBackgroundEntity(entity) {
         this.backgroundEntities.push(entity);
     };
@@ -139,12 +144,17 @@ class GameEngine {
             this.background.draw(this.ctx);
         }
 
-        // Draw latest things first
+        // Draw latest entities things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
 
-        // Draw latest things first
+        // Draw latest projectile entities things first
+        for (let i = this.projectileEntities.length - 1; i >= 0; i--) {
+            this.projectileEntities[i].draw(this.ctx, this);
+        }
+
+        // Draw latest background entities things first
         for (let i = this.backgroundEntities.length - 1; i >= 0; i--) {
             this.backgroundEntities[i].draw(this.ctx, this);
         }
@@ -154,7 +164,7 @@ class GameEngine {
 
     update() {
         let entitiesCount = this.entities.length;
-        let backEntitiesCount = this.backgroundEntities.length;
+        let projEntitiesCount = this.projectileEntities.length;
         let i;
 
         // updating entities
@@ -166,13 +176,13 @@ class GameEngine {
             }
         }
 
-        // for (i = 0; i < backEntitiesCount; i++) {
-        //     let entity = this.backgroundEntities[i];
+        for (i = 0; i < projEntitiesCount; i++) {
+            let entity = this.projectileEntities[i];
 
-        //     if (!entity.removeFromWorld) {
-        //         entity.update();
-        //     }
-        // }
+            if (!entity.removeFromWorld) {
+                entity.update();
+            }
+        }
 
         this.camera.update();
 
@@ -183,9 +193,9 @@ class GameEngine {
             }
         }
 
-        for (i = backEntitiesCount - 1; i >= 0; --i) {
-            if (this.backgroundEntities[i].removeFromWorld) {
-                this.backgroundEntities.splice(i, 1);
+        for (i = projEntitiesCount - 1; i >= 0; --i) {
+            if (this.projectileEntities[i].removeFromWorld) {
+                this.projectileEntities.splice(i, 1);
             }
         }
     };

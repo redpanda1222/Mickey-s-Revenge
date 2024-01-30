@@ -34,7 +34,7 @@ class Mickey {
     }
 
     loadAnimations() 
-    { // 24, 26
+    {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 0, 26, 40, 4, 0.09, 1, true, false));
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 41, 26, 40, 6, 0.09, 1, false, false));
         //reversed images

@@ -86,6 +86,10 @@ const centerRect = (ctx, x, y, w, h, fill, border) => {
     }
 }
 
+const degreeToRad = (degree) => {
+    return degree * (Math.PI / 180);
+}
+
 /**
  * Vector Math.
  */
@@ -115,8 +119,8 @@ class Vector2 {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
-    invert() {
-        return this.mul(-1);
+    rotate(theta) {
+        return new Vector2(this.x * Math.cos(theta) - this.y * Math.sin(theta), this.x * Math.sin(theta) + this.y * Math.cos(theta));
     }
 
     norm() {
