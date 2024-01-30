@@ -10,10 +10,10 @@ class TransitionScreen {
         this.elapsed += this.game.clockTick;
 
         if (this.scene) {
-            if (this.elapsed > 2) {
+            if (this.elapsed > 4) {
                 this.removeFromWorld = true;
                 this.game.camera.loadScene(this.scene, false);
-            } else if (this.elapsed > 1) {
+            } else if (this.elapsed > 2) {
                 this.message = "Now he's seeking revenge!!!";
             } else {
                 this.message = "Mickey lost Minnie to those damn monsters";

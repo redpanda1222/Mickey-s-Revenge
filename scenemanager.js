@@ -103,7 +103,7 @@ class SceneManager {
             this.menu.update();
         }
         else if (this.gameover === false) { 
-            // this.spawnmanager.update();
+            this.spawnmanager.update();
             if (this.mickey.currentHP <= 0) {
                 this.gameover = true;
                 this.clearAllEntities();
