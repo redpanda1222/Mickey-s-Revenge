@@ -16,7 +16,6 @@ const imageQueue = [
 	"./assets/attack/Fireball.png",
 	"./assets/attack/fireslash.png",
 	"./assets/character/mickeymouse.png",
-	"./assets/character/mickeymouse2.png",
 	"./assets/enemy/bird.png",
 	"./assets/enemy/huskydog.png",
 	"./assets/enemy/bird1.png",

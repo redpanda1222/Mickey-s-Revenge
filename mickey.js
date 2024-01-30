@@ -3,22 +3,21 @@ class Mickey {
 		this.game = game;
         this.facing = 0;
         this.status = 0;
-		this.x = 0;
-		this.y = 0;
-        this.width = 100;
-        this.height = 100;
+		this.x = 800;
+		this.y = 400;
+        this.sizeScale = 3
+        this.width = 26 * this.sizeScale;
+        this.height = 40 * this.sizeScale;
         this.movementSpeed = 5;
         this.animations = [];
-        this.width = 100;
-        this.height = 100;
         this.loadAnimations();
  
         //CHARACTER STATS
         this.MaxHP = 100;
-        this.currentHP = 100;
+        this.currentHP = this.MaxHP;
 
         //Rectangle bounding box
-        this.offsetBB = {x: 18, y: 3, w: -26, h: -10};
+        this.offsetBB = {x: 20, y: 30, w: -38, h: -30};
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 
@@ -35,12 +34,12 @@ class Mickey {
     }
 
     loadAnimations() 
-    {
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 5, 9, 33, 44, 4, 0.09, true, false));
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 5, 54, 33, 44, 6, 0.09, false, false));
+    { // 24, 26
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 0, 26, 40, 4, 0.09, 1, true, false));
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 41, 26, 40, 6, 0.09, 1, false, false));
         //reversed images
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse2.png"), 212, 9, 33, 44, 4, 0.09, true, true));
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse2.png"), 212, 54, 33, 44, 6, 0.09, false, true));
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 2, 26, 40, 4, 0.09, 1, true, true));
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 3, 26, 40, 6, 0.09, 1, false, true));
     };
 
 	update()
@@ -105,7 +104,7 @@ class Mickey {
         //drawing health box
         //--BACKGROUND FOR MAX HP
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.x + 15, this.y - 8, 80, 10);
+        ctx.fillRect(this.x, this.y - 8, 80, 10);
 
         //--Calculating Current HP and changing color with appropriate indicators for health percentage.
         let healthRatio = this.currentHP/this.MaxHP;
@@ -114,8 +113,8 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-	if (healthRatio >= 0){ ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10)}
-	else {ctx.fillRect(this.x + 15, this.y - 8, 0, 10)}
+	if (healthRatio >= 0){ ctx.fillRect(this.x, this.y - 8, healthBarSize, 10)}
+	else {ctx.fillRect(this.x, this.y - 8, 0, 10)}
     }
     
 }

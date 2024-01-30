@@ -102,12 +102,13 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.update();
         }
-        else if (this.gameover === false) { // not game over
-            this.spawnmanager.update();
+        else if (this.gameover === false) { 
+            // this.spawnmanager.update();
             if (this.mickey.currentHP <= 0) {
                 this.gameover = true;
                 this.clearAllEntities();
                 this.game.addEntity(new TransitionScreen(this.game));
+                ASSET_MANAGER.pauseBackgroundMusic();
 
                 this.game.background = new Background(this, 0, 0, [], 0, 0, false);;
                 this.mickey = new Mickey(this.game);
