@@ -97,6 +97,10 @@ class Mickey {
         }
 	};
 
+    resetAttributes() {
+        this.currentHP = this.MaxHP;
+    }
+
     drawHealthBar(ctx){
         //drawing health box
         //--BACKGROUND FOR MAX HP

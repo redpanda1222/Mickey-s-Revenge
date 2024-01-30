@@ -6,16 +6,26 @@ class SceneManager {
         this.level = null;
         this.mickey = new Mickey(this.game);
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
+        this.gameover = false;
 
         // preload
         this.game.background = new Background(this, 0, 0, [], 0, 0, false);
         this.menu = new MenuScreen(game, this);
-        this.loadScene(levelOne, 0, 0, false);
+        this.loadScene(levelOne, false);
     };
 
-    loadScene(level, x, y, isTransition) {
+    clearAllEntities() {
+        this.game.entities.forEach(function (entity) {
+            entity.removeFromWorld = true;
+        });
+        this.game.backgroundEntities.forEach(function (entity) {
+            entity.removeFromWorld = true;
+        });
+    };
+
+    loadScene(level, isTransition) {
         if (isTransition) {
-            this.game.addEntity(new TransitionScreen(this.game, level, x, y));
+            this.game.addEntity(new TransitionScreen(this.game, level));
         } else if (this.menu.isInMenu == false) {
             //load music
             if (level.music && !this.title) {
@@ -81,7 +91,7 @@ class SceneManager {
         // console.log("Mute state: " + muteCheckbox);
 
         var volume = document.getElementById("volume").value;
-        
+
         ASSET_MANAGER.muteAudio(muteCheckbox);
         ASSET_MANAGER.adjustVolume(volume);
         ASSET_MANAGER.autoRepeat("./audio/escape.mp3");
@@ -91,9 +101,18 @@ class SceneManager {
         this.updateAudio();
         if (this.menu.isInMenu) {
             this.menu.update();
-        } 
-        else {
+        }
+        else if (this.gameover === false) { // not game over
             this.spawnmanager.update();
+            if (this.mickey.currentHP <= 0) {
+                this.gameover = true;
+                this.clearAllEntities();
+                this.game.addEntity(new TransitionScreen(this.game));
+
+                this.game.background = new Background(this, 0, 0, [], 0, 0, false);;
+                this.mickey = new Mickey(this.game);
+                this.spawnmanager = new SpawnManager(this.game, this.mickey);
+            }
         }
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;

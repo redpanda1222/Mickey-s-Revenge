@@ -8,7 +8,7 @@ class SpawnManager {
     update() {
         let oldElapsed = this.elapsed;
         this.elapsed += this.game.clockTick;
-        
+
         if (this.elapsed <= 4) { // doing this because transition screen counts as an entity and it breaks collision
             return;
         }
