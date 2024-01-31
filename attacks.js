@@ -1,7 +1,7 @@
 class Projectile {
     constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius) {
-        Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius});
-    
+        Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius });
+
         this.elapsed = 0;
 
         this.targetX = x;
@@ -44,7 +44,7 @@ class Projectile {
 
         if (this.targetEntity && (this.isHoming || this.isRevolving)) {
             this.updateTargetLocation(this.targetEntity.BB.center().x, this.targetEntity.BB.center().y);
-        } 
+        }
 
         if (this.isRevolving) {
             this.theta += this.rotSpeed;
@@ -59,7 +59,7 @@ class Projectile {
             this.x += Math.cos(targetDirection) * this.projSpeed;
             this.y += Math.sin(targetDirection) * this.projSpeed;
         }
-        
+
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
@@ -87,7 +87,7 @@ class FireBall extends Projectile {
         super(game, mickey, isFriendly, x, y, 34, 34, projDamage, projSpeed, projDuration, projPierce, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/Fireball.png"), 0, 235, this.width, this.height, 6, 0.05, 1, false, false);
-        
+
         // this.sizeScale = 3
         // this.width  *= this.sizeScale;
         // this.height *= this.sizeScale;
@@ -99,6 +99,58 @@ class FireBall extends Projectile {
 
     draw(ctx) {
         this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.width, this.height);
+
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx);
+        }
+    };
+}
+
+class Meteor extends Projectile {
+    constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius) {
+        super(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius);
+
+        this.meteorArrive = false;
+        this.meteorArriveTime = 0;
+        this.meteorSpd = 15;
+        this.meteorY = -180;
+
+        this.spritesheet = [];
+        this.meteorSize = { w: 64, h: 180 };
+        this.explosionSize = { w: 140, h: 130 };
+        this.spritesheet.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/meteor.png"), 0, 0, this.meteorSize.w, this.meteorSize.h, 6, 0.1, 1, true, false));
+        this.spritesheet.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/explosion.png"), 0, 0, this.explosionSize.w, this.explosionSize.h, 9, 0.1, 1, false, false));
+
+        //Rectangle bounding box
+        this.offsetBB = { x: -this.width / 2, y: -this.height / 2, w: 0, h: 0 };
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+    }
+
+    update() {
+        if (this.meteorArrive) {
+            super.update();
+        } else {
+            this.meteorY += this.meteorSpd;
+            if (this.meteorY + this.meteorSize.h / 2 >= this.y) {
+                this.meteorY = this.y + this.meteorSize.h / 2;
+                this.meteorArrive = true;
+            }
+        }
+    }
+
+    draw(ctx) {
+        if (this.meteorArrive) {
+            if (this.elapsed > this.meteorArriveTime + 0.9) {
+                this.removeFromWorld = true;
+                return;
+            }
+            this.spritesheet[1].drawFrame(this.game.clockTick, ctx, this.x - this.explosionSize.w, this.y - this.meteorSize.h - 50, this.explosionSize.w * 2, this.explosionSize.h * 2);
+        } else {
+            this.meteorArriveTime = this.elapsed;
+            this.spritesheet[0].drawFrame(this.game.clockTick, ctx, this.x - this.meteorSize.w / 2, this.meteorY, this.meteorSize.w, this.meteorSize.h);
+        }
+
 
         if (PARAMS.DEBUG) {
             // draws bounding box

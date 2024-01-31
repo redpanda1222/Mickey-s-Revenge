@@ -15,6 +15,8 @@ const imageQueue = [
 	"./assets/background/walmartStoneHenge.png",
 	"./assets/attack/Fireball.png",
 	"./assets/attack/fireslash.png",
+	"./assets/attack/explosion.png",
+	"./assets/attack/meteor.png",
 	"./assets/character/mickeymouse.png",
 	"./assets/enemy/bird.png",
 	"./assets/enemy/huskydog.png",
