@@ -1,19 +1,40 @@
 class TransitionScreen {
-    constructor(game, scene, x, y) {
-        Object.assign(this, { game, scene, x, y });
-        this.message = "Mickey lost Minnie to those damn monsters";
+    constructor(game, scene) {
+        Object.assign(this, { game, scene });
+        this.message = "";
+        this.randomMessage = randomInt(3);
         this.elapsed = 0;
     };
 
     update() {
         this.elapsed += this.game.clockTick;
 
-        if (this.elapsed > 4) {
-            this.removeFromWorld = true;
-            this.game.camera.loadScene(this.scene, this.x, this.y, false);
-        } else if (this.elapsed > 2) {
-            this.message = "Now he's seeking revenge!!!";
-        };
+        if (this.scene) {
+            if (this.elapsed > 4) {
+                this.removeFromWorld = true;
+                this.game.camera.loadScene(this.scene, false);
+            } else if (this.elapsed > 2) {
+                this.message = "Now he's seeking revenge!!!";
+            } else {
+                this.message = "Mickey lost Minnie to those damn monsters";
+            }
+        } else {
+            if (this.elapsed > 2) {
+                this.removeFromWorld = true;
+                this.game.camera.menu.isInMenu = true;
+            } else {
+                switch(this.randomMessage) {
+                    case 0:
+                        this.message = "You Died";
+                        break;
+                    case 1:
+                        this.message = "Get Good";
+                        break;
+                    default:
+                        this.message = "Death only fuels his vengeance!!!";
+                }
+            }
+        }
     };
 
     draw(ctx) {

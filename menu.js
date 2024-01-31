@@ -58,7 +58,8 @@ class MenuScreen {
                     startButton.color = "gold";
                     if (this.game.click) {
                         this.isInMenu = false;
-                        this.sceneManager.loadScene(levelOne, 0, 0, true);
+                        this.sceneManager.gameover = false;
+                        this.sceneManager.loadScene(levelOne, true);
                     }
                 }
                 if (this.menuSelect.credits || 
