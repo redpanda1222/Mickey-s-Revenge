@@ -72,7 +72,8 @@ class SceneManager {
             // this.game.addEntity(new Bird(this.game, this.mickey, 500, 500));
             // this.game.addEntity(new Huskydog(this.game, this.mickey, 0, 720));
             // this.game.addEntity(new Skeleton(this.game, this.mickey, 1000, 720));
-
+            
+            this.game.addEntity(new Skeletonmage(this.game, this.mickey, 100, 100))
             this.game.addEntity(this.mickey);
         };
     };
