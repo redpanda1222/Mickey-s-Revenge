@@ -23,6 +23,8 @@ class Huskydog {
         this.width = 90;
         this.height = 60;
 
+        this.currentHP = 100;
+
         this.flip = 0;
 
         //Rectangle bounding box
@@ -84,6 +86,10 @@ class Huskydog {
         } else {
             this.flip = 0; // Do not flip the sprite if moving right
             this.xStart = 0;
+        }
+
+        if (this.currentHP <= 0) {
+            this.removeFromWorld = true;
         }
 
         // this should be last thing to update
@@ -236,6 +242,10 @@ class GiantHuskydog {
         } else {
             this.flip = 0; // Do not flip the sprite if moving right
             this.xStart = 0;
+        }
+
+        if (this.currentHP <= 0) {
+            this.removeFromWorld = true;
         }
 
         // this should be last thing to update
