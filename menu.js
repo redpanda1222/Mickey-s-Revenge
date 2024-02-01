@@ -57,6 +57,7 @@ class MenuScreen {
                                                    menuButtonDimensions.w, menuButtonDimensions.h)) {
                     startButton.color = "gold";
                     if (this.game.click) {
+                        // clicked on start
                         this.isInMenu = false;
                         this.sceneManager.gameover = false;
                         this.sceneManager.loadScene(levelOne, true);

@@ -21,9 +21,13 @@ class GameEngine {
         this.down = false;
         this.up = false;
 
+        this.pausable = false;
+        this.pause = false;
+
         // Options and the Details
         this.options = options || {
             debugging: false,
+            pause: false
         };
     };
 
@@ -103,6 +107,9 @@ class GameEngine {
                 case "KeyS":
                     that.down = false;
                     break;
+                case "Escape":
+                    that.pause = that.pausable ? !that.pause : that.pause;
+                    break;
             }
         }
 
@@ -150,9 +157,19 @@ class GameEngine {
         }
 
         this.camera.draw(this.ctx);
+
+        if (this.pause) {
+            this.ctx.font = '50px Arial';
+            this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
+            this.ctx.fillText("PAUSED", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
+        }
     };
 
     update() {
+        if (this.pause) { // don't update if paused
+            return;
+        }
+
         let entitiesCount = this.entities.length;
         let backEntitiesCount = this.backgroundEntities.length;
         let i;

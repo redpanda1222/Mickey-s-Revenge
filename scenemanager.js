@@ -84,6 +84,7 @@ class SceneManager {
             // this.game.addEntity(new Skeleton(this.game, this.mickey, 1000, 720));
 
             this.game.addEntity(this.mickey);
+            this.game.pausable = true;
         };
     };
     updateAudio() {
@@ -109,6 +110,7 @@ class SceneManager {
                 this.clearAllEntities();
                 this.game.addEntity(new TransitionScreen(this.game));
                 ASSET_MANAGER.pauseBackgroundMusic();
+                this.game.pausable = false;
 
                 this.game.background = new Background(this, 0, 0, [], 0, 0, false);;
                 this.mickey = new Mickey(this.game);
