@@ -154,12 +154,17 @@ class GameEngine {
             this.backgroundEntities[i].draw(this.ctx, this);
         }
 
+        for (let i = this.attackEntities.length - 1; i >= 0; i--) {
+            this.attackEntities[i].draw(this.ctx, this);
+        }
+
         this.camera.draw(this.ctx);
     };
 
     update() {
         let entitiesCount = this.entities.length;
         let backEntitiesCount = this.backgroundEntities.length;
+        let attackEntitiesCount = this.attackEntities.length
         let i;
 
         // updating entities
@@ -171,7 +176,7 @@ class GameEngine {
             }
         }
 
-        for (i = 0; i < this.attackEntities; i++) {
+        for (i = 0; i < attackEntitiesCount; i++) {
             let entity = this.attackEntities[i];
 
             if (!entity.removeFromWorld) {
@@ -190,7 +195,7 @@ class GameEngine {
         this.camera.update();
 
         // removing if they are marked with removeFromWorld
-        for (i = this.attackEntities - 1; i >= 0; --i) {
+        for (i = attackEntitiesCount - 1; i >= 0; --i) {
             if (this.attackEntities[i].removeFromWorld) {
                 this.attackEntities.splice(i, 1);
             }

@@ -72,15 +72,13 @@ class Mickey {
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
-        console.log(this.elapsedTime);
-        console.log(this.attacking);
         //add attack
         if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
             this.game.addAttackEntity(new FireSlash(this.game, this));
             this.attacking = true
         }
 
-        if (Math.floor(this.elapsedTime) > 6 && this.attacking){
+        if (Math.floor(this.elapsedTime) > 1 && this.attacking){
             this.elapsedTime = 0;
             this.attacking = false;
         }
