@@ -9,6 +9,7 @@ class GameEngine {
         // Everything that will be updated and drawn each frame
         this.entities = [];
         this.backgroundEntities = [];
+        this.attackEntities = [];
         this.background = null;
 
         // Information on the input
@@ -131,6 +132,10 @@ class GameEngine {
         this.backgroundEntities.push(entity);
     };
 
+    addAttackEntity(entity) {
+        this.attackEntities.push(entity);
+    };
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -149,17 +154,30 @@ class GameEngine {
             this.backgroundEntities[i].draw(this.ctx, this);
         }
 
+        for (let i = this.attackEntities.length - 1; i >= 0; i--) {
+            this.attackEntities[i].draw(this.ctx, this);
+        }
+
         this.camera.draw(this.ctx);
     };
 
     update() {
         let entitiesCount = this.entities.length;
         let backEntitiesCount = this.backgroundEntities.length;
+        let attackEntitiesCount = this.attackEntities.length
         let i;
 
         // updating entities
         for (i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
+
+            if (!entity.removeFromWorld) {
+                entity.update();
+            }
+        }
+
+        for (i = 0; i < attackEntitiesCount; i++) {
+            let entity = this.attackEntities[i];
 
             if (!entity.removeFromWorld) {
                 entity.update();
@@ -177,6 +195,12 @@ class GameEngine {
         this.camera.update();
 
         // removing if they are marked with removeFromWorld
+        for (i = attackEntitiesCount - 1; i >= 0; --i) {
+            if (this.attackEntities[i].removeFromWorld) {
+                this.attackEntities.splice(i, 1);
+            }
+        }
+
         for (i = entitiesCount - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
                 this.entities.splice(i, 1);

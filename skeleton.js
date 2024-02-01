@@ -22,6 +22,8 @@ class Skeleton {
         this.width = 64;
         this.height = 68;
 
+        this.currentHP = 100;
+
         this.flip = 0;
 
         //Rectangle bounding box
@@ -85,6 +87,10 @@ class Skeleton {
             this.flip = 0; // Do not flip the sprite if moving right
             this.xStart = 0;
             this.yStart = 204;
+        }
+
+        if (this.currentHP <= 0) {
+            this.removeFromWorld = true;
         }
 
         // this should be last thing to update

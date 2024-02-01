@@ -3,6 +3,8 @@ class Mickey {
 		this.game = game;
         this.facing = 0;
         this.status = 0;
+        this.attacking = false;
+        this.elapsedTime = 0;
 		this.x = 800;
 		this.y = 400;
         this.sizeScale = 3
@@ -44,6 +46,7 @@ class Mickey {
 
 	update()
 	{
+        this.elapsedTime += this.game.clockTick;
         this.status = 0;
 		if (this.game.left){
             this.x -= this.movementSpeed;
@@ -67,6 +70,17 @@ class Mickey {
 
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+
+        //add attack
+        if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
+            this.game.addAttackEntity(new FireSlash(this.game, this));
+            this.attacking = true
+        }
+
+        if (Math.floor(this.elapsedTime) > 1 && this.attacking){
+            this.elapsedTime = 0;
+            this.attacking = false;
+        }
 
         // mickey only collide with background objects
         this.game.backgroundEntities.forEach(backEntity => {
@@ -96,10 +110,6 @@ class Mickey {
         }
 	};
 
-    resetAttributes() {
-        this.currentHP = this.MaxHP;
-    }
-
     drawHealthBar(ctx){
         //drawing health box
         //--BACKGROUND FOR MAX HP
@@ -113,8 +123,8 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-	if (healthRatio >= 0){ ctx.fillRect(this.x, this.y - 8, healthBarSize, 10)}
-	else {ctx.fillRect(this.x, this.y - 8, 0, 10)}
+        if (healthRatio >= 0){ ctx.fillRect(this.x, this.y - 8, healthBarSize, 10)}
+        else {ctx.fillRect(this.x, this.y - 8, 0, 10)}
     }
     
 }
