@@ -40,8 +40,8 @@ class Mickey {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 0, 26, 40, 4, 0.09, 1, true, false));
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 41, 26, 40, 6, 0.09, 1, false, false));
         //reversed images
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse2.png"), 212, 9, 33, 44, 4, 0.09, true, true));
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse2.png"), 212, 54, 33, 44, 6, 0.09, false, true));
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 2, 26, 40, 4, 0.09, 1, true, true));
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 3, 26, 40, 6, 0.09, 1, false, true));
     };
 
 	update()
@@ -123,8 +123,8 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-	if (healthRatio >= 0){ ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10)}
-	else {ctx.fillRect(this.x + 15, this.y - 8, 0, 10)}
+        if (healthRatio >= 0){ ctx.fillRect(this.x, this.y - 8, healthBarSize, 10)}
+        else {ctx.fillRect(this.x, this.y - 8, 0, 10)}
     }
     
 }
