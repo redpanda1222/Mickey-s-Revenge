@@ -53,18 +53,18 @@ class GameEngine {
 
             return { x: x, y: y, radius: 0 };
         }
-        function mouseListener (e) {
+        function mouseListener(e) {
             that.mouse = getXandY(e);
         }
-        function mouseClickListener (e) {
+        function mouseClickListener(e) {
             that.click = getXandY(e);
             if (PARAMS.DEBUG) console.log(that.click);
         }
-        function wheelListener (e) {
+        function wheelListener(e) {
             e.preventDefault(); // Prevent Scrolling
             that.wheel = e.deltaY;
         }
-        function keydownListener (e) {
+        function keydownListener(e) {
             that.keyboardActive = true;
             switch (e.code) {
                 case "ArrowLeft":
@@ -85,7 +85,7 @@ class GameEngine {
                     break;
             }
         }
-        function keyUpListener (e) {
+        function keyUpListener(e) {
             that.keyboardActive = false;
             switch (e.code) {
                 case "ArrowLeft":
@@ -164,7 +164,7 @@ class GameEngine {
     update() {
         let entitiesCount = this.entities.length;
         let backEntitiesCount = this.backgroundEntities.length;
-        let attackEntitiesCount = this.attackEntities.length
+        let attackEntitiesCount = this.attackEntities.length;
         let i;
 
         // updating entities

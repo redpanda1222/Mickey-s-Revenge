@@ -6,6 +6,8 @@ class SceneManager {
         this.level = null;
         this.mickey = new Mickey(this.game);
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
+        this.skeletonMage = new SkeletonMage(this.game, this.mickey, 50, 50);
+
         this.gameover = false;
 
         // preload
@@ -31,7 +33,7 @@ class SceneManager {
             if (level.music && !this.title) {
                 ASSET_MANAGER.pauseBackgroundMusic();
                 ASSET_MANAGER.playAsset(level.music);
-                // this.updateAudio();
+
             }
             // load level stuff
             if (level.tileGrid) {
@@ -82,15 +84,15 @@ class SceneManager {
             // this.game.addEntity(new Bird(this.game, this.mickey, 500, 500));
             // this.game.addEntity(new Huskydog(this.game, this.mickey, 0, 720));
             // this.game.addEntity(new Skeleton(this.game, this.mickey, 1000, 720));
-            
-            this.game.addEntity(new Skeletonmage(this.game, this.mickey, 100, 100))
+
+            this.game.addEntity(this.skeletonMage);
+            this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
+
             this.game.addEntity(this.mickey);
         };
     };
     updateAudio() {
         var muteCheckbox = document.getElementById("mute").checked;
-        // console.log("Mute state: " + muteCheckbox);
-
         var volume = document.getElementById("volume").value;
 
         ASSET_MANAGER.muteAudio(muteCheckbox);
@@ -103,18 +105,28 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.update();
         }
-        else if (this.gameover === false) { 
+        else if (this.gameover === false) {
             this.spawnmanager.update();
-            if (this.mickey.currentHP <= 0) {
-                this.gameover = true;
-                this.clearAllEntities();
-                this.game.addEntity(new TransitionScreen(this.game));
-                ASSET_MANAGER.pauseBackgroundMusic();
 
-                this.game.background = new Background(this, 0, 0, [], 0, 0, false);;
-                this.mickey = new Mickey(this.game);
-                this.spawnmanager = new SpawnManager(this.game, this.mickey);
+            const dx = this.skeletonMage.x - this.mickey.x;
+            const dy = this.skeletonMage.y - this.mickey.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            const shootingRange = 200;
+
+            if (distance <= shootingRange) {
+                this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
             }
+            // if (this.mickey.currentHP <= 0) {
+            //     // this.gameover = true;
+            //     // this.clearAllEntities();
+            //     // this.game.addEntity(new TransitionScreen(this.game));
+            //     // ASSET_MANAGER.pauseBackgroundMusic();
+
+            //     this.game.background = new Background(this, 0, 0, [], 0, 0, false);;
+            //     this.mickey = new Mickey(this.game);
+            //     this.spawnmanager = new SpawnManager(this.game, this.mickey);
+            // }
         }
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;
