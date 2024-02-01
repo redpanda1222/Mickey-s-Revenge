@@ -3,6 +3,8 @@ class Mickey {
 		this.game = game;
         this.facing = 0;
         this.status = 0;
+        this.attacking = false;
+        this.elapsedTime = 0;
 		this.x = 0;
 		this.y = 0;
         this.width = 100;
@@ -41,10 +43,11 @@ class Mickey {
         //reversed images
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse2.png"), 212, 9, 33, 44, 4, 0.09, true, true));
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse2.png"), 212, 54, 33, 44, 6, 0.09, false, true));
-    };
+    }
 
 	update()
 	{
+        this.elapsedTime += this.game.clockTick;
         this.status = 0;
 		if (this.game.left){
             this.x -= this.movementSpeed;
@@ -68,6 +71,19 @@ class Mickey {
 
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+
+        console.log(this.elapsedTime);
+        console.log(this.attacking);
+        //add attack
+        if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
+            this.game.addAttackEntity(new FireSlash(this.game, this));
+            this.attacking = true
+        }
+
+        if (Math.floor(this.elapsedTime) > 6 && this.attacking){
+            this.elapsedTime = 0;
+            this.attacking = false;
+        }
 
         // mickey only collide with background objects
         this.game.backgroundEntities.forEach(backEntity => {
@@ -95,7 +111,7 @@ class Mickey {
             // draws bounding box
             this.BB.draw(ctx);
         }
-	};
+	}
 
     drawHealthBar(ctx){
         //drawing health box
