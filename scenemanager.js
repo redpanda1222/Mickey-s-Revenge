@@ -79,38 +79,38 @@ class SceneManager {
             // this.game.addEntity(new Bird(this.game, this.mickey, 1000, 50));
 
             // triple shot straight at mickey
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
-                                                       0, 2, 10, 1,            // attributes (dmg, spd, duration, pierce)
-                                                       this.mickey.BB.center() // destination vector (x, y)
-                                                       ));
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
-                                                       0, 2, 10, 1, 
-                                                       this.mickey.BB.center().rotate(degreeToRad(10))
-                                                       ));
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
-                                                       0, 2, 10, 1, 
-                                                       this.mickey.BB.center().rotate(degreeToRad(-10))
-                                                       ));
+            // this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
+            //                                            0, 2, 10, 1,            // attributes (dmg, spd, duration, pierce)
+            //                                            this.mickey.BB.center() // destination vector (x, y)
+            //                                            ));
+            // this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
+            //                                            0, 2, 10, 1, 
+            //                                            this.mickey.BB.center().rotate(degreeToRad(10))
+            //                                            ));
+            // this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
+            //                                            0, 2, 10, 1, 
+            //                                            this.mickey.BB.center().rotate(degreeToRad(-10))
+            //                                            ));
 
-            // fire ball homing towards mickey
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 700, 50, 
-                                                       0, 1, 5, 1,       // attributes (dmg, spd, duration, pierce)
-                                                       null,             // no destination vector
-                                                       true, this.mickey // homing to mickey
-                                                       )); 
+            // // fire ball homing towards mickey
+            // this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 700, 50, 
+            //                                            0, 1, 5, 1,       // attributes (dmg, spd, duration, pierce)
+            //                                            null,             // no destination vector
+            //                                            true, this.mickey // homing to mickey
+            //                                            )); 
 
-            // revolve around mickey
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, true, this.mickey.BB.center().x, this.mickey.BB.center().y, 
-                                                       0, 5, 20, 1,         // attributes (dmg, spd, duration, pierce)
-                                                       null,               // no destination vector
-                                                       false, this.mickey, // no homing, target entity is to revolve around
-                                                       true, true, 200));  // revolving clockwise at 100 radius
+            // // revolve around mickey
+            // this.game.addProjectileEntity(new FireBall(this.game, this.mickey, true, this.mickey.BB.center().x, this.mickey.BB.center().y, 
+            //                                            0, 5, 20, 1,         // attributes (dmg, spd, duration, pierce)
+            //                                            null,               // no destination vector
+            //                                            false, this.mickey, // no homing, target entity is to revolve around
+            //                                            true, true, 200));  // revolving clockwise at 100 radius
 
-            // meteor
-            this.game.addProjectileEntity(new Meteor(this.game, this.mickey, false, this.mickey.BB.center().x , this.mickey.BB.center().y, 
-                                                       128, 64,      // area of effect size
-                                                       0, 0, 10, 1, // attributes (dmg, spd, duration, pierce)
-                                                       ));
+            // // meteor
+            // this.game.addProjectileEntity(new Meteor(this.game, this.mickey, false, this.mickey.BB.center().x , this.mickey.BB.center().y, 
+            //                                            128, 64,      // area of effect size
+            //                                            0, 0, 10, 1, // attributes (dmg, spd, duration, pierce)
+            //                                            ));
             
             // border
             const mapWidth = level.tileGrid[0].length * level.tileSize * level.tileScale;
@@ -120,12 +120,7 @@ class SceneManager {
             this.game.addBackgroundEntity(new Border(mapWidth, 0, PARAMS.WIDTH / 2, mapHeight));
             this.game.addBackgroundEntity(new Border(-PARAMS.WIDTH / 2, -PARAMS.HEIGHT / 2, mapWidth + PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2));
             this.game.addBackgroundEntity(new Border(-PARAMS.WIDTH / 2, mapHeight, mapWidth + PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2));
-
-            // here for testing, later we may want to spawn them randomly or something
-            // this.game.addEntity(new Bird(this.game, this.mickey, 1000, 50));
             
-
-            this.game.addEntity(this.skeletonMage);
             // this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
 
             this.game.addEntity(this.mickey);
