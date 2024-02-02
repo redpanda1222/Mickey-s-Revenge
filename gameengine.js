@@ -10,6 +10,7 @@ class GameEngine {
         this.entities = [];
         this.projectileEntities = [];
         this.backgroundEntities = [];
+        this.attackEntities = [];
         this.background = null;
 
         // Information on the input
@@ -22,9 +23,13 @@ class GameEngine {
         this.down = false;
         this.up = false;
 
+        this.pausable = false;
+        this.pause = false;
+
         // Options and the Details
         this.options = options || {
             debugging: false,
+            pause: false
         };
     };
 
@@ -53,18 +58,18 @@ class GameEngine {
 
             return { x: x, y: y, radius: 0 };
         }
-        function mouseListener (e) {
+        function mouseListener(e) {
             that.mouse = getXandY(e);
         }
-        function mouseClickListener (e) {
+        function mouseClickListener(e) {
             that.click = getXandY(e);
             if (PARAMS.DEBUG) console.log(that.click);
         }
-        function wheelListener (e) {
+        function wheelListener(e) {
             e.preventDefault(); // Prevent Scrolling
             that.wheel = e.deltaY;
         }
-        function keydownListener (e) {
+        function keydownListener(e) {
             that.keyboardActive = true;
             switch (e.code) {
                 case "ArrowLeft":
@@ -85,7 +90,7 @@ class GameEngine {
                     break;
             }
         }
-        function keyUpListener (e) {
+        function keyUpListener(e) {
             that.keyboardActive = false;
             switch (e.code) {
                 case "ArrowLeft":
@@ -103,6 +108,9 @@ class GameEngine {
                 case "ArrowDown":
                 case "KeyS":
                     that.down = false;
+                    break;
+                case "Escape":
+                    that.pause = that.pausable ? !that.pause : that.pause;
                     break;
             }
         }
@@ -128,12 +136,12 @@ class GameEngine {
         this.entities.push(entity);
     };
 
-    addProjectileEntity(entity) {
-        this.projectileEntities.push(entity);
-    };
-
     addBackgroundEntity(entity) {
         this.backgroundEntities.push(entity);
+    };
+
+    addAttackEntity(entity) {
+        this.attackEntities.push(entity);
     };
 
     draw() {
@@ -149,22 +157,31 @@ class GameEngine {
             this.entities[i].draw(this.ctx, this);
         }
 
-        // Draw latest projectile entities things first
-        for (let i = this.projectileEntities.length - 1; i >= 0; i--) {
-            this.projectileEntities[i].draw(this.ctx, this);
-        }
-
         // Draw latest background entities things first
         for (let i = this.backgroundEntities.length - 1; i >= 0; i--) {
             this.backgroundEntities[i].draw(this.ctx, this);
         }
 
+        for (let i = this.attackEntities.length - 1; i >= 0; i--) {
+            this.attackEntities[i].draw(this.ctx, this);
+        }
+
         this.camera.draw(this.ctx);
+
+        if (this.pause) {
+            this.ctx.font = '50px Arial';
+            this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
+            this.ctx.fillText("PAUSED", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
+        }
     };
 
     update() {
+        if (this.pause) { // don't update if paused
+            return;
+        }
+
         let entitiesCount = this.entities.length;
-        let projEntitiesCount = this.projectileEntities.length;
+        let attackEntitiesCount = this.attackEntities.length;
         let i;
 
         // updating entities
@@ -176,8 +193,8 @@ class GameEngine {
             }
         }
 
-        for (i = 0; i < projEntitiesCount; i++) {
-            let entity = this.projectileEntities[i];
+        for (i = 0; i < attackEntitiesCount; i++) {
+            let entity = this.attackEntities[i];
 
             if (!entity.removeFromWorld) {
                 entity.update();
@@ -187,15 +204,15 @@ class GameEngine {
         this.camera.update();
 
         // removing if they are marked with removeFromWorld
-        for (i = entitiesCount - 1; i >= 0; --i) {
-            if (this.entities[i].removeFromWorld) {
-                this.entities.splice(i, 1);
+        for (i = attackEntitiesCount - 1; i >= 0; --i) {
+            if (this.attackEntities[i].removeFromWorld) {
+                this.attackEntities.splice(i, 1);
             }
         }
 
-        for (i = projEntitiesCount - 1; i >= 0; --i) {
-            if (this.projectileEntities[i].removeFromWorld) {
-                this.projectileEntities.splice(i, 1);
+        for (i = entitiesCount - 1; i >= 0; --i) {
+            if (this.entities[i].removeFromWorld) {
+                this.entities.splice(i, 1);
             }
         }
     };

@@ -23,6 +23,8 @@ class Bird {
         this.width = 159;
         this.height = 160;
 
+        this.currentHP = 100;
+
         this.flip = 0;
 
         //Rectangle bounding box
@@ -74,7 +76,7 @@ class Bird {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.currentHP -= 1;
+                this.mickey.takeDamage(5);
             }
         });
 
@@ -85,6 +87,10 @@ class Bird {
         } else {
             this.flip = 0; // Do not flip the sprite if moving right
             this.xStart = 0;
+        }
+
+        if (this.currentHP <= 0) {
+            this.removeFromWorld = true;
         }
 
         // this should be last thing to update
