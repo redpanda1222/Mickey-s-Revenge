@@ -54,7 +54,7 @@ class Mickey {
         }
         this.immune = true
         this.currentHP -= damage;
-        ASSET_MANAGER.playAsset("./audio/hurt.mp3");
+        // ASSET_MANAGER.playAsset("./audio/hurt.mp3");
     }
 
 	update()
