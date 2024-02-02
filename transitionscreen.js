@@ -35,7 +35,6 @@ class TransitionScreen {
                 }
             }
         }
-        this.game.click = null;
     };
 
     draw(ctx) {

@@ -78,7 +78,7 @@ class Mickey {
         if (this.game.down) {
             this.y += this.movementSpeed;
             this.status = 1;
-            // this.currentHP -= 1;  //<----TESTING HEALTH TRANSITION
+            this.currentHP -= 0.1;  //<----TESTING HEALTH TRANSITION
         };
 
         // update bounding box
