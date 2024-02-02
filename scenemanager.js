@@ -20,9 +20,10 @@ class SceneManager {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
-        this.game.backgroundEntities.forEach(function (entity) {
+        this.game.attackEntities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
+        this.game.backgroundEntities.length = 0;
     };
 
     loadScene(level, isTransition) {
@@ -122,6 +123,8 @@ class SceneManager {
             this.game.addBackgroundEntity(new Border(-PARAMS.WIDTH / 2, mapHeight, mapWidth + PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2));
             
             // this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
+            this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 500));
+            this.game.addEntity(new Huskydog(this.game, this.mickey, 0, 0));
 
             this.game.addEntity(this.mickey);
             this.game.pausable = true;
