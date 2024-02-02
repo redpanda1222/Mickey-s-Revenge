@@ -94,6 +94,7 @@ class Mickey {
             // draws bounding box
             this.BB.draw(ctx);
         }
+        console.log(this.y);
 	};
 
     resetAttributes() {

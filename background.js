@@ -5,7 +5,7 @@ class Background {
     constructor(game, x, y, tileGrid, tileSize, scale, show) {
         Object.assign(this, { game, x, y, tileGrid, tileSize, scale, show });
         
-        this.tiles = [ASSET_MANAGER.getAsset("./assets/background/sand.png"), ASSET_MANAGER.getAsset("./sandtile.png")];
+        this.tiles = [ASSET_MANAGER.getAsset("./assets/background/sand.png"), ASSET_MANAGER.getAsset("./assets/background/desertsand.png")];
     };
 
     updateTileGrid(tileGrid, tileSize, scale, show) {
@@ -27,6 +27,7 @@ class Background {
                         ctx.drawImage(this.tiles[0], 0, 0, this.tileSize, this.tileSize, j * size, i * size, size, size);
                         break;
                     case 1:
+                        ctx.drawImage(this.tiles[1], 0, 0, this.tileSize, this.tileSize, j * size, i * size, size, size);
                         break;
                     default:
                 }
