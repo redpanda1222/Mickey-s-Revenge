@@ -137,11 +137,11 @@ class GiantHuskydog {
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
-        this.speed = 0.5;
-        this.drag = -0.33 / (this.speed); // dont question
+        this.speed = 1;
+        this.drag = -1 / (this.speed); // dont question
 
         // actual sprite dimension for loading animations
-        this.width  = 90;
+        this.width = 90;
         this.height = 58;
         this.animations = [];
         this.loadAnimations();
@@ -165,13 +165,22 @@ class GiantHuskydog {
         this.isDashing = false;
 
         // roar
-        this.isRoaring = false;
+        this.barkTimer = 0;
+        this.barkInterval = 5;  // Bark every 5 seconds
+        this.barkDuration = 5;
+        this.isBarking = false;
+        this.fireTimer = 0;
+        this.fireInterval = 0.5;
     };
 
     loadAnimations() {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, this.height, this.width, this.height, 6, 0.1, 0, false, true));
+        // bark
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, 0, this.width, this.height, 6, 0.2, 0, false, true));
         //reversed images
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height, this.width, this.height, 6, 0.1, 0, false, false));
+        // bark
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, 0, this.width, this.height, 6, 0.2, 0, false, false));
     }
 
     handleCollision(entity, scalarForce) {
@@ -220,25 +229,66 @@ class GiantHuskydog {
             }
         });
 
-        // this.dashTimer += this.game.clockTick;
-        if (this.dashTimer >= this.dashInterval) {
-            // Start dashing towards Mickey
-            this.isDashing = true;
-            this.dashTimer = 0;  // Reset the timer
+        // attack events
+        this.barkTimer += this.game.clockTick;
+
+        if (!this.isBarking && this.barkTimer >= this.barkInterval) {
+            // Start barking towards Mickey
+            this.isBarking = true;
+            this.barkTimer = 0;  // Reset the timer
+            this.fireTimer = 0;
+            this.speed = 0.57;
+            this.drag = -1 / (this.speed);
         }
-
-        // Dash towards Mickey if it's currently dashing
-        if (this.isDashing) {
-            let dashForce = toMickey.mul(2);  // You can adjust the force multiplier as needed
-            this.applyForce(dashForce);
-
-            // You can also add logic to control the duration of the dash if needed
-
+        else if (this.isBarking) {
+            this.fireTimer += this.game.clockTick;
             // Reset the dash flag after a certain duration (e.g., 0.5 seconds)
-            if (this.dashTimer >= 0.5) {
-                this.isDashing = false;
+            if (this.fireTimer >= this.fireInterval) {
+                this.fireTimer = 0;
+                this.game.addAttackEntity(new FireBall(
+                    this.game, this.mickey, false, this.BB.center().x, this.BB.center().y,
+                    0, 2, 4, 1,            // attributes (dmg, spd, duration, pierce)
+                    this.mickey.BB.center() // destination vector (x, y)
+                ));
+                this.game.addAttackEntity(new FireBall(
+                    this.game, this.mickey, false, this.BB.center().x, this.BB.center().y,
+                    0, 2, 4, 1,
+                    this.mickey.BB.center().rotate(degreeToRad(10))
+                ));
+                this.game.addAttackEntity(new FireBall(
+                    this.game, this.mickey, false, this.BB.center().x, this.BB.center().y,
+                    0, 2, 4, 1,
+                    this.mickey.BB.center().rotate(degreeToRad(-10))
+                ));
+            }
+
+            if (this.barkTimer >= this.barkDuration) {
+                this.speed = 1;
+                this.drag = -1 / (this.speed);
+                this.isBarking = false;
+                this.barkTimer = 0;  // Reset the timer
             }
         }
+
+        // this.dashTimer += this.game.clockTick;
+        // if (this.dashTimer >= this.dashInterval) {
+        //     // Start dashing towards Mickey
+        //     this.isDashing = true;
+        //     this.dashTimer = 0;  // Reset the timer
+        // }
+
+        // // Dash towards Mickey if it's currently dashing
+        // if (this.isDashing) {
+        //     let dashForce = toMickey.mul(2);  // You can adjust the force multiplier as needed
+        //     this.applyForce(dashForce);
+
+        //     // You can also add logic to control the duration of the dash if needed
+
+        //     // Reset the dash flag after a certain duration (e.g., 0.5 seconds)
+        //     if (this.dashTimer >= 0.5) {
+        //         this.isDashing = false;
+        //     }
+        // }
 
         if (this.pos.x - this.mickey.x + 10 > 0) {
             this.flip = 1; // Flip the sprite if moving left
@@ -277,10 +327,18 @@ class GiantHuskydog {
 
     draw(ctx) {
         if (this.flip == 0) {
-            this.animations[0].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width,this.height);
+            if (this.isBarking) {
+                this.animations[1].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            } else {
+                this.animations[0].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            }
         }
         else if (this.flip == 1) {
-            this.animations[1].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width,this.height);
+            if (this.isBarking) {
+                this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            } else {
+                this.animations[2].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            }
         }
         if (PARAMS.DEBUG) {
             // draws bounding box

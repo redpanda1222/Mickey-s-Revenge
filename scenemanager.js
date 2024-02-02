@@ -124,7 +124,7 @@ class SceneManager {
             
             // this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
             this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 500));
-            this.game.addEntity(new Huskydog(this.game, this.mickey, 0, 0));
+            // this.game.addEntity(new Huskydog(this.game, this.mickey, 0, 0));
 
             this.game.addEntity(this.mickey);
             this.game.pausable = true;
