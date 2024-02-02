@@ -139,6 +139,7 @@ class GiantHuskydog {
         this.acc = new Vector2(0, 0);
         this.speed = 1;
         this.drag = -1 / (this.speed); // dont question
+        this.spdMul = 1;
 
         // actual sprite dimension for loading animations
         this.width = 90;
@@ -160,27 +161,41 @@ class GiantHuskydog {
         this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 
         // attacks
-        this.dashTimer = 0;
-        this.dashInterval = 5;  // Dash every 5 seconds
+        this.dashClock = new Clock(game, 5); // dash every 5 sec
+        this.dashingClock = new Clock(game, 1); // how long to dash for (1 sec)
         this.isDashing = false;
 
-        // roar
-        this.barkTimer = 0;
-        this.barkInterval = 5;  // Bark every 5 seconds
-        this.barkDuration = 5;
+        // roar blast
+        this.barkClock = new Clock(game, 8); // Bark every 8 sec
+        this.barkingClock = new Clock(game, 5); // how long bark lasts
+        this.firingClock = new Clock(game, 0.5);
         this.isBarking = false;
-        this.fireTimer = 0;
-        this.fireInterval = 0.5;
+
+        // jump attack
+        this.jumpClock = new Clock(game, 5); // jump every 20 sec
+        this.jumpingClock = new Clock(game, 0.6); // how long jumping lasts
+        this.airBorneClock = new Clock(game, 2); // how long airborne lasts
+        this.landingClock = new Clock(game, 4);
+        this.jumpY = 0;
+        this.isJumping = false;
+        this.isAirborne = false;
     };
 
     loadAnimations() {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, this.height, this.width, this.height, 6, 0.1, 0, false, true));
         // bark
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, 0, this.width, this.height, 6, 0.2, 0, false, true));
+        // dash
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, this.height * 2, this.width, this.height, 5, 0.1, 0, false, true));
+        // jump
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, this.height * 5, this.width, this.height, 6, 0.1, 0, false, true));
+
         //reversed images
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height, this.width, this.height, 6, 0.1, 0, false, false));
         // bark
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, 0, this.width, this.height, 6, 0.2, 0, false, false));
+        // dash
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height * 2, this.width, this.height, 5, 0.1, 0, false, false));
     }
 
     handleCollision(entity, scalarForce) {
@@ -190,7 +205,7 @@ class GiantHuskydog {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel);
+        this.pos = this.pos.add(this.vel.mul(this.spdMul));
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel
@@ -203,9 +218,8 @@ class GiantHuskydog {
 
     update() {
         // applies force to move towards center of mickey
-        let toMickey = this.mickey.BB.center().sub(this.BB.center());
-        const distToMickey = toMickey.mag();
-        this.applyForce(toMickey.norm());
+        let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
+        this.applyForce(toMickey);
 
         // drag force to limit velocity
         let v = this.vel.mag();
@@ -220,7 +234,7 @@ class GiantHuskydog {
             }
         });
         this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
+            if (entity !== this && entity !== this.mickey && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 1);
             }
             // colliding with mickey and attacking mickey
@@ -229,66 +243,105 @@ class GiantHuskydog {
             }
         });
 
-        // attack events
-        this.barkTimer += this.game.clockTick;
+        // === attack events ===
+        // this.barkClock.update();
+        // this.dashClock.update();
+        this.jumpClock.update();
 
-        if (!this.isBarking && this.barkTimer >= this.barkInterval) {
+        if (!this.isDashing && !this.isBarking && !this.isJumping && this.barkClock.isDone()) {
             // Start barking towards Mickey
             this.isBarking = true;
-            this.barkTimer = 0;  // Reset the timer
-            this.fireTimer = 0;
-            this.speed = 0.57;
-            this.drag = -1 / (this.speed);
+            this.spdMul = 0.5;
         }
         else if (this.isBarking) {
-            this.fireTimer += this.game.clockTick;
-            // Reset the dash flag after a certain duration (e.g., 0.5 seconds)
-            if (this.fireTimer >= this.fireInterval) {
-                this.fireTimer = 0;
-                this.game.addAttackEntity(new FireBall(
-                    this.game, this.mickey, false, this.BB.center().x, this.BB.center().y,
-                    0, 2, 4, 1,            // attributes (dmg, spd, duration, pierce)
-                    this.mickey.BB.center() // destination vector (x, y)
+            this.barkingClock.update();
+            this.firingClock.update();
+
+            if (this.firingClock.isDone()) {
+                this.game.addAttackEntity(new Blast(
+                    this.game, this.mickey, false, this.BB.center().x - (this.flip == 1 ? 70 : 0), this.BB.center().y - 50,
+                    10, 5, 4, 1,             // attributes (dmg, spd, duration, pierce)
+                    this.mickey.BB.center(), 0 // destination vector (x, y)
                 ));
-                this.game.addAttackEntity(new FireBall(
-                    this.game, this.mickey, false, this.BB.center().x, this.BB.center().y,
-                    0, 2, 4, 1,
-                    this.mickey.BB.center().rotate(degreeToRad(10))
+                this.game.addAttackEntity(new Blast(
+                    this.game, this.mickey, false, this.BB.center().x - (this.flip == 1 ? 70 : 0), this.BB.center().y - 50,
+                    10, 5, 4, 1,
+                    this.mickey.BB.center(), degreeToRad(20)
                 ));
-                this.game.addAttackEntity(new FireBall(
-                    this.game, this.mickey, false, this.BB.center().x, this.BB.center().y,
-                    0, 2, 4, 1,
-                    this.mickey.BB.center().rotate(degreeToRad(-10))
+                this.game.addAttackEntity(new Blast(
+                    this.game, this.mickey, false, this.BB.center().x - (this.flip == 1 ? 70 : 0), this.BB.center().y - 50,
+                    10, 5, 4, 1,
+                    this.mickey.BB.center(), degreeToRad(-20)
                 ));
+                this.firingClock.reset();
             }
 
-            if (this.barkTimer >= this.barkDuration) {
-                this.speed = 1;
-                this.drag = -1 / (this.speed);
+            if (this.barkingClock.isDone()) {
                 this.isBarking = false;
-                this.barkTimer = 0;  // Reset the timer
+                this.spdMul = 1;
+                this.barkClock.reset();
+                this.barkingClock.reset();
+                this.firingClock.reset();
             }
         }
 
-        // this.dashTimer += this.game.clockTick;
-        // if (this.dashTimer >= this.dashInterval) {
-        //     // Start dashing towards Mickey
-        //     this.isDashing = true;
-        //     this.dashTimer = 0;  // Reset the timer
-        // }
+        // dash every 5 seconds
+        if (!this.isDashing && !this.isBarking && !this.isJumping && this.dashClock.isDone()) {
+            // Start dashing towards Mickey
+            this.isDashing = true;
+        }
+        else if (this.isDashing) {
+            this.dashingClock.update();
 
-        // // Dash towards Mickey if it's currently dashing
-        // if (this.isDashing) {
-        //     let dashForce = toMickey.mul(2);  // You can adjust the force multiplier as needed
-        //     this.applyForce(dashForce);
+            let dashForce = toMickey.mul(4);  // You can adjust the force multiplier as needed
+            this.applyForce(dashForce);
 
-        //     // You can also add logic to control the duration of the dash if needed
+            // You can also add logic to control the duration of the dash if needed
 
-        //     // Reset the dash flag after a certain duration (e.g., 0.5 seconds)
-        //     if (this.dashTimer >= 0.5) {
-        //         this.isDashing = false;
-        //     }
-        // }
+            // Reset the dash flag after a certain duration (e.g., 1 seconds)
+            if (this.dashingClock.isDone()) {
+                this.isDashing = false;
+                this.dashingClock.reset();
+                this.dashClock.reset();
+            }
+        }
+
+        if (!this.isDashing && !this.isBarking && !this.isJumping && this.jumpClock.isDone()) {
+            this.isJumping = true;
+            this.spdMul = 0;
+        } else if (this.isJumping) {
+            this.jumpingClock.update();
+            if (this.jumpingClock.elapsed > 0.4) {
+                this.jumpY -= 40;
+            }
+
+            if (this.isAirborne) {
+                this.airBorneClock.update();
+
+                if (this.airBorneClock.isDone()) {
+                    this.jumpY = 0;
+                    this.isJumping = false;
+                    this.isAirborne = false;
+                    this.spdMul = 1;
+                    this.jumpClock.reset();
+                    this.jumpingClock.reset();
+                    this.airBorneClock.reset();
+                }
+            } 
+            else if (this.jumpingClock.isDone()) {
+                this.isAirborne = true;
+                this.game.addAttackEntity(new Warning(this.game, this.mickey.BB.center().x, this.mickey.BB.center().y, 300, 200, 2,
+                        new Shockwave(
+                            this.game, this.mickey, false, this.mickey.BB.center().x, this.mickey.BB.center().y,
+                            10, 0, 1, 1,             // attributes (dmg, spd, duration, pierce)
+                            this.mickey.BB.center() // destination vector (x, y)
+                )));
+            }
+        }
+
+        
+
+        // === end of attack events ===
 
         if (this.pos.x - this.mickey.x + 10 > 0) {
             this.flip = 1; // Flip the sprite if moving left
@@ -326,18 +379,27 @@ class GiantHuskydog {
     }
 
     draw(ctx) {
+        if (this.isAirborne) {
+            return;
+        }
         if (this.flip == 0) {
-            if (this.isBarking) {
+            if (this.isJumping) {
+                this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+            } else if (this.isDashing) {
+                this.animations[2].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            } else if (this.isBarking) {
                 this.animations[1].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             } else {
                 this.animations[0].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             }
         }
         else if (this.flip == 1) {
-            if (this.isBarking) {
-                this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            if (this.isDashing) {
+                this.animations[5].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            } else if (this.isBarking) {
+                this.animations[4].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             } else {
-                this.animations[2].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             }
         }
         if (PARAMS.DEBUG) {

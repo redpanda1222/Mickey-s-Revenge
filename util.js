@@ -119,10 +119,6 @@ class Vector2 {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
-    rotate(theta) {
-        return new Vector2(this.x * Math.cos(theta) - this.y * Math.sin(theta), this.x * Math.sin(theta) + this.y * Math.cos(theta));
-    }
-
     norm() {
         return this.div(this.mag());
     }
