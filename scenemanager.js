@@ -20,9 +20,7 @@ class SceneManager {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
-        this.game.backgroundEntities.forEach(function (entity) {
-            entity.removeFromWorld = true;
-        });
+        this.game.backgroundEntities.length = 0;
     };
 
     loadScene(level, isTransition) {
@@ -77,40 +75,6 @@ class SceneManager {
             }
             // entities here for testing
             // this.game.addEntity(new Bird(this.game, this.mickey, 1000, 50));
-
-            // triple shot straight at mickey
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
-                                                       0, 2, 10, 1,            // attributes (dmg, spd, duration, pierce)
-                                                       this.mickey.BB.center() // destination vector (x, y)
-                                                       ));
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
-                                                       0, 2, 10, 1, 
-                                                       this.mickey.BB.center().rotate(degreeToRad(10))
-                                                       ));
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 50, 50, 
-                                                       0, 2, 10, 1, 
-                                                       this.mickey.BB.center().rotate(degreeToRad(-10))
-                                                       ));
-
-            // fire ball homing towards mickey
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, false, 700, 50, 
-                                                       0, 1, 5, 1,       // attributes (dmg, spd, duration, pierce)
-                                                       null,             // no destination vector
-                                                       true, this.mickey // homing to mickey
-                                                       )); 
-
-            // revolve around mickey
-            this.game.addProjectileEntity(new FireBall(this.game, this.mickey, true, this.mickey.BB.center().x, this.mickey.BB.center().y, 
-                                                       0, 5, 20, 1,         // attributes (dmg, spd, duration, pierce)
-                                                       null,               // no destination vector
-                                                       false, this.mickey, // no homing, target entity is to revolve around
-                                                       true, true, 200));  // revolving clockwise at 100 radius
-
-            // meteor
-            this.game.addProjectileEntity(new Meteor(this.game, this.mickey, false, this.mickey.BB.center().x , this.mickey.BB.center().y, 
-                                                       128, 64,      // area of effect size
-                                                       0, 0, 10, 1, // attributes (dmg, spd, duration, pierce)
-                                                       ));
             
             // border
             const mapWidth = level.tileGrid[0].length * level.tileSize * level.tileScale;
@@ -126,7 +90,7 @@ class SceneManager {
             
 
             this.game.addEntity(this.skeletonMage);
-            // this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
+            this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
 
             this.game.addEntity(this.mickey);
             this.game.pausable = true;
@@ -147,17 +111,17 @@ class SceneManager {
             this.menu.update();
         }
         else if (this.gameover === false) {
-            // this.spawnmanager.update();
+            this.spawnmanager.update();
 
-            // const dx = this.skeletonMage.x - this.mickey.x;
-            // const dy = this.skeletonMage.y - this.mickey.y;
-            // const distance = Math.sqrt(dx * dx + dy * dy);
+            const dx = this.skeletonMage.x - this.mickey.x;
+            const dy = this.skeletonMage.y - this.mickey.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-            // const shootingRange = 200;
+            const shootingRange = 200;
 
-            // if (distance <= shootingRange) {
-            //     this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
-            // }
+            if (distance <= shootingRange) {
+                this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
+            }
 
             if (this.mickey.currentHP <= 0) {
                 this.gameover = true;

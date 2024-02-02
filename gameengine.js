@@ -8,7 +8,6 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
-        this.projectileEntities = [];
         this.backgroundEntities = [];
         this.attackEntities = [];
         this.background = null;
