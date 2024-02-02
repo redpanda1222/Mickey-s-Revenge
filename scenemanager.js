@@ -108,6 +108,7 @@ class SceneManager {
         }
         else if (this.gameover === false) { 
             this.spawnmanager.update();
+            // reset when lose
             if (this.mickey.currentHP <= 0) {
                 this.gameover = true;
                 this.clearAllEntities();

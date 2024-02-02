@@ -73,7 +73,7 @@ class Skeleton {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.currentHP -= 1;
+                this.mickey.takeDamage(5);
             }
         });
 
