@@ -13,6 +13,11 @@ class Mickey {
         this.movementSpeed = 5;
         this.animations = [];
         this.loadAnimations();
+
+        // dmg immune
+        this.immunityFrames = 20;
+        this.immunityCurrent = 0;
+        this.immune = false;
  
         //CHARACTER STATS
         this.MaxHP = 100;
@@ -26,7 +31,6 @@ class Mickey {
     handleCollision(entity) {
         let overlap = this.BB.overlapBB(entity.BB);
         let sig = { x: Math.sign(this.BB.x - entity.BB.x), y: Math.sign(this.BB.y - entity.BB.y) };
-        // console.log("[X: sig " + sig.x + ", dif " + overlap.x + "], [Y: sig " + sig.y + ", dif " + overlap.y + "]");
 
         if (overlap.x < overlap.y) {
             this.x += (overlap.x + 1) * sig.x;
@@ -36,13 +40,22 @@ class Mickey {
     }
 
     loadAnimations() 
-    { // 24, 26
+    { 
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 0, 26, 40, 4, 0.09, 1, true, false));
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 41, 26, 40, 6, 0.09, 1, false, false));
         //reversed images
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 2, 26, 40, 4, 0.09, 1, true, true));
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 3, 26, 40, 6, 0.09, 1, false, true));
     };
+
+    takeDamage(damage) {
+        if (this.immune) {
+            return;
+        }
+        this.immune = true
+        this.currentHP -= damage;
+        ASSET_MANAGER.playAsset("./audio/hurt.mp3");
+    }
 
 	update()
 	{
@@ -88,6 +101,14 @@ class Mickey {
                 this.handleCollision(backEntity); 
             }
         });
+
+        // immunity frames
+        if (this.immune) {
+            if (this.immunityCurrent++ >= this.immunityFrames) {
+                this.immunityCurrent = 0;
+                this.immune = false;
+            }
+        }
 	};
 
 	draw(ctx)

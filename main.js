@@ -28,7 +28,8 @@ const imageQueue = [
 	"./assets/attack/fireslash2.png",
 	"./assets/attack/Fireball.png",
 	"./audio/kitchen.mp3",
-	"./audio/escape.mp3"
+	"./audio/escape.mp3",
+	"./audio/hurt.mp3"
 ];
 
 for (let i = 0; i < imageQueue.length; i++) {
