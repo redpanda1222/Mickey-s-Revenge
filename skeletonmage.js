@@ -81,7 +81,7 @@ class SkeletonMage {
     };
 };
 
-class Fireball {
+class FireBall {
     constructor(game, skeletonMage, mickey) {
         Object.assign(this, { game, skeletonMage, mickey });
 

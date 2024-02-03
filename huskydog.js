@@ -149,6 +149,7 @@ class GiantHuskydog {
 
         this.MaxHP = 100;
         this.currentHP = 100;
+        this.collideDmg = 10;
 
         this.flip = 0;
 
@@ -175,10 +176,11 @@ class GiantHuskydog {
         this.jumpClock = new Clock(game, 5); // jump every 20 sec
         this.jumpingClock = new Clock(game, 0.6); // how long jumping lasts
         this.airBorneClock = new Clock(game, 2); // how long airborne lasts
-        this.landingClock = new Clock(game, 4);
         this.jumpY = 0;
         this.isJumping = false;
         this.isAirborne = false;
+        this.isLanding = false;
+        this.landCenter = null;
     };
 
     loadAnimations() {
@@ -196,6 +198,8 @@ class GiantHuskydog {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, 0, this.width, this.height, 6, 0.2, 0, false, false));
         // dash
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height * 2, this.width, this.height, 5, 0.1, 0, false, false));
+        // jump
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height * 5, this.width, this.height, 6, 0.1, 0, false, false));
     }
 
     handleCollision(entity, scalarForce) {
@@ -239,7 +243,7 @@ class GiantHuskydog {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(10);
+                this.mickey.takeDamage(this.collideDmg);
             }
         });
 
@@ -248,6 +252,7 @@ class GiantHuskydog {
         // this.dashClock.update();
         this.jumpClock.update();
 
+        // bark attack
         if (!this.isDashing && !this.isBarking && !this.isJumping && this.barkClock.isDone()) {
             // Start barking towards Mickey
             this.isBarking = true;
@@ -306,36 +311,51 @@ class GiantHuskydog {
             }
         }
 
+        // jump attack
         if (!this.isDashing && !this.isBarking && !this.isJumping && this.jumpClock.isDone()) {
             this.isJumping = true;
             this.spdMul = 0;
         } else if (this.isJumping) {
             this.jumpingClock.update();
-            if (this.jumpingClock.elapsed > 0.4) {
-                this.jumpY -= 40;
-            }
 
-            if (this.isAirborne) {
-                this.airBorneClock.update();
-
-                if (this.airBorneClock.isDone()) {
+            if (this.isLanding) {
+                if (this.jumpY < 0) {
+                    this.jumpY += 40;
+                } else {
+                    // attack end
                     this.jumpY = 0;
                     this.isJumping = false;
-                    this.isAirborne = false;
+                    this.isLanding = false;
                     this.spdMul = 1;
+                    this.collideDmg = 10;
+                    
                     this.jumpClock.reset();
                     this.jumpingClock.reset();
                     this.airBorneClock.reset();
                 }
-            } 
-            else if (this.jumpingClock.isDone()) {
+            } else if (this.isAirborne) {
+                this.airBorneClock.update();
+
+                if (this.airBorneClock.isDone()) {
+                    this.isLanding = true;
+                    this.isAirborne = false;
+                    this.pos.x = this.landCenter.x - this.width / 2;
+                    this.pos.y = this.landCenter.y - this.height / 2;
+                }
+            } else if (this.jumpingClock.isDone()) {
                 this.isAirborne = true;
-                this.game.addAttackEntity(new Warning(this.game, this.mickey.BB.center().x, this.mickey.BB.center().y, 300, 200, 2,
+                this.collideDmg = 0;
+                this.landCenter = this.mickey.BB.center();
+                this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 300, 200, 2.2,
                         new Shockwave(
-                            this.game, this.mickey, false, this.mickey.BB.center().x, this.mickey.BB.center().y,
+                            this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
                             10, 0, 1, 1,             // attributes (dmg, spd, duration, pierce)
                             this.mickey.BB.center() // destination vector (x, y)
                 )));
+            } else {
+                if (this.jumpingClock.elapsed > 0.35) {
+                    this.jumpY -= 40;
+                }
             }
         }
 
@@ -383,7 +403,7 @@ class GiantHuskydog {
             return;
         }
         if (this.flip == 0) {
-            if (this.isJumping) {
+            if (this.isLanding || this.isJumping) {
                 this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
             } else if (this.isDashing) {
                 this.animations[2].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
@@ -394,12 +414,14 @@ class GiantHuskydog {
             }
         }
         else if (this.flip == 1) {
-            if (this.isDashing) {
-                this.animations[5].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+            if (this.isLanding || this.isJumping) {
+                this.animations[7].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+            } else if (this.isDashing) {
+                this.animations[6].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             } else if (this.isBarking) {
-                this.animations[4].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[5].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             } else {
-                this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[4].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             }
         }
         if (PARAMS.DEBUG) {
