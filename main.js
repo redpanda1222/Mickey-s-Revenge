@@ -31,6 +31,7 @@ const imageQueue = [
 	"./assets/attack/Fireball2.png",
 	"./assets/attack/blast.png",
 	"./assets/attack/red.png",
+	"./assets/attack/shockwave.png",
 	"./audio/kitchen.mp3",
 	"./audio/escape.mp3",
 	"./audio/hurt.mp3"

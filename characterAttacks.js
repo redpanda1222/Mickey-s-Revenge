@@ -171,9 +171,16 @@ class Fireball extends Projectile {
 
 class Shockwave extends Projectile {
     constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation) {
-        super(game, mickey, isFriendly, x, y, 34, 34, projDamage, projSpeed, projDuration, projPierce, true, targetLocation);
+        super(game, mickey, isFriendly, x, y, 113, 95, projDamage, projSpeed, projDuration, projPierce, true, targetLocation);
 
-        this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/Fireball2.png"), 0, 235, this.width, this.height, 6, 0.05, 1, false, false);
+        this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/shockwave.png"), 0, 0, this.width, this.height, 8, 0.1, 0, false, false);
+
+        this.sizeScale = 4;
+        this.width  *= this.sizeScale;
+        this.height *= this.sizeScale;
+
+        this.x -= this.width / 2;
+        this.y -= this.height / 2;
 
         //Rectangle bounding box
         this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
@@ -184,7 +191,6 @@ class Shockwave extends Projectile {
         this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.width, this.height);
 
         if (PARAMS.DEBUG) {
-            // draws bounding box
             this.BB.draw(ctx);
         }
     };

@@ -173,13 +173,15 @@ class GiantHuskydog {
         this.isBarking = false;
 
         // jump attack
-        this.jumpClock = new Clock(game, 5); // jump every 20 sec
+        this.jumpClock = new Clock(game, 20); // jump every 20 sec
         this.jumpingClock = new Clock(game, 0.6); // how long jumping lasts
-        this.airBorneClock = new Clock(game, 2); // how long airborne lasts
+        this.airBorneClock = new Clock(game, 1); // how long airborne lasts
+        this.landingClock = new Clock(game, 0.8);
         this.jumpY = 0;
         this.isJumping = false;
         this.isAirborne = false;
         this.isLanding = false;
+        this.isLanded = false;
         this.landCenter = null;
     };
 
@@ -191,6 +193,8 @@ class GiantHuskydog {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, this.height * 2, this.width, this.height, 5, 0.1, 0, false, true));
         // jump
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, this.height * 5, this.width, this.height, 6, 0.1, 0, false, true));
+        // land
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), 0, this.height * 3, this.width, this.height, 8, 0.1, 0, false, false));
 
         //reversed images
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height, this.width, this.height, 6, 0.1, 0, false, false));
@@ -200,6 +204,8 @@ class GiantHuskydog {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height * 2, this.width, this.height, 5, 0.1, 0, false, false));
         // jump
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), 0, this.height * 5, this.width, this.height, 6, 0.1, 0, false, false));
+        // land
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), this.width * 7, this.height * 3, this.width, this.height, 8, 0.1, 0, false, true));
     }
 
     handleCollision(entity, scalarForce) {
@@ -248,8 +254,8 @@ class GiantHuskydog {
         });
 
         // === attack events ===
-        // this.barkClock.update();
-        // this.dashClock.update();
+        this.barkClock.update();
+        this.dashClock.update();
         this.jumpClock.update();
 
         // bark attack
@@ -311,27 +317,36 @@ class GiantHuskydog {
             }
         }
 
-        // jump attack
+        // jump attack sequence 
         if (!this.isDashing && !this.isBarking && !this.isJumping && this.jumpClock.isDone()) {
+            // initiate jumping
             this.isJumping = true;
             this.spdMul = 0;
         } else if (this.isJumping) {
             this.jumpingClock.update();
 
-            if (this.isLanding) {
-                if (this.jumpY < 0) {
-                    this.jumpY += 40;
-                } else {
+            if (this.isLanded) {
+                this.landingClock.update();
+
+                if (this.landingClock.isDone()) {
                     // attack end
-                    this.jumpY = 0;
                     this.isJumping = false;
                     this.isLanding = false;
+                    this.isLanded = false;
                     this.spdMul = 1;
                     this.collideDmg = 10;
                     
                     this.jumpClock.reset();
                     this.jumpingClock.reset();
                     this.airBorneClock.reset();
+                    this.landingClock.reset();
+                }
+            } else if (this.isLanding) {
+                if (this.jumpY < 0) {
+                    this.jumpY += 40;
+                } else {
+                    this.jumpY = 0;
+                    this.isLanded = true;
                 }
             } else if (this.isAirborne) {
                 this.airBorneClock.update();
@@ -346,13 +361,14 @@ class GiantHuskydog {
                 this.isAirborne = true;
                 this.collideDmg = 0;
                 this.landCenter = this.mickey.BB.center();
-                this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 300, 200, 2.2,
+                this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
                         new Shockwave(
                             this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                            10, 0, 1, 1,             // attributes (dmg, spd, duration, pierce)
+                            10, 0, 0.8, 1,             // attributes (dmg, spd, duration, pierce)
                             this.mickey.BB.center() // destination vector (x, y)
                 )));
             } else {
+                // jumping up
                 if (this.jumpingClock.elapsed > 0.35) {
                     this.jumpY -= 40;
                 }
@@ -403,7 +419,9 @@ class GiantHuskydog {
             return;
         }
         if (this.flip == 0) {
-            if (this.isLanding || this.isJumping) {
+            if (this.isLanded) {
+                this.animations[4].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+            } else if (this.isLanding || this.isJumping) {
                 this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
             } else if (this.isDashing) {
                 this.animations[2].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
@@ -414,14 +432,16 @@ class GiantHuskydog {
             }
         }
         else if (this.flip == 1) {
-            if (this.isLanding || this.isJumping) {
-                this.animations[7].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+            if (this.isLanded) {
+                this.animations[9].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+            } else if (this.isLanding || this.isJumping) {
+                this.animations[8].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
             } else if (this.isDashing) {
-                this.animations[6].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[7].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             } else if (this.isBarking) {
-                this.animations[5].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[6].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             } else {
-                this.animations[4].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[5].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
             }
         }
         if (PARAMS.DEBUG) {
