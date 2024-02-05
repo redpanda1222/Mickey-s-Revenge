@@ -105,14 +105,14 @@ class Skeleton {
             ctx.drawImage(this.spritesheet,
                 this.xStart + this.width * frame, this.yStart,
                 this.width, this.height,
-                this.pos.x, this.pos.y,
+                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
                 this.w, this.h);
         }
         else if (this.flip == 1) {
             ctx.drawImage(this.spritesheet,
                 this.xStart - this.width * frame, this.yStart,
                 this.width, this.height,
-                this.pos.x, this.pos.y,
+                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
                 this.w, this.h);
         }
         if (PARAMS.DEBUG) {

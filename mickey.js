@@ -1,6 +1,9 @@
 class Mickey {
     constructor(game){
 		this.game = game;
+
+        // this.game.mickey = this;
+
         this.facing = 0;
         this.status = 0;
         this.attacking = false;
@@ -48,6 +51,10 @@ class Mickey {
 	{
         this.elapsedTime += this.game.clockTick;
         this.status = 0;
+
+        this.game.cameraX = this.x - 200;
+        this.game.cameraY = this.y - 150;
+
 		if (this.game.left){
             this.x -= this.movementSpeed;
             this.facing = 1;
@@ -93,13 +100,13 @@ class Mickey {
 	draw(ctx)
 	{
         if (this.status == 0 && this.facing == 0){
-            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
+            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
         }else if (this.status == 0 && this.facing == 1){
-            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
+            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
         }else if (this.status == 1 && this.facing == 0){
-            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
+            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
         }else if (this.status == 1 && this.facing == 1){
-            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x,this.y, this.width,this.height);
+            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
         };
 
         this.drawHealthBar(ctx);

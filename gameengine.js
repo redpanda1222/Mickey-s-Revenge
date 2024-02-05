@@ -22,6 +22,9 @@ class GameEngine {
         this.down = false;
         this.up = false;
 
+        this.cameraX = 0;
+        this.cameraY = 0;
+
         // Options and the Details
         this.options = options || {
             debugging: false,
