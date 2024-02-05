@@ -177,11 +177,12 @@ class GiantHuskydog {
         this.jumpingClock = new Clock(game, 0.6); // how long jumping lasts
         this.airBorneClock = new Clock(game, 1); // how long airborne lasts
         this.landingClock = new Clock(game, 0.8);
-        this.jumpY = 0;
+        
         this.isJumping = false;
         this.isAirborne = false;
         this.isLanding = false;
         this.isLanded = false;
+        this.jumpY = 0;
         this.landCenter = null;
     };
 
@@ -265,10 +266,7 @@ class GiantHuskydog {
             this.spdMul = 0.5;
         }
         else if (this.isBarking) {
-            this.barkingClock.update();
-            this.firingClock.update();
-
-            if (this.firingClock.isDone()) {
+            if (this.firingClock.doneTicking()) {
                 this.game.addAttackEntity(new Blast(
                     this.game, this.mickey, false, this.BB.center().x - (this.flip == 1 ? 70 : 0), this.BB.center().y - 50,
                     10, 5, 4, 1,             // attributes (dmg, spd, duration, pierce)
@@ -284,15 +282,16 @@ class GiantHuskydog {
                     10, 5, 4, 1,
                     this.mickey.BB.center(), degreeToRad(-20)
                 ));
-                this.firingClock.reset();
             }
 
-            if (this.barkingClock.isDone()) {
+            if (this.barkingClock.doneTicking()) {
                 this.isBarking = false;
                 this.spdMul = 1;
                 this.barkClock.reset();
-                this.barkingClock.reset();
                 this.firingClock.reset();
+                // reset animation
+                this.animations[6].reset();
+                this.animations[1].reset();
             }
         }
 
@@ -302,18 +301,20 @@ class GiantHuskydog {
             this.isDashing = true;
         }
         else if (this.isDashing) {
-            this.dashingClock.update();
-
             let dashForce = toMickey.mul(4);  // You can adjust the force multiplier as needed
             this.applyForce(dashForce);
 
             // You can also add logic to control the duration of the dash if needed
 
             // Reset the dash flag after a certain duration (e.g., 1 seconds)
-            if (this.dashingClock.isDone()) {
+            if (this.dashingClock.doneTicking()) {
                 this.isDashing = false;
-                this.dashingClock.reset();
                 this.dashClock.reset();
+                // reset animation
+                this.animations[4].reset();
+                this.animations[3].reset();
+                this.animations[8].reset();
+                this.animations[9].reset();
             }
         }
 
@@ -323,23 +324,20 @@ class GiantHuskydog {
             this.isJumping = true;
             this.spdMul = 0;
         } else if (this.isJumping) {
-            this.jumpingClock.update();
 
             if (this.isLanded) {
-                this.landingClock.update();
-
-                if (this.landingClock.isDone()) {
+                if (this.landingClock.doneTicking()) {
                     // attack end
-                    this.isJumping = false;
-                    this.isLanding = false;
                     this.isLanded = false;
+                    this.isJumping = false;
+
                     this.spdMul = 1;
                     this.collideDmg = 10;
                     
                     this.jumpClock.reset();
-                    this.jumpingClock.reset();
-                    this.airBorneClock.reset();
-                    this.landingClock.reset();
+                    // reset animation
+                    this.animations[6].reset();
+                    this.animations[1].reset();
                 }
             } else if (this.isLanding) {
                 if (this.jumpY < 0) {
@@ -347,17 +345,16 @@ class GiantHuskydog {
                 } else {
                     this.jumpY = 0;
                     this.isLanded = true;
+                    this.isLanding = false;
                 }
             } else if (this.isAirborne) {
-                this.airBorneClock.update();
-
-                if (this.airBorneClock.isDone()) {
-                    this.isLanding = true;
+                if (this.airBorneClock.doneTicking()) {
                     this.isAirborne = false;
+                    this.isLanding = true;
                     this.pos.x = this.landCenter.x - this.width / 2;
                     this.pos.y = this.landCenter.y - this.height / 2;
                 }
-            } else if (this.jumpingClock.isDone()) {
+            } else if (this.jumpingClock.doneTicking()) {
                 this.isAirborne = true;
                 this.collideDmg = 0;
                 this.landCenter = this.mickey.BB.center();
@@ -374,8 +371,6 @@ class GiantHuskydog {
                 }
             }
         }
-
-        
 
         // === end of attack events ===
 

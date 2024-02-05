@@ -33,6 +33,16 @@ class Clock {
         return this.elapsed >= this.timesUp;
     }
 
+    doneTicking() { // combines update and is done and reset
+        if (this.isDone()) {
+            this.reset();
+            return true;
+        } else {
+            this.update();
+            return false;
+        }
+    }
+
     reset() {
         this.elapsed = 0;
     }
