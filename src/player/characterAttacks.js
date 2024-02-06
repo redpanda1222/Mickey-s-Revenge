@@ -139,9 +139,10 @@ class Projectile {
         }
     }
 
-    handleCollision(entity) {
+    handleCollision(entity) { // TODO: pierce is bugged
         entity.takeDamage(this.projDamage); // uncomment this later
         this.projPierce--;
+        
         if (this.projPierce < 1) {
             this.removeFromWorld = true;
         } 

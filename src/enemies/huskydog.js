@@ -246,9 +246,9 @@ class GiantHuskydog {
             }
         });
         this.game.entities.forEach(entity => {
-            if (entity !== this && entity !== this.mickey && this.BB.collideBB(entity.BB)) {
-                this.handleCollision(entity, 1);
-            }
+            // if (entity !== this && entity !== this.mickey && this.BB.collideBB(entity.BB)) {
+            //     this.handleCollision(entity, 1);
+            // }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
                 this.mickey.takeDamage(this.collideDmg);
@@ -362,7 +362,7 @@ class GiantHuskydog {
                 this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
                         new Shockwave(
                             this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                            10, 0, 0.8, 1,          // attributes (dmg, spd, duration, pierce)
+                            10, 0, 0.8, 1000,          // attributes (dmg, spd, duration, pierce)
                             this.mickey.BB.center() // destination vector (x, y)
                 )));
             } else {
