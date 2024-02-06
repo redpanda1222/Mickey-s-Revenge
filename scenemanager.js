@@ -20,6 +20,11 @@ class SceneManager {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
+
+        this.game.attackEntities.forEach(function (entity) {
+            entity.removeFromWorld = true;
+        });
+
         this.game.backgroundEntities.length = 0;
     };
 
