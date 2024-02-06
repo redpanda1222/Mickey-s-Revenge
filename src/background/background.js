@@ -2,12 +2,10 @@ const scales = {
 
 }
 class Background {
-    constructor(game, x, y, tileGrid, tileSize, scale, show) {
-        Object.assign(this, { game, x, y, tileGrid, tileSize, scale, show });
+    constructor(game, tileGrid, tileSize, scale, show) {
+        Object.assign(this, { game, tileGrid, tileSize, scale, show });
         this.game = game;
         this.tiles = [ASSET_MANAGER.getAsset("./assets/background/sand.png"), ASSET_MANAGER.getAsset("./sandtile.png")];
-        this.x = x;
-        this.y = y;
        
     };
 

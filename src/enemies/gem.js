@@ -18,7 +18,7 @@ class Gem {
 
         // bounding box
         this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
-        this.BB = new BoundingBox(game, this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
     }
 
     update() {
@@ -39,7 +39,7 @@ class Gem {
 
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     }
 

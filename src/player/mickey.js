@@ -28,7 +28,7 @@ class Mickey {
 
         //Rectangle bounding box
         this.offsetBB = {x: 20, y: 30, w: -38, h: -33};
-        this.BB = new BoundingBox(this.game, this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 
     handleCollision(entity) {
@@ -134,15 +134,17 @@ class Mickey {
 
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
 	};
 
     drawHealthBar(ctx){
+        const camX = this.x + 15 - this.game.cameraX;
+        const camY = this.y - 8 - this.game.cameraY;
         //drawing health box
         //--BACKGROUND FOR MAX HP
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.x - this.game.cameraX, this.y - 8 - this.game.cameraY, 80, 10);
+        ctx.fillRect(camX, camY, 80, 10);
 
         //--Calculating Current HP and changing color with appropriate indicators for health percentage.
         let healthRatio = this.currentHP/this.MaxHP;
@@ -151,8 +153,8 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-        if (healthRatio >= 0){ ctx.fillRect(this.x - this.game.cameraX, this.y - 8 - this.game.cameraY, healthBarSize, 10)}
-        else {ctx.fillRect(this.x - this.game.cameraX, this.y - 8 - this.game.cameraY, 0, 10)}
+        if (healthRatio >= 0){ ctx.fillRect(camX, camY, healthBarSize, 10)}
+        else {ctx.fillRect(camX, camY, 0, 10)}
     }
     
 }

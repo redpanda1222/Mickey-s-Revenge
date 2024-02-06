@@ -6,12 +6,11 @@ class SceneManager {
         this.level = null;
         this.mickey = new Mickey(this.game);
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
-        this.skeletonMage = new SkeletonMage(this.game, this.mickey, 50, 50);
 
         this.gameover = false;
 
         // preload
-        this.game.background = new Background(this.game, 0, 0, [], 0, 0, false);
+        this.game.background = new Background(this.game, [], 0, 0, false);
         this.menu = new MenuScreen(game, this);
         this.loadScene(levelOne, false);
     };
@@ -39,10 +38,6 @@ class SceneManager {
                 ASSET_MANAGER.playAsset(level.music);
 
             }
-            // load level stuff
-            if (level.tileGrid) {
-                this.game.background.updateTileGrid(level.tileGrid, 64, 1, true);
-            };
             // load background
             this.game.background.updateTileGrid(level.tileGrid, 64, 2, true);
             let i;
@@ -51,41 +46,42 @@ class SceneManager {
             // barbedwires
             for (i = 0; i < level.barbedwires.length; i++) {
                 obj = level.barbedwires[i];
-                this.game.addBackgroundEntity(new BarbedWire(this.game, obj.x, obj.y, 83, 56, 1));
+                this.game.addBackgroundEntity(new BarbedWire(this.game, obj.x, obj.y));
             }
             // deadtrees
             for (i = 0; i < level.deadtrees.length; i++) {
                 obj = level.deadtrees[i];
-                this.game.addBackgroundEntity(new DeadTree(this.game, obj.x, obj.y, 1920, 1920, 0.05));
+                this.game.addBackgroundEntity(new DeadTree(this.game, obj.x, obj.y));
             }
             // deserttowers
             for (i = 0; i < level.deserttowers.length; i++) {
                 obj = level.deserttowers[i];
-                this.game.addBackgroundEntity(new DesertTower(this.game, obj.x, obj.y, 311, 324, 0.5));
+                this.game.addBackgroundEntity(new DesertTower(this.game, obj.x, obj.y));
             }
             // destroyeddeserttowers
             for (i = 0; i < level.destroyeddeserttowers.length; i++) {
                 obj = level.destroyeddeserttowers[i];
-                this.game.addBackgroundEntity(new DestroyedDesertTower(this.game, obj.x, obj.y, 393, 399, 0.5));
+                this.game.addBackgroundEntity(new DestroyedDesertTower(this.game, obj.x, obj.y));
             }
             // walmartstonehenges
             for (i = 0; i < level.walmartstonehenges.length; i++) {
                 obj = level.walmartstonehenges[i];
-                this.game.addBackgroundEntity(new WallmartStoneHenge(this.game, obj.x, obj.y, 446, 370, 0.5));
+                this.game.addBackgroundEntity(new WallmartStoneHenge(this.game, obj.x, obj.y));
             }
             // deadbodies
             for (i = 0; i < level.deadbodies.length; i++) {
                 obj = level.deadbodies[i];
-                this.game.addBackgroundEntity(new DeadBody(this.game, obj.x, obj.y, 64, 34, 1));
+                this.game.addBackgroundEntity(new DeadBody(this.game, obj.x, obj.y));
             }
             // emptybarrels
             for (i = 0; i < level.emptybarrels.length; i++) {
                 obj = level.emptybarrels[i];
-                this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y, 72, 64, 1));
+                this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
             }
             // here for testing, later we may want to spawn them randomly or something
             // this.game.addEntity(this.skeletonMage);
             this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
+            this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
 
             this.game.addEntity(this.mickey);
         };
@@ -105,18 +101,15 @@ class SceneManager {
             this.menu.update();
         }
         else if (this.gameover === false) {
-            // this.spawnmanager.update();
+            this.spawnmanager.update();
 
-            // if (distance <= shootingRange) {
-            //     this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
-            // }
             // if (this.mickey.currentHP <= 0) {
             //     // this.gameover = true;
             //     // this.clearAllEntities();
             //     // this.game.addEntity(new TransitionScreen(this.game));
             //     // ASSET_MANAGER.pauseBackgroundMusic();
 
-            //     this.game.background = new Background(this, 0, 0, [], 0, 0, false);;
+            //     this.game.background = new Background(this.game, [], 0, 0, false);
             //     this.mickey = new Mickey(this.game);
             //     this.spawnmanager = new SpawnManager(this.game, this.mickey);
             // }
@@ -132,11 +125,3 @@ class SceneManager {
         }
     };
 };
-
-class Camera { 
-    constructor (game, x, y,){
-
-    }
-
-    
-}

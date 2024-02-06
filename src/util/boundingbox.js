@@ -1,6 +1,6 @@
 class BoundingBox {
-    constructor(game, x, y, width, height) {
-        Object.assign(this, {game, x, y, width, height });
+    constructor(x, y, width, height) {
+        Object.assign(this, {x, y, width, height });
     };
 
     overlapBB(otherBB) {
@@ -35,9 +35,9 @@ class BoundingBox {
         this.y = y;
     }
 
-    draw(ctx) {
+    draw(ctx, game) {
         ctx.strokeStyle = "red";
         ctx.lineWidth = 2;
-        ctx.strokeRect(this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
+        ctx.strokeRect(this.x - game.cameraX, this.y - game.cameraY, this.width, this.height);
     }
 };

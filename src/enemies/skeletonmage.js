@@ -27,7 +27,7 @@ class SkeletonMage {
 
         //Rectangle bounding box
         this.offsetBB = { x: -3, y: 0, w: -20, h: 0 };
-        this.BB = new BoundingBox(this.game, this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
 
     };
 
@@ -60,7 +60,7 @@ class SkeletonMage {
 
         // Check if enough time has passed to fire another FireBall
         if (this.timeSinceLastFireball >= this.fireballDelay && distance <= shootingRange) {
-            this.game.addEntity(new FireBall(this.game, this, this.mickey));
+            this.game.addAttackEntity(new FireBall(this.game, this, this.mickey));
             this.timeSinceLastFireball = 0; // Reset the timer
         } else {
             this.timeSinceLastFireball += this.game.clockTick; // Increment the timer
@@ -91,7 +91,7 @@ class SkeletonMage {
 
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     };
 
@@ -142,7 +142,7 @@ class FireBall {
 
         // Rectangle bounding box
         this.offsetBB = { x: 10, y: 15, w: -20, h: -20 };
-        this.BB = new BoundingBox(this.game, this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.w + this.offsetBB.w, this. h + this.offsetBB.h);
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.w + this.offsetBB.w, this. h + this.offsetBB.h);
     }
 
     update() {
@@ -174,7 +174,7 @@ class FireBall {
             this.w, this.h);
 
         if (PARAMS.DEBUG) {
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     }
 

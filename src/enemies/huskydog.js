@@ -29,7 +29,7 @@ class Huskydog {
 
         //Rectangle bounding box
         this.offsetBB = { x: 3, y: 3, w: -3, h: -3 };
-        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
     handleCollision(entity, scalarForce) {
@@ -117,7 +117,7 @@ class Huskydog {
         }
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     };
 
@@ -148,8 +148,8 @@ class GiantHuskydog {
         this.animations = [];
         this.loadAnimations();
 
-        this.MaxHP = 100;
-        this.currentHP = 100;
+        this.MaxHP = 1000;
+        this.currentHP = 1000;
         this.collideDmg = 10;
 
         this.flip = 0;
@@ -160,7 +160,7 @@ class GiantHuskydog {
         //Rectangle bounding box
         this.offsetBB = { x: 18, y: 14, w: -20, h: -20 };
         //this.offsetBB = { x: 3, y: 3, w: -3, h: -3 };
-        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 
         // attacks
         this.dashClock = new Clock(game, 5); // dash every 5 sec
@@ -362,7 +362,7 @@ class GiantHuskydog {
                 this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
                         new Shockwave(
                             this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                            10, 0, 0.8, 1,             // attributes (dmg, spd, duration, pierce)
+                            10, 0, 0.8, 1,          // attributes (dmg, spd, duration, pierce)
                             this.mickey.BB.center() // destination vector (x, y)
                 )));
             } else {
@@ -446,9 +446,10 @@ class GiantHuskydog {
                 this.animations[5].drawFrame(this.game.clockTick, ctx, camX, camY, this.width, this.height);
             }
         }
+
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
 
         // draw health bar

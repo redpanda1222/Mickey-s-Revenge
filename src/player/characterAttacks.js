@@ -4,7 +4,7 @@ class FireSlash{
         this.elapsedTime = 0;
         this.removeFromWorld = false;
         this.coolDown = 15;
-        this.BB = new BoundingBox(game, mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3, mickey.height*3);
+        this.BB = new BoundingBox(mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3, mickey.height*3);
         this.attackAnimations = [];
         this.loadAttackAnimations();
     }
@@ -48,7 +48,7 @@ class FireSlash{
 
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     }
 }
@@ -63,7 +63,7 @@ class FireBreath{
         this.coolDown = 15;
 
         this.offsetBB = { x: 0, y: 30, w: 0, h: -45 };
-        this.BB = new BoundingBox(game,  this.mickey.x + this.width/2 - this.game.cameraX + this.offsetBB.x, this.mickey.y - this.game.cameraY + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+        this.BB = new BoundingBox(this.mickey.x + this.width/2 - this.game.cameraX + this.offsetBB.x, this.mickey.y - this.game.cameraY + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
         this.attackAnimations = [];
         this.loadAttackAnimations();
     }
@@ -111,7 +111,7 @@ class FireBreath{
 
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     }
 }
@@ -140,11 +140,11 @@ class Projectile {
     }
 
     handleCollision(entity) {
+        entity.takeDamage(this.projDamage); // uncomment this later
+        this.projPierce--;
         if (this.projPierce < 1) {
             this.removeFromWorld = true;
-            return;
-        }
-        entity.takeDamage(this.projDamage); // uncomment this later
+        } 
     }
 
     updateTargetLocation(x, y) {
@@ -223,32 +223,9 @@ class Warning {
     draw(ctx) {
         ctx.drawImage(this.spritesheet, 0, 0,
             this.width, this.height,
-            this.x, this.y,
+            this.x - this.game.cameraX, this.y - this.game.cameraY,
             this.w, this.h);
     }
-}
-
-class Fireball2 extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians, isHoming, targetEntity, isRevolving, isClockwise, radius) {
-        super(game, mickey, isFriendly, x, y, 34, 34, projDamage, projSpeed, projDuration, projPierce, false, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius);
-
-        this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/Fireball2.png"), 0, 235, this.width, this.height, 6, 0.05, 1, false, false);
-
-        //Rectangle bounding box
-        this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
-        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
-
-        this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
-    }
-
-    draw(ctx) {
-        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.width, this.height);
-
-        if (PARAMS.DEBUG) {
-            // draws bounding box
-            this.BB.draw(ctx);
-        }
-    };
 }
 
 class Shockwave extends Projectile {
@@ -270,10 +247,10 @@ class Shockwave extends Projectile {
     }
 
     draw(ctx) {
-        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.width, this.height);
+        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
 
         if (PARAMS.DEBUG) {
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     };
 }
@@ -296,11 +273,11 @@ class Blast extends Projectile {
     }
 
     draw(ctx) {
-        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.width, this.height);
+        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
 
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     };
 }
@@ -343,16 +320,16 @@ class Meteor extends Projectile {
                 this.removeFromWorld = true;
                 return;
             }
-            this.spritesheet[1].drawFrame(this.game.clockTick, ctx, this.x - this.explosionSize.w, this.y - this.meteorSize.h - 50, this.explosionSize.w * 2, this.explosionSize.h * 2);
+            this.spritesheet[1].drawFrame(this.game.clockTick, ctx, this.x - this.explosionSize.w - this.game.cameraX, this.y - this.meteorSize.h - 50 - this.game.cameraY, this.explosionSize.w * 2, this.explosionSize.h * 2);
         } else {
             this.meteorArriveTime = this.elapsed;
-            this.spritesheet[0].drawFrame(this.game.clockTick, ctx, this.x - this.meteorSize.w / 2, this.meteorY, this.meteorSize.w, this.meteorSize.h);
+            this.spritesheet[0].drawFrame(this.game.clockTick, ctx, this.x - this.meteorSize.w / 2 - this.game.cameraX, this.meteorY - this.game.cameraY, this.meteorSize.w, this.meteorSize.h);
         }
 
 
         if (PARAMS.DEBUG) {
             // draws bounding box
-            this.BB.draw(ctx);
+            this.BB.draw(ctx, this.game);
         }
     };
 }
