@@ -4,7 +4,7 @@ class FireSlash{
         this.elapsedTime = 0;
         this.removeFromWorld = false;
         this.coolDown = 15;
-        this.BB = new BoundingBox(mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3, mickey.height*3);
+        this.BB = new BoundingBox(game, mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3, mickey.height*3);
         this.attackAnimations = [];
         this.loadAttackAnimations();
     }
