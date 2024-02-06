@@ -71,7 +71,7 @@ class Bird {
         });
         // collision detection & resolution with other enemmies
         this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
+            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
                 this.handleCollision(entity, 0.75);
             }
             // colliding with mickey and attacking mickey
@@ -90,6 +90,7 @@ class Bird {
         }
 
         if (this.currentHP <= 0) {
+            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
             this.removeFromWorld = true;
         }
 

@@ -90,7 +90,7 @@ class SceneManager {
             // this.game.addEntity(new Skeleton(this.game, this.mickey, 1000, 720));
 
             this.game.addEntity(this.skeletonMage);
-            this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
+            //this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
 
             this.game.addEntity(this.mickey);
         };
@@ -112,15 +112,15 @@ class SceneManager {
         else if (this.gameover === false) {
             this.spawnmanager.update();
 
-            const dx = this.skeletonMage.x - this.mickey.x;
-            const dy = this.skeletonMage.y - this.mickey.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            // const dx = this.skeletonMage.x - this.mickey.x;
+            // const dy = this.skeletonMage.y - this.mickey.y;
+            // const distance = Math.sqrt(dx * dx + dy * dy);
 
-            const shootingRange = 200;
+            // const shootingRange = 200;
 
-            if (distance <= shootingRange) {
-                this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
-            }
+            // if (distance <= shootingRange) {
+            //     this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
+            // }
             // if (this.mickey.currentHP <= 0) {
             //     // this.gameover = true;
             //     // this.clearAllEntities();

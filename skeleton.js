@@ -70,7 +70,7 @@ class Skeleton {
         });
         // collision detection & resolution with other enemmies
         this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey) {
+            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
                 this.handleCollision(entity, 0.75);
             }
             // colliding with mickey and attacking mickey
@@ -90,6 +90,7 @@ class Skeleton {
         }
 
         if (this.currentHP <= 0) {
+            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
             this.removeFromWorld = true;
         }
 
