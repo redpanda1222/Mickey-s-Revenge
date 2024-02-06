@@ -26,10 +26,9 @@ const imageQueue = [
 	"./assets/miscellaneous/gems.png",
 	"./assets/attack/fireslash.png",
 	"./assets/attack/fireslash2.png",
-	"./assets/attack/Fireball2.png",
-	"./assets/attack/blast.png",
-	"./assets/attack/red.png",
-	"./assets/attack/shockwave.png",
+	"./assets/attack/Fireball.png",
+	"./assets/attack/firebreath.png",
+	"./assets/attack/firebreath2.png",
 	"./audio/kitchen.mp3",
 	"./audio/escape.mp3",
 	"./audio/hurt.mp3"
