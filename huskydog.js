@@ -156,7 +156,7 @@ class GiantHuskydog {
 
         //Rectangle bounding box
         this.offsetBB = { x: 18, y: 14, w: -20, h: -20 };
-        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
 
         // attacks
         this.dashClock = new Clock(game, 5); // dash every 5 sec
@@ -174,7 +174,7 @@ class GiantHuskydog {
         this.jumpingClock = new Clock(game, 0.6); // how long jumping lasts
         this.airBorneClock = new Clock(game, 1); // how long airborne lasts
         this.landingClock = new Clock(game, 0.8);
-        
+
         this.isJumping = false;
         this.isAirborne = false;
         this.isLanding = false;
@@ -222,7 +222,6 @@ class GiantHuskydog {
     }
 
     applyForce(force) {
-        // assume mass is 1, F = A
         this.acc = this.acc.add(force);
     }
 
@@ -245,7 +244,7 @@ class GiantHuskydog {
         });
         // collision detection & resolution with other enemmies
         this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+            if (entity !== this && this.BB.collideBB(entity.BB) && entity !== this.mickey && !(entity instanceof Gem)) {
                 this.handleCollision(entity, 1);
             }
             // colliding with mickey and attacking mickey
@@ -255,9 +254,9 @@ class GiantHuskydog {
         });
 
         // === attack events ===
-        this.barkClock.update();
-        this.dashClock.update();
-        this.jumpClock.update();
+        // this.barkClock.update();
+        // this.dashClock.update();
+        // this.jumpClock.update();
 
         // bark attack
         if (!this.isDashing && !this.isBarking && !this.isJumping && this.barkClock.isDone()) {
@@ -304,8 +303,6 @@ class GiantHuskydog {
             let dashForce = toMickey.mul(4);  // You can adjust the force multiplier as needed
             this.applyForce(dashForce);
 
-            // You can also add logic to control the duration of the dash if needed
-
             // Reset the dash flag after a certain duration (e.g., 1 seconds)
             if (this.dashingClock.doneTicking()) {
                 this.isDashing = false;
@@ -333,7 +330,7 @@ class GiantHuskydog {
 
                     this.spdMul = 1;
                     this.collideDmg = 10;
-                    
+
                     this.jumpClock.reset();
                     // reset animation
                     this.animations[6].reset();
@@ -359,11 +356,11 @@ class GiantHuskydog {
                 this.collideDmg = 0;
                 this.landCenter = this.mickey.BB.center();
                 this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
-                        new Shockwave(
-                            this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                            10, 0, 0.8, 1,             // attributes (dmg, spd, duration, pierce)
-                            this.mickey.BB.center() // destination vector (x, y)
-                )));
+                    new Shockwave(
+                        this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
+                        10, 0, 0.8, 1,             // attributes (dmg, spd, duration, pierce)
+                        this.mickey.BB.center() // destination vector (x, y)
+                    )));
             } else {
                 // jumping up
                 if (this.jumpingClock.elapsed > 0.35) {
@@ -376,10 +373,8 @@ class GiantHuskydog {
 
         if (this.pos.x - this.mickey.x + 10 > 0) {
             this.flip = 1; // Flip the sprite if moving left
-            this.xStart = 445;
         } else {
             this.flip = 0; // Do not flip the sprite if moving right
-            this.xStart = 0;
         }
 
         if (this.currentHP <= 0) {
@@ -390,22 +385,22 @@ class GiantHuskydog {
         this.move();
     };
 
-    drawHealthBar(ctx){
-        //drawing health box
-        //--BACKGROUND FOR MAX HP
-        ctx.fillStyle = 'black';
-        ctx.fillRect(this.x + 15, this.y - 8, 80, 10);
+    // drawHealthBar(ctx){
+    //     //drawing health box
+    //     //--BACKGROUND FOR MAX HP
+    //     ctx.fillStyle = 'black';
+    //     ctx.fillRect(this.x + 15, this.y - 8, 80, 10);
 
-        //--Calculating Current HP and changing color with appropriate indicators for health percentage.
-        let healthRatio = this.currentHP/this.MaxHP;
-        let healthBarSize = 80 * healthRatio;
-        if (healthRatio > 0.75) ctx.fillStyle = 'green';
-        if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
-        if (healthRatio <= 0.50) ctx.fillStyle = 'red';
-        if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-        if (healthRatio >= 0){ ctx.fillRect(this.x + 15, this.y - 8, healthBarSize, 10)}
-        else {ctx.fillRect(this.x + 15, this.y - 8, 0, 10)}
-    }
+    //     //--Calculating Current HP and changing color with appropriate indicators for health percentage.
+    //     let healthRatio = this.currentHP/this.MaxHP;
+    //     let healthBarSize = 80 * healthRatio;
+    //     if (healthRatio > 0.75) ctx.fillStyle = 'green';
+    //     if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
+    //     if (healthRatio <= 0.50) ctx.fillStyle = 'red';
+    //     if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
+    //     if (healthRatio >= 0){ ctx.fillRect(this.pos.x + 15, this.pos.y - 8, healthBarSize, 10)}
+    //     else {ctx.fillRect(this.pos.x + 15, this.pos.y - 8, 0, 10)}
+    // }
 
     drawHealthBar(ctx) {
         // Drawing health box
@@ -432,30 +427,32 @@ class GiantHuskydog {
         if (this.isAirborne) {
             return;
         }
+        const camX = this.pos.x - this.game.cameraX;
+        const camY = this.pos.y - this.game.cameraY;
         if (this.flip == 0) {
             if (this.isLanded) {
-                this.animations[4].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+                this.animations[4].drawFrame(this.game.clockTick, ctx, camX, camY + this.jumpY, this.width, this.height);
             } else if (this.isLanding || this.isJumping) {
-                this.animations[3].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+                this.animations[3].drawFrame(this.game.clockTick, ctx, camX, camY + this.jumpY, this.width, this.height);
             } else if (this.isDashing) {
-                this.animations[2].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[2].drawFrame(this.game.clockTick, ctx, camX, camY, this.width, this.height);
             } else if (this.isBarking) {
-                this.animations[1].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[1].drawFrame(this.game.clockTick, ctx, camX, camY, this.width, this.height);
             } else {
-                this.animations[0].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[0].drawFrame(this.game.clockTick, ctx, camX, camY, this.width, this.height);
             }
         }
         else if (this.flip == 1) {
             if (this.isLanded) {
-                this.animations[9].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+                this.animations[9].drawFrame(this.game.clockTick, ctx, camX, camY + this.jumpY, this.width, this.height);
             } else if (this.isLanding || this.isJumping) {
-                this.animations[8].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y + this.jumpY, this.width, this.height);
+                this.animations[8].drawFrame(this.game.clockTick, ctx, camX, camY + this.jumpY, this.width, this.height);
             } else if (this.isDashing) {
-                this.animations[7].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[7].drawFrame(this.game.clockTick, ctx, camX, camY, this.width, this.height);
             } else if (this.isBarking) {
-                this.animations[6].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[6].drawFrame(this.game.clockTick, ctx, camX, camY, this.width, this.height);
             } else {
-                this.animations[5].drawFrame(this.game.clockTick, ctx, this.pos.x, this.pos.y, this.width, this.height);
+                this.animations[5].drawFrame(this.game.clockTick, ctx, camX, camY, this.width, this.height);
             }
         }
         if (PARAMS.DEBUG) {
@@ -465,13 +462,5 @@ class GiantHuskydog {
 
         // draw health bar
         this.drawHealthBar(ctx);
-    };
-
-    currentFrame() {
-        return Math.floor(this.elapsedTime / this.frameDuration);
-    };
-
-    isDone() {
-        return (this.elapsedTime >= this.totalTime);
     };
 };

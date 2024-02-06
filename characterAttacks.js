@@ -165,7 +165,7 @@ class Warning {
     }
 }
 
-class Fireball extends Projectile {
+class Fireball2 extends Projectile {
     constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians, isHoming, targetEntity, isRevolving, isClockwise, radius) {
         super(game, mickey, isFriendly, x, y, 34, 34, projDamage, projSpeed, projDuration, projPierce, false, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius);
 

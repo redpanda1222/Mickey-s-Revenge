@@ -81,13 +81,8 @@ class SceneManager {
                 this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y, 72, 64, 1));
             }
             // here for testing, later we may want to spawn them randomly or something
-            // this.game.addEntity(new Bird(this.game, this.mickey, 1000, 50));
-            // this.game.addEntity(new Bird(this.game, this.mickey, 500, 500));
-            // this.game.addEntity(new Huskydog(this.game, this.mickey, 0, 720));
-            // this.game.addEntity(new Skeleton(this.game, this.mickey, 1000, 720));
-
-            this.game.addEntity(this.skeletonMage);
-            //this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
+            // this.game.addEntity(this.skeletonMage);
+            this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
 
             this.game.addEntity(this.mickey);
         };
@@ -107,13 +102,7 @@ class SceneManager {
             this.menu.update();
         }
         else if (this.gameover === false) {
-            this.spawnmanager.update();
-
-            // const dx = this.skeletonMage.x - this.mickey.x;
-            // const dy = this.skeletonMage.y - this.mickey.y;
-            // const distance = Math.sqrt(dx * dx + dy * dy);
-
-            // const shootingRange = 200;
+            // this.spawnmanager.update();
 
             // if (distance <= shootingRange) {
             //     this.game.addEntity(new FireBall(this.game, this.skeletonMage, this.mickey));
