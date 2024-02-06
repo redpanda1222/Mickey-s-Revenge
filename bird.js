@@ -29,7 +29,7 @@ class Bird {
 
         //Rectangle bounding box
         this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
-        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        this.BB = new BoundingBox(this.game, x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
     handleCollision(entity, scalarForce) {

@@ -22,7 +22,7 @@ class SkeletonMage {
 
         //Rectangle bounding box
         this.offsetBB = { x: -3, y: 0, w: -20, h: 0 };
-        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
+        this.BB = new BoundingBox(this.game, this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
 
     };
 

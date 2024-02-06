@@ -29,7 +29,7 @@ class Huskydog {
 
         //Rectangle bounding box
         this.offsetBB = { x: 3, y: 3, w: -3, h: -3 };
-        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
     handleCollision(entity, scalarForce) {

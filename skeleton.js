@@ -28,7 +28,7 @@ class Skeleton {
 
         //Rectangle bounding box
         this.offsetBB = { x: 15, y: 2, w: -30, h: -15 };
-        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
     handleCollision(entity, scalarForce) {

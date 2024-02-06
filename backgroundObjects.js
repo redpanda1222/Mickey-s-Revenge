@@ -5,7 +5,7 @@ class BackgroundObject {
     }
 
     updateBB(offsetBB) {
-        this.BB = new BoundingBox(this.x + offsetBB.x, this.y + offsetBB.y, this.width * this.scale + offsetBB.w, this.height * this.scale + offsetBB.h);
+        this.BB = new BoundingBox(this.game, this.x + offsetBB.x, this.y + offsetBB.y, this.width * this.scale + offsetBB.w, this.height * this.scale + offsetBB.h);
     }
 
     updateSpritesheet(path) {

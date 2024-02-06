@@ -28,7 +28,7 @@ class Mickey {
 
         //Rectangle bounding box
         this.offsetBB = {x: 20, y: 30, w: -38, h: -33};
-        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+        this.BB = new BoundingBox(this.game, this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 
     handleCollision(entity) {
@@ -65,8 +65,8 @@ class Mickey {
         this.elapsedTime += this.game.clockTick;
         this.status = 0;
 
-        this.game.cameraX = this.x - 200;
-        this.game.cameraY = this.y - 150;
+        this.game.cameraX = this.x - PARAMS.WIDTH/2 + this.width/2;
+        this.game.cameraY = this.y - PARAMS.HEIGHT/2 + this.height/2;
 
 		if (this.game.left){
             this.x -= this.movementSpeed;
@@ -141,7 +141,7 @@ class Mickey {
         //drawing health box
         //--BACKGROUND FOR MAX HP
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.x, this.y - 8, 80, 10);
+        ctx.fillRect(this.x - this.game.cameraX, this.y - 8 - this.game.cameraY, 80, 10);
 
         //--Calculating Current HP and changing color with appropriate indicators for health percentage.
         let healthRatio = this.currentHP/this.MaxHP;
@@ -150,8 +150,8 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-        if (healthRatio >= 0){ ctx.fillRect(this.x, this.y - 8, healthBarSize, 10)}
-        else {ctx.fillRect(this.x, this.y - 8, 0, 10)}
+        if (healthRatio >= 0){ ctx.fillRect(this.x - this.game.cameraX, this.y - 8 - this.game.cameraY, healthBarSize, 10)}
+        else {ctx.fillRect(this.x - this.game.cameraX, this.y - 8 - this.game.cameraY, 0, 10)}
     }
     
 }
