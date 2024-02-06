@@ -104,7 +104,6 @@ class SkeletonMage {
     };
 };
 
-
 class FireBall {
     constructor(game, skeletonMage, mickey) {
         Object.assign(this, { game, skeletonMage, mickey });

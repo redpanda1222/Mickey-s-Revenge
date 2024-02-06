@@ -17,3 +17,33 @@ class Timer {
         return gameDelta;
     };
 };
+
+class Clock {
+    constructor(game, timesUp) {
+        this.game = game;
+        this.elapsed = 0;
+        this.timesUp = timesUp;
+    }
+
+    update() {
+        this.elapsed += this.game.clockTick;
+    }
+
+    isDone() {
+        return this.elapsed >= this.timesUp;
+    }
+
+    doneTicking() { // combines update and is done and reset
+        if (this.isDone()) {
+            this.reset();
+            return true;
+        } else {
+            this.update();
+            return false;
+        }
+    }
+
+    reset() {
+        this.elapsed = 0;
+    }
+}
