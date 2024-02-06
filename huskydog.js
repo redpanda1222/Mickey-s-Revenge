@@ -154,9 +154,13 @@ class GiantHuskydog {
 
         this.flip = 0;
 
+        // change to be ingame dimension
+        this.width = 150;
+        this.height = 150;
         //Rectangle bounding box
         this.offsetBB = { x: 18, y: 14, w: -20, h: -20 };
-        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        //this.offsetBB = { x: 3, y: 3, w: -3, h: -3 };
+        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 
         // attacks
         this.dashClock = new Clock(game, 5); // dash every 5 sec
@@ -174,7 +178,7 @@ class GiantHuskydog {
         this.jumpingClock = new Clock(game, 0.6); // how long jumping lasts
         this.airBorneClock = new Clock(game, 1); // how long airborne lasts
         this.landingClock = new Clock(game, 0.8);
-
+        
         this.isJumping = false;
         this.isAirborne = false;
         this.isLanding = false;
@@ -207,7 +211,6 @@ class GiantHuskydog {
     }
 
     handleCollision(entity, scalarForce) {
-        // basically treats other entity like a repelling force field
         let toEntityCenter = this.BB.center().sub(entity.BB.center()).norm().mul(scalarForce);
         this.applyForce(toEntityCenter);
     }
@@ -242,9 +245,8 @@ class GiantHuskydog {
                 this.handleCollision(backEntity, this.speed + 1);
             }
         });
-        // collision detection & resolution with other enemmies
         this.game.entities.forEach(entity => {
-            if (entity !== this && this.BB.collideBB(entity.BB) && entity !== this.mickey && !(entity instanceof Gem)) {
+            if (entity !== this && entity !== this.mickey && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 1);
             }
             // colliding with mickey and attacking mickey
@@ -254,9 +256,9 @@ class GiantHuskydog {
         });
 
         // === attack events ===
-        // this.barkClock.update();
-        // this.dashClock.update();
-        // this.jumpClock.update();
+        this.barkClock.update();
+        this.dashClock.update();
+        this.jumpClock.update();
 
         // bark attack
         if (!this.isDashing && !this.isBarking && !this.isJumping && this.barkClock.isDone()) {
@@ -303,6 +305,8 @@ class GiantHuskydog {
             let dashForce = toMickey.mul(4);  // You can adjust the force multiplier as needed
             this.applyForce(dashForce);
 
+            // You can also add logic to control the duration of the dash if needed
+
             // Reset the dash flag after a certain duration (e.g., 1 seconds)
             if (this.dashingClock.doneTicking()) {
                 this.isDashing = false;
@@ -330,7 +334,7 @@ class GiantHuskydog {
 
                     this.spdMul = 1;
                     this.collideDmg = 10;
-
+                    
                     this.jumpClock.reset();
                     // reset animation
                     this.animations[6].reset();
@@ -356,11 +360,11 @@ class GiantHuskydog {
                 this.collideDmg = 0;
                 this.landCenter = this.mickey.BB.center();
                 this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
-                    new Shockwave(
-                        this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                        10, 0, 0.8, 1,             // attributes (dmg, spd, duration, pierce)
-                        this.mickey.BB.center() // destination vector (x, y)
-                    )));
+                        new Shockwave(
+                            this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
+                            10, 0, 0.8, 1,             // attributes (dmg, spd, duration, pierce)
+                            this.mickey.BB.center() // destination vector (x, y)
+                )));
             } else {
                 // jumping up
                 if (this.jumpingClock.elapsed > 0.35) {
@@ -385,27 +389,12 @@ class GiantHuskydog {
         this.move();
     };
 
-    // drawHealthBar(ctx){
-    //     //drawing health box
-    //     //--BACKGROUND FOR MAX HP
-    //     ctx.fillStyle = 'black';
-    //     ctx.fillRect(this.x + 15, this.y - 8, 80, 10);
-
-    //     //--Calculating Current HP and changing color with appropriate indicators for health percentage.
-    //     let healthRatio = this.currentHP/this.MaxHP;
-    //     let healthBarSize = 80 * healthRatio;
-    //     if (healthRatio > 0.75) ctx.fillStyle = 'green';
-    //     if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
-    //     if (healthRatio <= 0.50) ctx.fillStyle = 'red';
-    //     if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-    //     if (healthRatio >= 0){ ctx.fillRect(this.pos.x + 15, this.pos.y - 8, healthBarSize, 10)}
-    //     else {ctx.fillRect(this.pos.x + 15, this.pos.y - 8, 0, 10)}
-    // }
-
     drawHealthBar(ctx) {
+        const camX = this.pos.x + 15 - this.game.cameraX;
+        const camY = this.pos.y - 8  - this.game.cameraY;
         // Drawing health box
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.pos.x + 15, this.pos.y - 8, 120, 10);
+        ctx.fillRect(camX, camY, 120, 10);
 
         // Calculating current HP and changing color with appropriate indicators for health percentage.
         let healthRatio = this.currentHP / this.MaxHP;
@@ -417,9 +406,9 @@ class GiantHuskydog {
         else ctx.fillStyle = 'maroon';
 
         if (healthRatio > 0) {
-            ctx.fillRect(this.pos.x + 15, this.pos.y - 8, healthBarSize, 10);
+            ctx.fillRect(camX, camY, healthBarSize, 10);
         } else {
-            ctx.fillRect(this.pos.x + 15, this.pos.y - 8, 0, 10);
+            ctx.fillRect(camX, camY, 0, 10);
         }
     }
 
@@ -427,8 +416,10 @@ class GiantHuskydog {
         if (this.isAirborne) {
             return;
         }
+
         const camX = this.pos.x - this.game.cameraX;
         const camY = this.pos.y - this.game.cameraY;
+
         if (this.flip == 0) {
             if (this.isLanded) {
                 this.animations[4].drawFrame(this.game.clockTick, ctx, camX, camY + this.jumpY, this.width, this.height);
