@@ -29,7 +29,7 @@ class Huskydog {
 
         //Rectangle bounding box
         this.offsetBB = { x: 3, y: 3, w: -3, h: -3 };
-        this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
+        this.BB = new BoundingBox(game, x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
     handleCollision(entity, scalarForce) {
@@ -104,14 +104,14 @@ class Huskydog {
             ctx.drawImage(this.spritesheet,
                 this.xStart + this.width * frame, this.yStart,
                 this.width, this.height,
-                this.pos.x, this.pos.y,
+                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
                 this.w, this.h);
         }
         else if (this.flip == 1) {
             ctx.drawImage(this.spritesheet1,
                 this.xStart - this.width * frame, this.yStart,
                 this.width, this.height,
-                this.pos.x, this.pos.y,
+                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
                 this.w, this.h);
         }
         if (PARAMS.DEBUG) {
@@ -298,14 +298,14 @@ class GiantHuskydog {
             ctx.drawImage(this.spritesheet,
                 this.xStart + this.width * frame, this.yStart,
                 this.width, this.height,
-                this.pos.x, this.pos.y,
+                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
                 this.w, this.h);
         }
         else if (this.flip == 1) {
             ctx.drawImage(this.spritesheet1,
                 this.xStart - this.width * frame, this.yStart,
                 this.width, this.height,
-                this.pos.x, this.pos.y,
+                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
                 this.w, this.h);
         }
         if (PARAMS.DEBUG) {

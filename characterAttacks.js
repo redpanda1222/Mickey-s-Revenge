@@ -4,7 +4,7 @@ class FireSlash{
         this.elapsedTime = 0;
         this.removeFromWorld = false;
         this.coolDown = 15;
-        this.BB = new BoundingBox(mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3, mickey.height*3);
+        this.BB = new BoundingBox(game, mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3, mickey.height*3);
         this.attackAnimations = [];
         this.loadAttackAnimations();
     }
@@ -39,9 +39,9 @@ class FireSlash{
     draw(ctx){
         this.elapsedTime += this.game.clockTick;
         if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-            this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5), this.mickey.y-((this.mickey.height*3)/2.5), this.mickey.width*3, this.mickey.height*3);
+            this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3, this.mickey.height*3);
         }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-            this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5), this.mickey.y-((this.mickey.height*3)/2.5), this.mickey.width*3, this.mickey.height*3);
+            this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3, this.mickey.height*3);
         }
 
         if (this.elapsedTime > 1) this.removeFromWorld = true;

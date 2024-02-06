@@ -22,6 +22,8 @@ class GameEngine {
         this.down = false;
         this.up = false;
 
+        this.cameraX = 0;
+        this.cameraY = 0;
         this.pausable = false;
         this.pause = false;
 

@@ -2,7 +2,7 @@ class SkeletonMage {
     constructor(game, mickey, x, y) {
         this.game = game;
         this.mickey = mickey;
-
+    
         this.x = x;
         this.y = y;
         this.w = 50;
@@ -22,7 +22,7 @@ class SkeletonMage {
 
         //Rectangle bounding box
         this.offsetBB = { x: -3, y: 0, w: -20, h: 0 };
-        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
+        this.BB = new BoundingBox(this.game, this.x + this.offsetBB.x, this.y, this.w + this.offsetBB.y, this.h);
 
     };
 
@@ -63,7 +63,7 @@ class SkeletonMage {
         ctx.drawImage(this.spritesheet,
             this.xStart + this.width * frame, this.yStart,
             this.width, this.height,
-            this.x, this.y,
+            this.x - this.game.cameraX, this.y - this.game.cameraY,
             this.w, this.h);
 
         if (PARAMS.DEBUG) {
@@ -127,19 +127,19 @@ class FireBall {
     }
 
     draw(ctx) {
-        console.log("Fire ball : ", this.spriteSheet)
+        // console.log("Fire ball : ", this.spriteSheet)
         this.elapsedTime += this.game.clockTick;
         const frame = this.currentFrame();
         if (this.elapsedTime > this.totalTime) this.elapsedTime -= this.totalTime;
 
         ctx.drawImage(
             this.spriteSheet,
-            frame * this.width + 20, // src x
+            (frame * this.width + 20), // src x
             20,                  // src y
             this.width - 40,
             this.height - 40,
-            this.x,              // dest x
-            this.y,
+            this.x - this.game.cameraX,              // dest x
+            this.y - this.game.cameray,
             this.width,
             this.height
         );
