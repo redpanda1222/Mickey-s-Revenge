@@ -12,6 +12,8 @@ class GameEngine {
         this.attackEntities = [];
         this.background = null;
 
+        this.transition = null;
+
         // Information on the input
         this.click = null;
         this.mouse = null;
@@ -149,7 +151,9 @@ class GameEngine {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        if (this.background) {
+        if (this.transition) {
+            this.transition.draw(this.ctx);
+        } else if (this.background) {
             this.background.draw(this.ctx);
         }
 
@@ -163,6 +167,7 @@ class GameEngine {
             this.backgroundEntities[i].draw(this.ctx, this);
         }
 
+        // Draw latest attack entities things first
         for (let i = this.attackEntities.length - 1; i >= 0; i--) {
             this.attackEntities[i].draw(this.ctx, this);
         }
@@ -177,9 +182,12 @@ class GameEngine {
     };
 
     update() {
-        if (this.pause) { // don't update if paused
+        if (this.transition) {
+            this.transition.update();
             return;
-        }
+        } else if (this.pause) { // don't update if paused
+            return;
+        } 
 
         let entitiesCount = this.entities.length;
         let attackEntitiesCount = this.attackEntities.length;

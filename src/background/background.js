@@ -2,24 +2,24 @@ const scales = {
 
 }
 class Background {
-    constructor(game, tileGrid, tileSize, scale, show) {
-        Object.assign(this, { game, tileGrid, tileSize, scale, show });
+    constructor(game, show, tileGrid, tileSize, scale) {
+        Object.assign(this, { game, show, tileGrid, tileSize, scale });
         this.game = game;
         this.tiles = [ASSET_MANAGER.getAsset("./assets/background/sand.png"), ASSET_MANAGER.getAsset("./sandtile.png")];
        
     };
 
-    updateTileGrid(tileGrid, tileSize, scale, show) {
+    updateTileGrid(show, tileGrid, tileSize, scale) {
+        this.show = show;
         this.tileGrid = tileGrid;
         this.tileSize = tileSize;
         this.scale = scale;
-        this.show = show;
     };
   
     
     draw(ctx) {
 
-        if (this.show == false) {
+        if (!this.show) {
             return;
         }
         const size = this.tileSize * this.scale;

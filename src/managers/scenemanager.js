@@ -4,13 +4,13 @@ class SceneManager {
         this.game.camera = this;
         
         this.level = null;
-        this.mickey = new Mickey(this.game);
+        this.mickey = new Mickey(this.game, 800, 400); // 800 400 is initial x and y
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
 
         this.gameover = false;
 
         // preload
-        this.game.background = new Background(this.game, [], 0, 0, false);
+        this.game.background = new Background(this.game, false);
         this.menu = new MenuScreen(game, this);
         this.loadScene(levelOne, false);
     };
@@ -30,8 +30,9 @@ class SceneManager {
     loadScene(level, isTransition) {
         
         if (isTransition) {
-            this.game.addEntity(new TransitionScreen(this.game, level));
+            this.game.transition = new TransitionScreen(this.game, level);
         } else if (this.menu.isInMenu == false) {
+            this.game.pausable = true;
             //load music
             if (level.music && !this.title) {
                 ASSET_MANAGER.pauseBackgroundMusic();
@@ -39,7 +40,7 @@ class SceneManager {
 
             }
             // load background
-            this.game.background.updateTileGrid(level.tileGrid, 64, 2, true);
+            this.game.background.updateTileGrid(true, level.tileGrid, 64, 2);
             let i;
             let obj;
 
@@ -83,6 +84,7 @@ class SceneManager {
             this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
             this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
 
+            this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey);
         };
     };
@@ -100,18 +102,19 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.update();
         }
-        else if (this.gameover === false) {
+        else if (!this.gameover) {
             this.spawnmanager.update();
 
+            // uncomment conditional below to allow game over
             // if (this.mickey.currentHP <= 0) {
-            //     // this.gameover = true;
-            //     // this.clearAllEntities();
-            //     // this.game.addEntity(new TransitionScreen(this.game));
-            //     // ASSET_MANAGER.pauseBackgroundMusic();
+            //     this.game.pausable = false;
+            //     this.gameover = true;
+            //     this.clearAllEntities();
+            //     this.game.transition = new TransitionScreen(this.game);
+            //     ASSET_MANAGER.pauseBackgroundMusic();
 
-            //     this.game.background = new Background(this.game, [], 0, 0, false);
-            //     this.mickey = new Mickey(this.game);
-            //     this.spawnmanager = new SpawnManager(this.game, this.mickey);
+            //     this.game.background.updateTileGrid(false);
+            //     this.mickey.reset();
             // }
         }
     

@@ -1,5 +1,5 @@
 class Mickey {
-    constructor(game){
+    constructor(game, x, y){
 		this.game = game;
 
         // this.game.mickey = this;
@@ -8,8 +8,10 @@ class Mickey {
         this.status = 0;
         this.attacking = false;
         this.elapsedTime = 0;
-		this.x = 800;
-		this.y = 400;
+        this.initialX = x;
+        this.initialY = y;
+		this.x = x;
+		this.y = y;
         this.sizeScale = 3
         this.width = 26 * this.sizeScale;
         this.height = 40 * this.sizeScale;
@@ -52,12 +54,19 @@ class Mickey {
     };
 
     takeDamage(damage) {
-        if (this.immune) {
-            return;
-        }
+        if (this.immune) return;
         this.immune = true
         this.currentHP -= damage;
         // ASSET_MANAGER.playAsset("./audio/hurt.mp3");
+    }
+
+    reset() {
+        this.currentHP = this.MaxHP;
+        this.x = this.initialX;
+        this.y = this.initialY;
+
+        this.immunityCurrent = 0;
+        this.immune = false;
     }
 
 	update()

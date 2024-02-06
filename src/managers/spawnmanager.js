@@ -9,10 +9,6 @@ class SpawnManager {
         let oldElapsed = this.elapsed;
         this.elapsed += this.game.clockTick;
 
-        if (this.elapsed <= 4) { // doing this because transition screen counts as an entity and it breaks collision
-            return;
-        }
-
         // randomly spawns every second
         if (Math.floor(this.elapsed) != Math.floor(oldElapsed)) {
             switch(randomInt(3)) {
