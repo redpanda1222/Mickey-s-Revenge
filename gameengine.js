@@ -24,10 +24,13 @@ class GameEngine {
 
         this.cameraX = 0;
         this.cameraY = 0;
+        this.pausable = false;
+        this.pause = false;
 
         // Options and the Details
         this.options = options || {
             debugging: false,
+            pause: false
         };
     };
 
@@ -107,6 +110,9 @@ class GameEngine {
                 case "KeyS":
                     that.down = false;
                     break;
+                case "Escape":
+                    that.pause = that.pausable ? !that.pause : that.pause;
+                    break;
             }
         }
 
@@ -147,12 +153,12 @@ class GameEngine {
             this.background.draw(this.ctx);
         }
 
-        // Draw latest things first
+        // Draw latest entities things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
 
-        // Draw latest things first
+        // Draw latest background entities things first
         for (let i = this.backgroundEntities.length - 1; i >= 0; i--) {
             this.backgroundEntities[i].draw(this.ctx, this);
         }
@@ -162,11 +168,20 @@ class GameEngine {
         }
 
         this.camera.draw(this.ctx);
+
+        if (this.pause) {
+            this.ctx.font = '50px Arial';
+            this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
+            this.ctx.fillText("PAUSED", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
+        }
     };
 
     update() {
+        if (this.pause) { // don't update if paused
+            return;
+        }
+
         let entitiesCount = this.entities.length;
-        let backEntitiesCount = this.backgroundEntities.length;
         let attackEntitiesCount = this.attackEntities.length;
         let i;
 
@@ -187,14 +202,6 @@ class GameEngine {
             }
         }
 
-        // for (i = 0; i < backEntitiesCount; i++) {
-        //     let entity = this.backgroundEntities[i];
-
-        //     if (!entity.removeFromWorld) {
-        //         entity.update();
-        //     }
-        // }
-
         this.camera.update();
 
         // removing if they are marked with removeFromWorld
@@ -207,12 +214,6 @@ class GameEngine {
         for (i = entitiesCount - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
                 this.entities.splice(i, 1);
-            }
-        }
-
-        for (i = backEntitiesCount - 1; i >= 0; --i) {
-            if (this.backgroundEntities[i].removeFromWorld) {
-                this.backgroundEntities.splice(i, 1);
             }
         }
     };

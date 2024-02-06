@@ -84,3 +84,11 @@ class WallmartStoneHenge extends BackgroundObject {
         this.updateBB(this.offsetBB);
     }
 }
+
+class Border extends BackgroundObject {
+    constructor(x, y, width, height) {
+        super(x, y, width, height, 1);
+        this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
+        this.updateBB(this.offsetBB);
+    }
+}

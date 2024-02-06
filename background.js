@@ -32,6 +32,7 @@ class Background {
                         ctx.drawImage(this.tiles[0], 0, 0, this.tileSize, this.tileSize, (j-1) * size - this.game.cameraX % size, (i-1) * size - this.game.cameraY % size, size, size);                    
                         break;
                     case 1:
+                        ctx.drawImage(this.tiles[1], 0, 0, this.tileSize, this.tileSize, j * size, i * size, size, size);
                         break;
                     default:
                 }
