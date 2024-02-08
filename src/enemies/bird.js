@@ -8,24 +8,27 @@ class Bird {
         this.acc = new Vector2(0, 0);
         this.w = 50;
         this.h = 50;
-        this.speed = 2;
-        this.drag = -1 / (this.speed); // dont question
+        this.speed = 2; // must be at least 1
+        this.drag = -1 / this.speed; // dont question
 
         this.elapsedTime = 0;
         this.frameCount = 7;
         this.frameDuration = 0.1;
 
         this.totalTime = this.frameCount * this.frameDuration;
-        this.spritesheet = ASSET_MANAGER.getAsset("./assets/enemy/bird.png");
-        this.spritesheet1 = ASSET_MANAGER.getAsset("./assets/enemy/bird1.png");
+        this.spritesheets = [];
+        this.spritesheets.push(ASSET_MANAGER.getAsset("./assets/enemy/bird.png"));
+        this.spritesheets.push(ASSET_MANAGER.getAsset("./assets/enemy/bird1.png"));
         this.xStart = 0;
         this.yStart = 160;
         this.width = 159;
         this.height = 160;
 
+        // attributes
         this.currentHP = 100;
+        this.collideDmg = 10;
 
-        this.flip = 0;
+        this.flipLeft = false;
 
         //Rectangle bounding box
         this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
@@ -76,16 +79,16 @@ class Bird {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(5);
+                this.mickey.takeDamage(this.collideDmg);
             }
         });
 
         // facing
         if (this.pos.x - this.mickey.x - 35 > 0) {
-            this.flip = 1; // Flip the sprite if moving left
+            this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 1120;
         } else {
-            this.flip = 0; // Do not flip the sprite if moving right
+            this.flipLeft = false; // Do not flip the sprite if moving right
             this.xStart = 0;
         }
 
@@ -101,21 +104,14 @@ class Bird {
     draw(ctx) {
         this.elapsedTime += this.game.clockTick;
         const frame = this.currentFrame();
-        if (this.elapsedTime > this.totalTime) this.elapsedTime -= this.totalTime;
-        if (this.flip == 0) {
-            ctx.drawImage(this.spritesheet,
-                this.xStart + this.width * frame, this.yStart,
-                this.width, this.height,
-                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
-                this.w, this.h);
-        }
-        else if (this.flip == 1) {
-            ctx.drawImage(this.spritesheet1,
-                this.xStart - this.width * frame, this.yStart,
-                this.width, this.height,
-                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
-                this.w, this.h);
-        }
+        if (this.isDone()) this.elapsedTime -= this.totalTime;
+
+        ctx.drawImage(this.spritesheets[this.flipLeft ? 1 : 0],
+            this.xStart + this.width * frame * (this.flipLeft ? -1 : 1), this.yStart,
+            this.width, this.height,
+            this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
+            this.w, this.h);
+
         if (PARAMS.DEBUG) {
             // draws bounding box
             this.BB.draw(ctx, this.game);

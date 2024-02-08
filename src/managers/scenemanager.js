@@ -79,10 +79,11 @@ class SceneManager {
                 obj = level.emptybarrels[i];
                 this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
             }
-            // here for testing, later we may want to spawn them randomly or something
-            // this.game.addEntity(this.skeletonMage);
-            this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
-            this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
+            // put entities here for testing
+            // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
+            // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
+
+            this.spawnmanager.loadWaves(level.waves);
 
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey);

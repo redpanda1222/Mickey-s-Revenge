@@ -8,8 +8,8 @@ class Skeleton {
         this.acc = new Vector2(0, 0);
         this.w = 60;
         this.h = 60;
-        this.speed = 1;
-        this.drag = -1 / (this.speed); // dont question
+        this.speed = 1; // must be at least 1
+        this.drag = -1 / this.speed; // dont question
 
         this.elapsedTime = 0;
         this.frameCount = 8;
@@ -23,8 +23,9 @@ class Skeleton {
         this.height = 68;
 
         this.currentHP = 100;
+        this.collideDmg = 10;
 
-        this.flip = 0;
+        this.flipLeft = false;
 
         //Rectangle bounding box
         this.offsetBB = { x: 15, y: 2, w: -30, h: -15 };
@@ -75,16 +76,16 @@ class Skeleton {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(5);
+                this.mickey.takeDamage(this.collideDmg);
             }
         });
 
         if (this.pos.x - this.mickey.x - 30 > 0) {
-            this.flip = 1; // Flip the sprite if moving left
+            this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 515;
             this.yStart = 73;
         } else {
-            this.flip = 0; // Do not flip the sprite if moving right
+            this.flipLeft = false; // Do not flip the sprite if moving right
             this.xStart = 0;
             this.yStart = 204;
         }
@@ -101,21 +102,14 @@ class Skeleton {
     draw(ctx) {
         this.elapsedTime += this.game.clockTick;
         const frame = this.currentFrame();
-        if (this.elapsedTime > this.totalTime) this.elapsedTime -= this.totalTime;
-        if (this.flip == 0) {
-            ctx.drawImage(this.spritesheet,
-                this.xStart + this.width * frame, this.yStart,
-                this.width, this.height,
-                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
-                this.w, this.h);
-        }
-        else if (this.flip == 1) {
-            ctx.drawImage(this.spritesheet,
-                this.xStart - this.width * frame, this.yStart,
-                this.width, this.height,
-                this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
-                this.w, this.h);
-        }
+        if (this.isDone()) this.elapsedTime -= this.totalTime;
+
+        ctx.drawImage(this.spritesheet,
+            this.xStart + this.width * frame * (this.flipLeft ? -1 : 1), this.yStart,
+            this.width, this.height,
+            this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
+            this.w, this.h);
+
         if (PARAMS.DEBUG) {
             // draws bounding box
             this.BB.draw(ctx, this.game);
