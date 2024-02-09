@@ -105,15 +105,32 @@ var levelOne = {
 
             // skeleton wall right
             skeleton: [
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 },
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 2 },
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 3 },
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 4 },
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 6 },
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 7 },
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 8 },
-                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 9 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 + 10 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 2 + 10 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 3 + 10 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 4 + 10 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 6 + 10 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 7 + 10 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 8 + 10 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 10 * 9 + 10 },
                 { x: PARAMS.WIDTH, y: PARAMS.HEIGHT }
+            ]
+        },
+        {
+            spawntime: [30],
+            moveVector: { x: 0, y: -1 },
+            despawnTime: 10,
+
+            // skeleton wall up
+            skeleton: [
+                { x: PARAMS.WIDTH / 10 * 2, y: PARAMS.HEIGHT + 20 },
+                { x: PARAMS.WIDTH / 10 * 3, y: PARAMS.HEIGHT + 20 },
+                { x: PARAMS.WIDTH / 10 * 4, y: PARAMS.HEIGHT + 20 },
+                { x: PARAMS.WIDTH / 10 * 5, y: PARAMS.HEIGHT + 20 },
+                { x: PARAMS.WIDTH / 10 * 6, y: PARAMS.HEIGHT + 20 },
+                { x: PARAMS.WIDTH / 10 * 7, y: PARAMS.HEIGHT + 20 },
+                { x: PARAMS.WIDTH / 10 * 8, y: PARAMS.HEIGHT + 20 },
+                { x: PARAMS.WIDTH / 10 * 9, y: PARAMS.HEIGHT + 20 }
             ]
         },
         {
