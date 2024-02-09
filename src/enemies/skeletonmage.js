@@ -1,5 +1,5 @@
 class SkeletonMage {
-    constructor(game, mickey, x, y) {
+    constructor(game, mickey, x, y, move, lifespan) {
         this.game = game;
         this.mickey = mickey;
     
@@ -11,6 +11,7 @@ class SkeletonMage {
         this.speed = 1; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
+        this.totalElapsed = 0;
         this.elapsedTime = 0;
         this.frameCount = 2;
         this.frameDuration = 0.3;
@@ -31,11 +32,36 @@ class SkeletonMage {
         this.fireballDelay = 3; // Delay in seconds before firing another FireBall
         this.timeSinceLastFireball = 0; // Track time since the last FireBall was fired
 
+        // for formations
+        if (move) {
+            this.moveVec = new Vector2(move.x, move.y);
+            this.updateFacing();
+        }
+        this.lifespan = lifespan ? lifespan : null;
+
         //Rectangle bounding box
         this.offsetBB = { x: 5, y: 0, w: -13, h: 0 };
         this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
-
     };
+
+    checkCollision() {
+        // collision with background objects
+        this.game.backgroundEntities.forEach(backEntity => {
+            if (this.BB.collideBB(backEntity.BB)) {
+                this.handleCollision(backEntity, this.speed + 1);
+            }
+        });
+        // collision with other enemies
+        this.game.entities.forEach(entity => {
+            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+                this.handleCollision(entity, 0.75);
+            }
+            // colliding with mickey and attacking mickey
+            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
+                this.mickey.takeDamage(this.collideDmg);
+            }
+        });
+    }
 
     handleCollision(entity, scalarForce) {
         // basically treats other entity like a repelling force field
@@ -57,34 +83,43 @@ class SkeletonMage {
         this.acc = this.acc.add(force);
     }
 
+    updateFacing() {
+        if (this.pos.x - this.mickey.x - 25 > 0) {
+            // Flip the sprite if moving left
+            this.xStart = 1;
+            this.yStart = 48;
+        } else {
+            // Do not flip the sprite if moving right
+            this.xStart = 1;
+            this.yStart = 96;
+        }
+    }
+
     update() {
-        // applies force to move towards center of mickey
+        if (this.lifespan){
+            if (this.totalElapsed > this.lifespan) {
+                this.removeFromWorld = true;
+                return;
+            } else {
+                this.totalElapsed += this.game.clockTick;
+            }
+        }
+
         let toMickey = this.mickey.BB.center().sub(this.BB.center());
         const distance = toMickey.mag();
-        this.applyForce(toMickey.norm());
+
+        if (this.moveVec) {
+            this.applyForce(this.moveVec);
+        } else {
+            // applies force to move towards center of mickey
+            this.applyForce(toMickey.norm());
+        }
 
         // drag force to limit velocity
         let v = this.vel.mag();
         if (v !== 0) {
             this.applyForce(this.vel.norm().mul(this.drag * v));
         }
-
-        // collision detection & resolution with background objects
-        this.game.backgroundEntities.forEach(backEntity => {
-            if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed + 1);
-            }
-        });
-        // collision detection & resolution with other enemmies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
-                this.handleCollision(entity, 0.75);
-            }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
-        });
 
         // fire ball shooting 
         // Check if enough time has passed to fire another FireBall
@@ -95,21 +130,13 @@ class SkeletonMage {
             this.timeSinceLastFireball += this.game.clockTick; // Increment the timer
         }
 
-        if (this.pos.x - this.mickey.x - 25 > 0) {
-            // Flip the sprite if moving left
-            this.xStart = 1;
-            this.yStart = 48;
-        } else {
-            // Do not flip the sprite if moving right
-            this.xStart = 1;
-            this.yStart = 96;
-        }
-
         if (this.currentHP <= 0) {
             this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
             this.removeFromWorld = true;
         }
 
+        this.updateFacing();
+        this.checkCollision();
         // this should be last thing to update
         this.move();
     };

@@ -1,5 +1,5 @@
 class Skeleton {
-    constructor(game, mickey, x, y) {
+    constructor(game, mickey, x, y, move, lifespan) {
         this.game = game;
         this.mickey = mickey;
 
@@ -11,6 +11,7 @@ class Skeleton {
         this.speed = 1; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
+        this.totalElapsed = 0;
         this.elapsedTime = 0;
         this.frameCount = 8;
         this.frameDuration = 0.1;
@@ -22,15 +23,42 @@ class Skeleton {
         this.width = 64;
         this.height = 68;
 
+        // attributes
         this.currentHP = 100;
         this.collideDmg = 10;
 
         this.flipLeft = false;
 
+        // for formations
+        if (move) {
+            this.moveVec = new Vector2(move.x, move.y);
+            this.updateFacing();
+        }
+        this.lifespan = lifespan ? lifespan : null;
+
         //Rectangle bounding box
         this.offsetBB = { x: 15, y: 2, w: -30, h: -15 };
         this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
+
+    checkCollision() {
+        // collision with background objects
+        this.game.backgroundEntities.forEach(backEntity => {
+            if (this.BB.collideBB(backEntity.BB)) {
+                this.handleCollision(backEntity, this.speed + 1);
+            }
+        });
+        // collision with other enemies
+        this.game.entities.forEach(entity => {
+            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+                this.handleCollision(entity, 0.75);
+            }
+            // colliding with mickey and attacking mickey
+            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
+                this.mickey.takeDamage(this.collideDmg);
+            }
+        });
+    }
 
     handleCollision(entity, scalarForce) {
         // basically treats other entity like a repelling force field
@@ -52,34 +80,7 @@ class Skeleton {
         this.acc = this.acc.add(force);
     }
 
-    update() {
-        // applies force to move towards center of mickey
-        let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
-        this.applyForce(toMickey);
-
-        // drag force to limit velocity
-        let v = this.vel.mag();
-        if (v !== 0) {
-            this.applyForce(this.vel.norm().mul(this.drag * v));
-        }
-
-        // collision detection & resolution with background objects
-        this.game.backgroundEntities.forEach(backEntity => {
-            if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed + 1);
-            }
-        });
-        // collision detection & resolution with other enemmies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
-                this.handleCollision(entity, 0.75);
-            }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
-        });
-
+    updateFacing() {
         if (this.pos.x - this.mickey.x - 30 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 515;
@@ -89,12 +90,39 @@ class Skeleton {
             this.xStart = 0;
             this.yStart = 204;
         }
+    }
+
+    update() {
+        if (this.lifespan){
+            if (this.totalElapsed > this.lifespan) {
+                this.removeFromWorld = true;
+                return;
+            } else {
+                this.totalElapsed += this.game.clockTick;
+            }
+        }
+
+        if (this.moveVec) {
+            this.applyForce(this.moveVec);
+        } else {
+            // applies force to move towards center of mickey
+            let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
+            this.applyForce(toMickey);
+            this.updateFacing();
+        }
+
+        // drag force to limit velocity
+        let v = this.vel.mag();
+        if (v !== 0) {
+            this.applyForce(this.vel.norm().mul(this.drag * v));
+        }
 
         if (this.currentHP <= 0) {
             this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
             this.removeFromWorld = true;
         }
 
+        this.checkCollision();
         // this should be last thing to update
         this.move();
     };
