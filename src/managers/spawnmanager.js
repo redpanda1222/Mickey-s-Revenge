@@ -3,10 +3,10 @@ class SpawnManager {
         this.game = game;
         this.mickey = mickey;
         this.waves = null;
+        this.formations = [];
     }
 
-    loadWaves(waves, spawn) {
-        this.spawn = spawn;
+    loadWaves(waves, formations) {
         this.tickCounter = 0;
         this.elapsed = 0;
 
@@ -51,6 +51,47 @@ class SpawnManager {
             this.allWeights.push(weights);
             this.allSpawns.push(spawns);
         });
+
+        if (!formations) return;
+
+        formations.forEach(f => {
+            if (f.skeleton) {
+                f.skeleton.forEach(s => {
+
+                });
+            }
+
+            if (f.bird) {
+                
+            }
+
+            if (f.huskydog) {
+                
+            }
+
+            if (f.skeletonmage) {
+                
+            }
+            this.formations.push(new BatchSpawns())
+        });
+    }
+
+    spawnEnemy(id) {
+        switch(id) {
+            case 0:
+                this.game.addEntity(new Skeleton(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
+                break;
+            case 1:
+                this.game.addEntity(new Bird(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
+                break;
+            case 2:
+                this.game.addEntity(new Huskydog(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
+                break;
+            case 3:
+                this.game.addEntity(new SkeletonMage(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
+                break;
+            default:
+        }
     }
 
     update() {
@@ -65,25 +106,19 @@ class SpawnManager {
         if (this.tickCounter === 0) { // spawn
             const maxWeight = this.allWeights[this.waveNum].length;
             const randSpawn = this.allWeights[this.waveNum][randomInt(maxWeight)];
-            
-            switch(this.allSpawns[this.waveNum][randSpawn]) {
-                case 0:
-                    this.game.addEntity(new Skeleton(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
-                    break;
-                case 1:
-                    this.game.addEntity(new Bird(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
-                    break;
-                case 2:
-                    this.game.addEntity(new Huskydog(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
-                    break;
-                case 3:
-                    this.game.addEntity(new SkeletonMage(this.game, this.mickey, randomInt(PARAMS.WIDTH), randomInt(PARAMS.HEIGHT)));
-                    break;
-                default:
-            }
+            this.spawnEnemy(this.allSpawns[this.waveNum][randSpawn]);
         }
-        
+
         this.tickCounter = (this.tickCounter + 1) % this.waves[this.waveNum].spawnrate; 
         this.elapsed += this.game.clockTick;
+    }
+}
+
+class BatchSpawns {
+    constructor(time, id, positions, moveVector) {
+        this.time = time;
+        this.id = id;
+        this.positions = positions;
+        this.moveVector;
     }
 }

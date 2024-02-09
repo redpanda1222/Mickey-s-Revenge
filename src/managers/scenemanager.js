@@ -83,7 +83,7 @@ class SceneManager {
             // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
             // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
 
-            this.spawnmanager.loadWaves(level.waves);
+            this.spawnmanager.loadWaves(level.waves, level.formations);
 
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey);

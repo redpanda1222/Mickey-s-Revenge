@@ -47,9 +47,9 @@ var levelOne = {
 
     waves: [
         {
-            time: 0, // spawn listed enemies after this time (seconds)
+            time: 0,       // spawn listed enemies after this time (seconds)
             spawnrate: 60, // lower for faster spawnrate (60 = 1 second)
-            skeleton: 1 // enemyType and its weight (higher weight means higher chance to spawn)
+            skeleton: 1    // enemyType and its weight (higher weight means higher chance to spawn)
         },
         {
             time: 20,
@@ -61,8 +61,8 @@ var levelOne = {
         {
             time: 40,
             spawnrate: 30, // (30 = 0.5 second, 15 = 0.25 second, etc.)
-            skeleton: 5, // skeleton has 5 / 11 chance to spawn
-            bird: 2,     // bird has 2 / 11 chance to spawn
+            skeleton: 5,   // skeleton has 5 / 11 chance to spawn
+            bird: 2,       // bird has 2 / 11 chance to spawn
             huskydog: 3,
             skeletonmage: 1
         },
@@ -75,6 +75,7 @@ var levelOne = {
 
     formations: [
         {
+            spawntime: [10, 20], // at what time it spawns (in seconds)
             moveVector: { x: 1, y: 0 }, // the direction that each enemy below will take (null = towards mickey)
             despawnTime: 10, // all despawns after this time (null = no despawn)
 
@@ -89,29 +90,34 @@ var levelOne = {
             ]
         },
         {
+            spawntime: [30],
             moveVector: { x: -1, y: -1 },
-            despawnTime: 10,
+            despawnTime: 20,
 
             // dog stampede
             huskydog: [
-                { x: 10, y: 10 },
-                { x: 10, y: 20 },
-                { x: 10, y: 30 },
-                { x: 10, y: 40 },
-                { x: 10, y: 50 },
+                { x: 1000, y: 1000 },
+                { x: 1000, y: 1010 },
+                { x: 1000, y: 1020 },
+                { x: 1010, y: 1000 },
+                { x: 1020, y: 1000 },
+                { x: 1010, y: 1010 },
+                { x: 1020, y: 1020 },
+                { x: 1010, y: 1020 },
+                { x: 1020, y: 1010 },
             ]
         },
         {
-            moveVector: { x: 1, y: 0 },
+            spawntime: [40],
+            moveVector: { x: 0, y: 0 },
             despawnTime: 10,
 
             // skeletonmage circle
-            huskydog: [
-                { x: 10, y: 10 },
-                { x: 10, y: 20 },
-                { x: 10, y: 30 },
-                { x: 10, y: 40 },
-                { x: 10, y: 50 },
+            skeletonmage: [
+                { x: PARAMS.WIDTH / 2, y: 0 },
+                { x: PARAMS.WIDTH / 2, y: PARAMS.HEIGHT },
+                { x: 0, y: PARAMS.HEIGHT / 2 },
+                { x: PARAMS.WIDTH, y: PARAMS.HEIGHT / 2 }
             ]
         }
     ]
