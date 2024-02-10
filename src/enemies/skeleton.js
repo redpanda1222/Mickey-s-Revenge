@@ -126,7 +126,4 @@ class Skeleton {
         return Math.floor(this.elapsedTime / this.frameDuration);
     };
 
-    isDone() {
-        return (this.elapsedTime >= this.totalTime);
-    };
 };
