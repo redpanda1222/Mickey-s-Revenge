@@ -111,7 +111,7 @@ class SkeletonKnight {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(5);
+                this.mickey.takeDamage(10);
             }
         }); 
 
