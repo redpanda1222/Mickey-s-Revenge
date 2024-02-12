@@ -81,8 +81,9 @@ class SceneManager {
             }
             // here for testing, later we may want to spawn them randomly or something
             // this.game.addEntity(this.skeletonMage);
-            this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
-            this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
+            // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
+            // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
+            this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
 
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey);
@@ -103,7 +104,7 @@ class SceneManager {
             this.menu.update();
         }
         else if (!this.gameover) {
-            this.spawnmanager.update();
+            //this.spawnmanager.update();
 
             // uncomment conditional below to allow game over
             // if (this.mickey.currentHP <= 0) {
