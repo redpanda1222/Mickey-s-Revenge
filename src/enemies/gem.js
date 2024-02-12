@@ -5,9 +5,9 @@ class Gem {
 
         // information from sprite sheet
         this.coordinates = [
-            { x: 0, y: 0 },
-            { x: 86, y: 0 },
-            { x: 170, y: 85 },
+            { x: 0, y: 0 },   //RED
+            { x: 86, y: 0 },  //BLUE
+            { x: 170, y: 85 },// GREEN
         ];
         this.width = 82;
         this.height = 85;
@@ -23,8 +23,22 @@ class Gem {
 
     update() {
         if (this.BB.collideBB(this.mickey.BB)) {
-            // update exp point or do something
-
+            //red = 0 gives base exp, blue = 1 gives exp 2X , green = 2 gives exp
+            if (this.gemType == 0){ 
+                this.mickey.experiencePoints += 1;
+            }
+            else if (this.gemType == 1){
+                 this.mickey.experiencePoints +=  5;
+                }
+            else if (this.gemType == 2){
+                //check for overflow
+                if (this.mickey.currentHP + 20>this.mickey.MaxHP) {
+                    //add difference in health instead and fill currentHP to MaxHP
+                    this.mickey.currentHP = this.mickey.MaxHP - this.mickey.currentHP;
+                }else {
+                    this.mickey.currentHP += 20;
+                }
+            }
             
             this.removeFromWorld = true;
         }
