@@ -27,6 +27,8 @@ class Mickey {
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
+        this.Level = 1;
+        this.experiencePoints = 0;
 
         //Rectangle bounding box
         this.offsetBB = {x: 20, y: 30, w: -38, h: -33};
@@ -55,6 +57,10 @@ class Mickey {
 
     takeDamage(damage) {
         if (this.immune) return;
+        if (this.currentHP <= 0){
+            this.currentHP = 0;
+            return;
+        }
         this.immune = true
         this.currentHP -= damage;
         // ASSET_MANAGER.playAsset("./audio/hurt.mp3");
@@ -73,6 +79,13 @@ class Mickey {
 	{
         this.elapsedTime += this.game.clockTick;
         this.status = 0;
+
+        //console.log(this.experiencePoints);
+        //update his level
+        if (this.experiencePoints >= this.Level * 10) {
+            this.Level +=1; //add level if experience points met
+            //should we reset player's exp points?
+        }
 
         this.game.cameraX = this.x - PARAMS.WIDTH/2 + this.width/2;
         this.game.cameraY = this.y - PARAMS.HEIGHT/2 + this.height/2;
@@ -99,10 +112,11 @@ class Mickey {
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
+
         //add attack
         if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
-            //this.game.addAttackEntity(new FireSlash(this.game, this));
-            this.game.addAttackEntity(new FireBreath(this.game, this));
+            //this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/100))));
+            this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/100)), 2));
             this.attacking = true
         }
 
