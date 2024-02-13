@@ -130,7 +130,7 @@ class Bird {
     draw(ctx) {
         this.elapsedTime += this.game.clockTick;
         const frame = this.currentFrame();
-        if (this.isDone()) this.elapsedTime -= this.totalTime;
+        if (this.elapsedTime > this.totalTime) this.elapsedTime -= this.totalTime;
 
         ctx.drawImage(this.spritesheets[this.flipLeft ? 1 : 0],
             this.xStart + this.width * frame * (this.flipLeft ? -1 : 1), this.yStart,
@@ -146,9 +146,5 @@ class Bird {
 
     currentFrame() {
         return Math.floor(this.elapsedTime / this.frameDuration);
-    };
-
-    isDone() {
-        return (this.elapsedTime >= this.totalTime);
     };
 };

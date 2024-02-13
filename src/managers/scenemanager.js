@@ -125,7 +125,7 @@ class SceneManager {
             this.menu.update();
         }
         else if (!this.gameover) {
-            //this.spawnmanager.update();
+            this.spawnmanager.update();
 
             // uncomment conditional below to allow game over
             // if (this.mickey.currentHP <= 0) {

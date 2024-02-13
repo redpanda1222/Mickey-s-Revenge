@@ -189,10 +189,11 @@ class GameEngine {
             this.ctx.fillStyle = rgb(0, 0, 0);
             this.ctx.strokeStyle = 'black';
             this.ctx.text
-            this.ctx.fillText("FPS | " + this.lastFps, 5, 16);
-            this.ctx.fillText("Entities | " + this.entities.length, 5, 32);
-            this.ctx.fillText("Attacks | " + this.attackEntities.length, 5, 48);
-            this.ctx.fillText("X: " + this.camera.mickey.x + " Y:" + this.camera.mickey.y, 5, 64);
+            this.ctx.fillText("FPS: " + this.lastFps, 5, 16);
+            this.ctx.fillText("Entities: " + this.entities.length, 5, 32);
+            this.ctx.fillText("Attacks: " + this.attackEntities.length, 5, 48);
+            this.ctx.fillText("Time: " + Math.floor(this.camera.spawnmanager.elapsed), 5, 64);
+            this.ctx.fillText("X: " + this.camera.mickey.x + " Y:" + this.camera.mickey.y, 5, 80);
             this.ctx.textAlign = "center";
             if (this.elapsed >= 1) {
                 this.lastFps = this.fps;
