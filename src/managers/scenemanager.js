@@ -137,6 +137,7 @@ class SceneManager {
 
             //     this.game.background.updateTileGrid(false);
             //     this.mickey.reset();
+            //     this.spawnmanager.reset();
             // }
         }
     
