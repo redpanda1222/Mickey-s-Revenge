@@ -25,7 +25,7 @@ class SkeletonMage {
 
         // attributes
         this.currentHP = 100;
-        this.collideDmg = 10;
+        this.collideDmg = 2;
         this.fireBallDmg = 10;
         this.shootingRange = 400;
 
@@ -132,6 +132,7 @@ class SkeletonMage {
 
         if (this.currentHP <= 0) {
             this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
+            this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
 

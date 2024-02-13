@@ -21,8 +21,8 @@ class SkeletonKnight {
         this.width = 32;
         this.height = 43;
 
-        this.MaxHP = 500;
-        this.currentHP = 500;
+        this.MaxHP = 1000;
+        this.currentHP = 1000;
 
         // Laser ball properties
         this.laserCooldown = 0; // Cooldown for firing laser balls
@@ -37,6 +37,11 @@ class SkeletonKnight {
         this.offsetBB = { x: 23, y: 13, w: -50, h: -10 };
         this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
+
+    setPosition(x, y) {
+        this.pos.x = x;
+        this.pos.y = y;
+    }
 
     handleCollision(entity, scalarForce) {
         // basically treats other entity like a repelling force field

@@ -30,6 +30,9 @@ class Mickey {
         this.Level = 1;
         this.experiencePoints = 0;
 
+        // Killed enemies counter
+        this.enemiesCounter = 0;
+
         //Rectangle bounding box
         this.offsetBB = {x: 20, y: 30, w: -38, h: -33};
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
@@ -115,7 +118,7 @@ class Mickey {
 
         //add attack
         if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
-            //this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/100))));
+            this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/100))));
             // this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/100)), 2));
             this.attacking = true
         }

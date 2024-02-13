@@ -7,6 +7,11 @@ class SceneManager {
         this.mickey = new Mickey(this.game, PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2); // 800 400 is initial x and y
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
 
+        // Bosses
+        this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
+        this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
+        this.bossSpawned = false;
+
         this.gameover = false;
 
         // preload
@@ -14,6 +19,10 @@ class SceneManager {
         this.menu = new MenuScreen(game, this);
         this.loadScene(levelOne, false);
     };
+
+    areBossesDead() {
+        return this.huskyBoss.currentHP <= 0 && this.skeletonBoss.currentHP <= 0;
+    }
 
     clearAllEntities() {
         this.game.entities.forEach(function (entity) {
@@ -100,10 +109,7 @@ class SceneManager {
                 }
             }
             // put entities here for testing
-            // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
             // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
-            this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
-
             this.spawnmanager.loadWaves(level.waves, level.formations);
 
             this.mickey.removeFromWorld = false;
@@ -125,7 +131,17 @@ class SceneManager {
             this.menu.update();
         }
         else if (!this.gameover) {
-            this.spawnmanager.update();
+            if (this.mickey.enemiesCounter >= 100) {
+                if (!this.bossSpawned) {
+                    this.skeletonBoss.setPosition(this.mickey.x + 400, this.mickey.y + 400);
+                    this.huskyBoss.setPosition(this.mickey.x - 400, this.mickey.y - 400);
+                    this.game.addEntity(this.huskyBoss);
+                    this.game.addEntity(this.skeletonBoss);
+                    this.bossSpawned = true;
+                }
+            } else {
+                this.spawnmanager.update();
+            }
 
             // uncomment conditional below to allow game over
             // if (this.mickey.currentHP <= 0) {
@@ -139,6 +155,10 @@ class SceneManager {
             //     this.mickey.reset();
             // }
         }
+        if (this.areBossesDead()) {
+            // win feature
+        } 
+        
     
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;

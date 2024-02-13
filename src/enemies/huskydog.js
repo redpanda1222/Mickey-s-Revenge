@@ -27,7 +27,7 @@ class Huskydog {
 
         // attributes
         this.currentHP = 100;
-        this.collideDmg = 10;
+        this.collideDmg = 2;
 
         this.flipLeft = false;
 
@@ -119,6 +119,7 @@ class Huskydog {
 
         if (this.currentHP <= 0) {
             this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
+            this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
 
@@ -204,6 +205,11 @@ class GiantHuskydog {
         this.jumpY = 0;
         this.landCenter = null;
     };
+
+    setPosition(x, y) {
+        this.pos.x = x;
+        this.pos.y = y;
+    }
 
     loadAnimations() {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog.png"), this.width * 6, this.height, this.width, this.height, 6, 0.1, 0, false, true));
