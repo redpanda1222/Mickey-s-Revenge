@@ -28,6 +28,9 @@ class GameEngine {
         this.cameraY = 0;
         this.pausable = false;
         this.pause = false;
+        this.fps = 0;
+        this.lastFps = 0;
+        this.elapsed = 0;
 
         // Options and the Details
         this.options = options || {
@@ -66,7 +69,7 @@ class GameEngine {
         }
         function mouseClickListener(e) {
             that.click = getXandY(e);
-            if (PARAMS.DEBUG) console.log(that.click);
+            // if (PARAMS.DEBUG) console.log(that.click);
         }
         function wheelListener(e) {
             e.preventDefault(); // Prevent Scrolling
@@ -179,6 +182,27 @@ class GameEngine {
             this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
             this.ctx.fillText("PAUSED", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
         }
+        // fps counter
+        if (PARAMS.DEBUG) {
+            this.ctx.textAlign = "left";
+            this.ctx.font = '16px Arial';
+            this.ctx.fillStyle = rgb(0, 0, 0);
+            this.ctx.strokeStyle = 'black';
+            this.ctx.text
+            this.ctx.fillText("FPS | " + this.lastFps, 5, 16);
+            this.ctx.fillText("Entities | " + this.entities.length, 5, 32);
+            this.ctx.fillText("Attacks | " + this.attackEntities.length, 5, 48);
+            this.ctx.fillText("X: " + this.camera.mickey.x + " Y:" + this.camera.mickey.y, 5, 64);
+            this.ctx.textAlign = "center";
+            if (this.elapsed >= 1) {
+                this.lastFps = this.fps;
+                this.elapsed = 0;
+                this.fps = 0;
+            }
+            
+            this.fps++;
+            this.elapsed += this.clockTick;
+        }
     };
 
     update() {
@@ -227,7 +251,7 @@ class GameEngine {
     };
 
     loop() {
-        this.clockTick = this.timer.tick();
+        this.clockTick = this.timer.tick();        
         this.update();
         this.draw();
     };

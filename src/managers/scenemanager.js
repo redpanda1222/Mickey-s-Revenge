@@ -4,7 +4,7 @@ class SceneManager {
         this.game.camera = this;
         
         this.level = null;
-        this.mickey = new Mickey(this.game, 800, 400); // 800 400 is initial x and y
+        this.mickey = new Mickey(this.game, PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2); // 800 400 is initial x and y
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
 
         this.gameover = false;
@@ -45,45 +45,66 @@ class SceneManager {
             let obj;
 
             // barbedwires
-            for (i = 0; i < level.barbedwires.length; i++) {
-                obj = level.barbedwires[i];
-                this.game.addBackgroundEntity(new BarbedWire(this.game, obj.x, obj.y));
+            if (level.barbedwires) {
+                for (i = 0; i < level.barbedwires.length; i++) {
+                    obj = level.barbedwires[i];
+                    this.game.addBackgroundEntity(new BarbedWire(this.game, obj.x, obj.y));
+                }
             }
+            
             // deadtrees
-            for (i = 0; i < level.deadtrees.length; i++) {
-                obj = level.deadtrees[i];
-                this.game.addBackgroundEntity(new DeadTree(this.game, obj.x, obj.y));
+            if (level.deadtrees) {
+                for (i = 0; i < level.deadtrees.length; i++) {
+                    obj = level.deadtrees[i];
+                    this.game.addBackgroundEntity(new DeadTree(this.game, obj.x, obj.y));
+                }
             }
+            
             // deserttowers
-            for (i = 0; i < level.deserttowers.length; i++) {
-                obj = level.deserttowers[i];
-                this.game.addBackgroundEntity(new DesertTower(this.game, obj.x, obj.y));
+            if (level.deserttowers) {
+                for (i = 0; i < level.deserttowers.length; i++) {
+                    obj = level.deserttowers[i];
+                    this.game.addBackgroundEntity(new DesertTower(this.game, obj.x, obj.y));
+                }
             }
+            
             // destroyeddeserttowers
-            for (i = 0; i < level.destroyeddeserttowers.length; i++) {
-                obj = level.destroyeddeserttowers[i];
-                this.game.addBackgroundEntity(new DestroyedDesertTower(this.game, obj.x, obj.y));
+            if (level.destroyeddeserttowers) {
+                for (i = 0; i < level.destroyeddeserttowers.length; i++) {
+                    obj = level.destroyeddeserttowers[i];
+                    this.game.addBackgroundEntity(new DestroyedDesertTower(this.game, obj.x, obj.y));
+                }
             }
+            
             // walmartstonehenges
-            for (i = 0; i < level.walmartstonehenges.length; i++) {
-                obj = level.walmartstonehenges[i];
-                this.game.addBackgroundEntity(new WallmartStoneHenge(this.game, obj.x, obj.y));
+            if (level.walmartstonehenges) {
+                for (i = 0; i < level.walmartstonehenges.length; i++) {
+                    obj = level.walmartstonehenges[i];
+                    this.game.addBackgroundEntity(new WallmartStoneHenge(this.game, obj.x, obj.y));
+                }
             }
+            
             // deadbodies
-            for (i = 0; i < level.deadbodies.length; i++) {
-                obj = level.deadbodies[i];
-                this.game.addBackgroundEntity(new DeadBody(this.game, obj.x, obj.y));
+            if (level.deadbodies) {
+                for (i = 0; i < level.deadbodies.length; i++) {
+                    obj = level.deadbodies[i];
+                    this.game.addBackgroundEntity(new DeadBody(this.game, obj.x, obj.y));
+                }
             }
+            
             // emptybarrels
-            for (i = 0; i < level.emptybarrels.length; i++) {
-                obj = level.emptybarrels[i];
-                this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
+            if (level.emptybarrels) {
+                for (i = 0; i < level.emptybarrels.length; i++) {
+                    obj = level.emptybarrels[i];
+                    this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
+                }
             }
-            // here for testing, later we may want to spawn them randomly or something
-            // this.game.addEntity(this.skeletonMage);
+            // put entities here for testing
             // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
             // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
             this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
+
+            this.spawnmanager.loadWaves(level.waves, level.formations);
 
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey);
