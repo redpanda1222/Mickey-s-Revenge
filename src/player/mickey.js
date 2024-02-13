@@ -118,8 +118,9 @@ class Mickey {
 
         //add attack
         if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
-            this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/100))));
             // this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/100)), 2));
+            this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), 4));
+            //this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), 2));
             this.attacking = true
         }
 
