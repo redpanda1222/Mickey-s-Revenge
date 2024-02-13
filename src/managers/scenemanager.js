@@ -8,6 +8,7 @@ class SceneManager {
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
 
         this.gameover = false;
+        this.gamewin = false;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -27,11 +28,17 @@ class SceneManager {
         this.game.backgroundEntities.length = 0;
     };
 
-    loadScene(level, isTransition) {
-        
-        if (isTransition) {
+    loadScene(level, isTransition, isGameover) {
+        if (isGameover) {
+            this.game.transition = new TransitionScreen(this.game, level, true);
+        } 
+        else if (isGameover === false) {
+            this.game.transition = new TransitionScreen(this.game);
+        } 
+        else if (isTransition) {
             this.game.transition = new TransitionScreen(this.game, level);
-        } else if (this.menu.isInMenu == false) {
+        } 
+        else if (this.menu.isInMenu == false) {
             this.game.pausable = true;
             //load music
             if (level.music && !this.title) {
@@ -99,12 +106,11 @@ class SceneManager {
                     this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
                 }
             }
-            
-            // put entities here for testing
-            // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
-            // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
-
             this.spawnmanager.loadWaves(level.waves, level.formations);
+            // put entities here for testing
+            this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
+            // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
+            // this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
 
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey);
@@ -124,15 +130,25 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.update();
         }
+        else if (this.gamewin) {
+            this.game.pausable = false;
+            this.clearAllEntities();
+            this.loadScene(null, true, true);
+            ASSET_MANAGER.pauseBackgroundMusic();
+
+            this.game.background.updateTileGrid(false);
+            this.mickey.reset();
+            this.spawnmanager.reset();
+        }
         else if (!this.gameover) {
-            this.spawnmanager.update();
+            // this.spawnmanager.update();
 
             // uncomment conditional below to allow game over
             // if (this.mickey.currentHP <= 0) {
             //     this.game.pausable = false;
             //     this.gameover = true;
             //     this.clearAllEntities();
-            //     this.game.transition = new TransitionScreen(this.game);
+            //     this.loadScene(null, true, false);
             //     ASSET_MANAGER.pauseBackgroundMusic();
 
             //     this.game.background.updateTileGrid(false);

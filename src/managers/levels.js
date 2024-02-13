@@ -17,38 +17,42 @@ var levelOne = {
         ],
 
     // overlay on top of background (these are collidable)
-    // barbedwires: [
-    //     { x: 100, y: 392 }
-    // ],
+    barbedwires: [
+        { x: 100, y: 392 }
+    ],
 
-    // deadbodies: [
-    //     { x: 600, y: 102 }
-    // ],
+    deadbodies: [
+        { x: 600, y: 102 }
+    ],
 
-    // deadtrees: [
-    //     { x: 410, y: 222 }
-    // ],
+    deadtrees: [
+        { x: 410, y: 222 }
+    ],
 
-    // emptybarrels: [
-    //     { x: 283, y: 602 }
-    // ],
+    emptybarrels: [
+        { x: 283, y: 602 }
+    ],
 
-    // deserttowers: [
-    //     { x: 100, y: 100 }
-    // ],
+    deserttowers: [
+        { x: 100, y: 100 }
+    ],
 
-    // destroyeddeserttowers: [
-    //     { x: 500, y: 400 }
-    // ],
+    destroyeddeserttowers: [
+        { x: 500, y: 400 }
+    ],
 
-    // walmartstonehenges: [
-    //     { x: 220, y: 313 }
-    // ],
+    walmartstonehenges: [
+        { x: 220, y: 313 }
+    ],
 
     waves: [
         {
             time: 0,       // spawn listed enemies after this time (seconds)
+<<<<<<< HEAD
             spawnrate: 5, // lower for faster spawnrate (60 = 1 second)
+=======
+            spawnrate: 60, // lower for faster spawnrate (60 = 1 second)
+>>>>>>> e8b58e742ed8b40f712267bae76a0b7099fc73a7
             skeleton: 1    // enemyType and its weight (higher weight means higher chance to spawn)
         },
         {
@@ -66,8 +70,8 @@ var levelOne = {
         {
             time: 60,
             spawnrate: 30, // (30 = 0.5 second, 15 = 0.25 second, etc.)
-            skeleton: 5,   // skeleton has 5 / 11 chance to spawn
-            bird: 2,       // bird has 2 / 11 chance to spawn
+            skeleton: 5,
+            bird: 2,
             huskydog: 3,
             skeletonmage: 1
         },

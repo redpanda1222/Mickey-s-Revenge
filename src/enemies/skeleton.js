@@ -130,7 +130,7 @@ class Skeleton {
     draw(ctx) {
         this.elapsedTime += this.game.clockTick;
         const frame = this.currentFrame();
-        if (this.isDone()) this.elapsedTime -= this.totalTime;
+        if (this.elapsedTime > this.totalTime) this.elapsedTime -= this.totalTime;
 
         ctx.drawImage(this.spritesheet,
             this.xStart + this.width * frame * (this.flipLeft ? -1 : 1), this.yStart,
@@ -148,7 +148,4 @@ class Skeleton {
         return Math.floor(this.elapsedTime / this.frameDuration);
     };
 
-    isDone() {
-        return (this.elapsedTime >= this.totalTime);
-    };
 };
