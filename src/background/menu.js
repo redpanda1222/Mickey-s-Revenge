@@ -60,6 +60,7 @@ class MenuScreen {
                         // clicked on start
                         this.isInMenu = false;
                         this.sceneManager.gameover = false;
+                        this.sceneManager.gamewin = false;
                         this.sceneManager.loadScene(levelOne, true);
                     }
                 }

@@ -397,6 +397,7 @@ class GiantHuskydog {
 
         if (this.currentHP <= 0) {
             this.removeFromWorld = true;
+            this.game.camera.gamewin = true;
         }
 
         // this should be last thing to update
