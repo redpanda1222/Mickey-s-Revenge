@@ -1,9 +1,8 @@
 class FireSlash{
-    constructor(game, mickey, sizeScale){
-        Object.assign(this, {game, mickey, sizeScale});
+    constructor(game, mickey, sizeScale, Level){
+        Object.assign(this, {game, mickey, sizeScale, Level});
         this.elapsedTime = 0;
         this.removeFromWorld = false;
-        this.Level = 1;
         this.coolDown = 30;
         this.BB = new BoundingBox(mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3 * this.sizeScale, mickey.height*3 * this.sizeScale);
         this.attackAnimations = [];
@@ -14,6 +13,12 @@ class FireSlash{
     {
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireslash.png"), 3060, 0, 340, 334, 10, 0.04, 0, false, true));
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireslash2.png"), 0, 0, 340, 334, 10, 0.04, 0, false, false));
+        this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/redfireslash.png"), 3060, 0, 340, 334, 10, 0.04, 0, false, true));
+        this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/redfireslash2.png"), 0, 0, 340, 334, 10, 0.04, 0, false, false));
+        this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/bluefireslash.png"), 3060, 0, 340, 334, 10, 0.04, 0, false, true));
+        this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/bluefireslash2.png"), 0, 0, 340, 334, 10, 0.04, 0, false, false));
+        this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/purplefireslash.png"), 3060, 0, 340, 334, 10, 0.04, 0, false, true));
+        this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/purplefireslash2.png"), 0, 0, 340, 334, 10, 0.04, 0, false, false));
     }
 
 
@@ -39,10 +44,30 @@ class FireSlash{
 
     draw(ctx){
         this.elapsedTime += this.game.clockTick;
-        if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-            this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
-        }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-            this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+        if (this.Level == 1){
+            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }
+        }else if (this.Level == 2){
+            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[2].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[3].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }
+        }else if (this.Level == 3){
+            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[4].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[5].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }
+        }else if (this.Level == 4){
+            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[6].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[7].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+            }
         }
 
         if (this.elapsedTime > 1) this.removeFromWorld = true;
