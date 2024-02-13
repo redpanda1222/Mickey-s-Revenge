@@ -11,7 +11,7 @@ class TransitionScreen {
 
         if (this.scene) {
             if (this.elapsed > 1) {
-                this.removeFromWorld = true;
+                this.game.transition = null;
                 this.game.camera.loadScene(this.scene, false);
             } else if (this.elapsed > 0.5) {
                 this.message = "Now he's seeking revenge!!!";
@@ -20,7 +20,7 @@ class TransitionScreen {
             }
         } else {
             if (this.elapsed > 2) {
-                this.removeFromWorld = true;
+                this.game.transition = null;
                 this.game.camera.menu.isInMenu = true;
             } else {
                 switch(this.randomMessage) {
@@ -35,6 +35,8 @@ class TransitionScreen {
                 }
             }
         }
+
+        this.game.click = null;
     };
 
     draw(ctx) {

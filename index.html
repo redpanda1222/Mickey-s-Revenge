@@ -5,39 +5,45 @@
     <meta charset="utf-8">
     <title>Mickey's Revenge</title>
 
-    <script type="text/javascript" src="./assetmanager.js"></script>
-    <script type="text/javascript" src="./timer.js"></script>
+    <script type="text/javascript" src="./src/managers/assetmanager.js"></script>
+    <script type="text/javascript" src="./src/util/timer.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
-    <script type="text/javascript" src="./util.js"></script>
-    <script type="text/javascript" src="./background.js"></script>
-    <script type="text/javascript" src="./boundingbox.js"></script>
-    <script type="text/javascript" src="./backgroundObjects.js"></script>
-    <script type="text/javascript" src="./levels.js"></script>
-    <script type="text/javascript" src="./menu.js"></script>
-    <script type="text/javascript" src="./spawnmanager.js"></script>
-    <script type="text/javascript" src="./scenemanager.js"></script>
-    <script type="text/javascript" src="./transitionscreen.js"></script>
-    <script type="text/javascript" src="./animator.js"></script>
-    <script type="text/javascript" src="./bird.js"></script>
-    <script type="text/javascript" src="./huskydog.js"></script>
-    <script type="text/javascript" src="./skeleton.js"></script>
-    <script type="text/javascript" src="./skeletonmage.js"></script>
-    <script type="text/javascript" src="./gem.js"></script>
-    <script type="text/javascript" src="./mickey.js"></script>
-    <script type="text/javascript" src="./characterAttacks.js"></script>
+    <script type="text/javascript" src="./src/util/util.js"></script>
+    <script type="text/javascript" src="./src/util/boundingbox.js"></script>
+
+    <script type="text/javascript" src="./src/managers/levels.js"></script>
+    <script type="text/javascript" src="./src/managers/spawnmanager.js"></script>
+    <script type="text/javascript" src="./src/managers/scenemanager.js"></script>
+    
+    <script type="text/javascript" src="./src/background/background.js"></script>
+    <script type="text/javascript" src="./src/background/backgroundObjects.js"></script>
+    
+
+    <script type="text/javascript" src="./src/background/menu.js"></script>
+    
+    <script type="text/javascript" src="./src/background/transitionscreen.js"></script>
+
+    <script type="text/javascript" src="./src/util/animator.js"></script>
+
+    <script type="text/javascript" src="./src/enemies/bird.js"></script>
+    <script type="text/javascript" src="./src/enemies/huskydog.js"></script>
+    <script type="text/javascript" src="./src/enemies/skeleton.js"></script>
+    <script type="text/javascript" src="./src/enemies/skeletonmage.js"></script>
+    <script type="text/javascript" src="./src/enemies/skeletonKnight.js"></script>
+    <script type="text/javascript" src="./src/enemies/gem.js"></script>
+    <script type="text/javascript" src="./src/player/mickey.js"></script>
+    <script type="text/javascript" src="./src/player/characterAttacks.js"></script>
     <script type="text/javascript" src="./main.js"></script>
 </head>
 
 <body>
-    <div>
-        Mickey's Revenge <br>
-    </div>
     <canvas id="gameWorld" width="1024" height="768" style="background: white; border: 1px solid black" tabindex="0"
         autofocus></canvas>
 
     <div>
         <input type="checkbox" id="debug"> Debug<input type="checkbox" id="mute"> Mute <input type="range" id="volume" min="0" max="1" value="0.5" step=".05">
         Volume
+        <span> | ESC to PAUSE</span>
     </div>
 </body>
 
