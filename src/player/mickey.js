@@ -159,6 +159,15 @@ class Mickey {
             // draws bounding box
             this.BB.draw(ctx, this.game);
         }
+
+        console.log(this.game.entityDistances.length);
+        // draw line to nearest target
+        if (this.game.entityDistances.length > 0) {
+            const nearest = this.game.entityDistances[0].e;
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+            line(ctx, this.BB.center().x - this.game.cameraX, this.BB.center().y - this.game.cameraY, nearest.BB.center().x - this.game.cameraX, nearest.BB.center().y - this.game.cameraY);
+        }
 	};
 
     drawHealthBar(ctx){
