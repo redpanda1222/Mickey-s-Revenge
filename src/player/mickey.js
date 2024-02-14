@@ -1,9 +1,9 @@
 class Mickey {
-    constructor(game, x, y){
+    constructor(game, x, y , sceneManager){
 		this.game = game;
 
         // this.game.mickey = this;
-
+        this.sceneManager = sceneManager;
         this.facing = 0;
         this.status = 0;
         this.attacking = false;
@@ -29,6 +29,10 @@ class Mickey {
         this.currentHP = this.MaxHP;
         this.Level = 1;
         this.experiencePoints = 0;
+
+        //Player Attack Stats
+        this.fireSlashLevel = 0;
+        this.fireBreathLevel = 0;
 
         //Rectangle bounding box
         this.offsetBB = {x: 20, y: 30, w: -38, h: -33};
@@ -81,10 +85,13 @@ class Mickey {
         this.status = 0;
 
         //console.log(this.experiencePoints);
+        //console.log(this.Level);
         //update his level
         if (this.experiencePoints >= this.Level * 10) {
             this.Level +=1; //add level if experience points met
             //should we reset player's exp points?
+            this.experiencePoints = 0;
+            this.sceneManager.upgradeScreen.visible = true;
         }
 
         this.game.cameraX = this.x - PARAMS.WIDTH/2 + this.width/2;
@@ -116,7 +123,12 @@ class Mickey {
         //add attack
         if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
             //this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), 4));
-            this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), 2));
+            //this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), 2));
+
+            //check Fire Slash Upgrades
+            if (this.fireSlashLevel > 0) this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
+            //check Fire Breath Upgrades
+            if (this.fireBreathLevel > 0) this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
             this.attacking = true
         }
 

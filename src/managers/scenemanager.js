@@ -4,9 +4,10 @@ class SceneManager {
         this.game.camera = this;
         
         this.level = null;
-        this.mickey = new Mickey(this.game, PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2); // 800 400 is initial x and y
+        this.mickey = new Mickey(this.game, PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2, this); // 800 400 is initial x and y
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
-
+        this.upgradeScreen = new UpgradeScreen(this.game, this);
+        this.game.upgrade = this.upgradeScreen;
         this.gameover = false;
 
         // preload
@@ -108,6 +109,8 @@ class SceneManager {
 
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey);
+
+            this.upgradeScreen.visible = true;
         };
     };
     updateAudio() {
@@ -126,6 +129,7 @@ class SceneManager {
         }
         else if (!this.gameover) {
             this.spawnmanager.update();
+            this.upgradeScreen.update();
 
             // uncomment conditional below to allow game over
             // if (this.mickey.currentHP <= 0) {

@@ -13,6 +13,7 @@ class GameEngine {
         this.background = null;
 
         this.transition = null;
+        this.upgrade = null;
 
         // Information on the input
         this.click = null;
@@ -160,6 +161,7 @@ class GameEngine {
             this.background.draw(this.ctx);
         }
 
+
         // Draw latest entities things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
@@ -181,6 +183,10 @@ class GameEngine {
             this.ctx.font = '50px Arial';
             this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
             this.ctx.fillText("PAUSED", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
+        }
+
+        if (this.upgrade) {
+            this.upgrade.draw(this.ctx);
         }
         // fps counter
         if (PARAMS.DEBUG) {
@@ -211,6 +217,7 @@ class GameEngine {
             this.transition.update();
             return;
         } else if (this.pause) { // don't update if paused
+            if (this.upgrade != null ) this.upgrade.update();
             return;
         } 
 
