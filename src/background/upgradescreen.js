@@ -27,9 +27,9 @@ class UpgradeScreen {
         this.sceneManager = sceneManager;
         this.visible = false;
 
-        this.upgrade1 = null;
-        this.upgrade2 = null;
-        this.upgrade3 = null;
+        this.upgrade1 = "Fire Slash Upgrade";
+        this.upgrade2 = "Fire Breath Upgrade";
+        this.upgrade3 = "Fire Slash Upgrade";
 
         this.upgrades = ["Fire Slash Upgrade", "Fire Breath Upgrade", "Increased Health: +100"];
 
@@ -46,6 +46,9 @@ class UpgradeScreen {
             this.sceneManager.mickey.MaxHP += 100;
             this.sceneManager.mickey.currentHP += 100;
         }
+        this.upgrade1 = null;
+        this.upgrade2 = null;
+        this.upgrade3 = null;
     }
 
     update() {

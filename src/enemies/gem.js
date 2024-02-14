@@ -32,11 +32,11 @@ class Gem {
                 }
             else if (this.gemType == 2){
                 //check for overflow
-                if (this.mickey.currentHP + 20>this.mickey.MaxHP) {
+                if (this.mickey.currentHP + (this.mickey.MaxHP*0.3)>this.mickey.MaxHP) {
                     //add difference in health instead and fill currentHP to MaxHP
                     this.mickey.currentHP = this.mickey.MaxHP - this.mickey.currentHP;
                 }else {
-                    this.mickey.currentHP += 20;
+                    this.mickey.currentHP += this.mickey.MaxHP*0.3;
                 }
             }
             
