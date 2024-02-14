@@ -4,17 +4,13 @@ class SpawnManager {
         this.mickey = mickey;
         this.waves = null;
         this.formations = [];
+        this.allWeights = [];
+        this.allSpawns = [];
     }
 
     loadWaves(waves, formations) {
-        this.tickCounter = 0;
-        this.elapsed = 0;
-
-        this.formationsIndex = 0;
-        this.wavesIndex = 0;
+        this.reset();
         this.waves = waves;
-        this.allWeights = [];
-        this.allSpawns = [];
         let i;
 
         waves.forEach(wave => {
@@ -81,7 +77,19 @@ class SpawnManager {
             return a.time - b.time;
         });
 
-        console.log(this.formations);
+        // console.log(this.formations);
+    }
+
+    reset() {
+        this.tickCounter = 0;
+        this.elapsed = 0;
+
+        this.formationsIndex = 0;
+        this.wavesIndex = 0;
+
+        this.allSpawns.length = 0;
+        this.allWeights.length = 0;
+        this.formations.length = 0;
     }
 
     spawnEnemy(id, x, y, move, lifespan) {

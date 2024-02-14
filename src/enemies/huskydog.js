@@ -55,11 +55,15 @@ class Huskydog {
             if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
                 this.handleCollision(entity, 0.75);
             }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
         });
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDmg);
+        }
+    }
+
+    takeDamage(damage) {
+        this.currentHP -= damage;
     }
 
     handleCollision(entity, scalarForce) {
@@ -102,12 +106,14 @@ class Huskydog {
             }
         }
 
+        let toMickey = this.mickey.BB.center().sub(this.BB.center());
+        this.game.addEntityDistances(this, toMickey.mag());
+
         if (this.moveVec) {
             this.applyForce(this.moveVec.norm());
         } else {
             // applies force to move towards center of mickey
-            let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
-            this.applyForce(toMickey);
+            this.applyForce(toMickey.norm());
             this.updateFacing();
         }
 
@@ -234,6 +240,23 @@ class GiantHuskydog {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), this.width * 7, this.height * 3, this.width, this.height, 8, 0.1, 0, false, true));
     }
 
+    takeDamage(damage) {
+        this.currentHP -= damage;
+    }
+
+    checkCollision() {
+        // collision with background objects
+        this.game.backgroundEntities.forEach(backEntity => {
+            if (this.BB.collideBB(backEntity.BB)) {
+                this.handleCollision(backEntity, this.speed + 1);
+            }
+        });
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDmg);
+        }
+    }
+
     handleCollision(entity, scalarForce) {
         let toEntityCenter = this.BB.center().sub(entity.BB.center()).norm().mul(scalarForce);
         this.applyForce(toEntityCenter);
@@ -254,8 +277,11 @@ class GiantHuskydog {
 
     update() {
         // applies force to move towards center of mickey
-        let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
+        let toMickey = this.mickey.BB.center().sub(this.BB.center());
+        this.game.addEntityDistances(this, toMickey.mag());
+        toMickey = toMickey.norm();
         this.applyForce(toMickey);
+        
 
         // drag force to limit velocity
         let v = this.vel.mag();
@@ -263,21 +289,7 @@ class GiantHuskydog {
             this.applyForce(this.vel.norm().mul(this.drag * v));
         }
 
-        // collision detection & resolution with background objects
-        this.game.backgroundEntities.forEach(backEntity => {
-            if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed + 1);
-            }
-        });
-        this.game.entities.forEach(entity => {
-            // if (entity !== this && entity !== this.mickey && this.BB.collideBB(entity.BB)) {
-            //     this.handleCollision(entity, 1);
-            // }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
-        });
+        this.checkCollision();
 
         // === attack events ===
         this.barkAtkClock.update();
@@ -403,6 +415,7 @@ class GiantHuskydog {
 
         if (this.currentHP <= 0) {
             this.removeFromWorld = true;
+            this.game.camera.gamewin = true;
         }
 
         // this should be last thing to update
