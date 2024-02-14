@@ -27,7 +27,7 @@ class Bird {
 
         // attributes
         this.currentHP = 100;
-        this.collideDmg = 10;
+        this.collideDmg = 5;
 
         this.flipLeft = false;
 
@@ -119,6 +119,7 @@ class Bird {
 
         if (this.currentHP <= 0) {
             this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
+            this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
 

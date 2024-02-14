@@ -34,6 +34,9 @@ class Mickey {
         this.fireSlashLevel = 0;
         this.fireBreathLevel = 0;
 
+        // Killed enemies counter
+        this.enemiesCounter = 0;
+
         //Rectangle bounding box
         this.offsetBB = {x: 20, y: 30, w: -38, h: -33};
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);

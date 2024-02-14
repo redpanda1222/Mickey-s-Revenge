@@ -34,7 +34,8 @@ class Gem {
                 //check for overflow
                 if (this.mickey.currentHP + (this.mickey.MaxHP*0.3)>this.mickey.MaxHP) {
                     //add difference in health instead and fill currentHP to MaxHP
-                    this.mickey.currentHP = this.mickey.MaxHP - this.mickey.currentHP;
+                    //this.mickey.currentHP = this.mickey.MaxHP - this.mickey.currentHP;
+                    this.mickey.currentHP = this.mickey.MaxHP;
                 }else {
                     this.mickey.currentHP += this.mickey.MaxHP*0.3;
                 }
