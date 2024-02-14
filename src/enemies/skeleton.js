@@ -102,12 +102,14 @@ class Skeleton {
             }
         }
 
+        let toMickey = this.mickey.BB.center().sub(this.BB.center());
+        this.game.addEntityDistances(this, toMickey.mag());
+
         if (this.moveVec) {
             this.applyForce(this.moveVec);
         } else {
             // applies force to move towards center of mickey
-            let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
-            this.applyForce(toMickey);
+            this.applyForce(toMickey.norm());
             this.updateFacing();
         }
 

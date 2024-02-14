@@ -77,7 +77,7 @@ class SpawnManager {
             return a.time - b.time;
         });
 
-        console.log(this.formations);
+        // console.log(this.formations);
     }
 
     reset() {
