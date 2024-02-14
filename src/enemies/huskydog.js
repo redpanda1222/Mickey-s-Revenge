@@ -55,11 +55,11 @@ class Huskydog {
             if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
                 this.handleCollision(entity, 0.75);
             }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
         });
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDmg);
+        }
     }
 
     takeDamage(damage) {
