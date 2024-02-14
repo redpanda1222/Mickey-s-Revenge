@@ -75,6 +75,10 @@ var levelOne = {
             time: 80,
             spawnrate: 60,
             skeletonmage: 1
+        },
+        {
+            time: 100,
+            spawnrate: 1000
         }
     ],
 

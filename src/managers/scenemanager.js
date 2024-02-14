@@ -108,14 +108,10 @@ class SceneManager {
             }
             this.spawnmanager.loadWaves(level.waves, level.formations);
             this.mickey.removeFromWorld = false;
-            // mickey is always the first entity in game.entities
-            this.game.addEntity(this.mickey);
+            this.game.addEntity(this.mickey); // mickey is always the first entity in game.entities
 
             // put entities here for testing
             // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
-            this.game.addEntity(new Skeleton(this.game, this.mickey, 50, 50));
-            this.game.addEntity(new Skeleton(this.game, this.mickey, 60, 50));
-            this.game.addEntity(new Skeleton(this.game, this.mickey, 70, 50));
             // this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
         };
     };
@@ -134,35 +130,32 @@ class SceneManager {
             this.menu.update();
         }
         else if (this.gamewin) {
-            this.game.pausable = false;
-            this.clearAllEntities();
-            this.loadScene(null, true, true);
-            ASSET_MANAGER.pauseBackgroundMusic();
-
-            this.game.background.updateTileGrid(false);
-            this.mickey.reset();
-            this.spawnmanager.reset();
+            this.reset();
         }
         else if (!this.gameover) {
-            // this.spawnmanager.update();
+            this.spawnmanager.update();
 
             // uncomment conditional below to allow game over
             // if (this.mickey.currentHP <= 0) {
-            //     this.game.pausable = false;
             //     this.gameover = true;
-            //     this.clearAllEntities();
-            //     this.loadScene(null, true, false);
-            //     ASSET_MANAGER.pauseBackgroundMusic();
-
-            //     this.game.background.updateTileGrid(false);
-            //     this.mickey.reset();
-            //     this.spawnmanager.reset();
+            //     this.reset();
             // }
         }
     
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;
     };
+
+    reset() {
+        this.game.pausable = false;
+        this.clearAllEntities();
+        this.loadScene(null, true, true);
+        ASSET_MANAGER.pauseBackgroundMusic();
+
+        this.game.background.updateTileGrid(false);
+        this.mickey.reset();
+        this.spawnmanager.reset();
+    }
 
     draw(ctx) {
         if (this.menu.isInMenu) {

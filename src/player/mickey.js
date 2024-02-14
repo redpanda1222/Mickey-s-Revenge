@@ -115,8 +115,17 @@ class Mickey {
 
         //add attack
         if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
-            this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/100))));
+            // this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/100))));
             // this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/100)), 2));
+
+            if (this.game.entityDistances.length > 0) {
+                const nearest = this.game.entityDistances[0].e;
+                this.game.addAttackEntity(new Rasengan(
+                    this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
+                    100, 8, 4, 2, // attributes (dmg, spd, duration, pierce)
+                    nearest.BB.center(), 0
+                ));
+            }
             this.attacking = true
         }
 
@@ -159,15 +168,13 @@ class Mickey {
             // draws bounding box
             this.BB.draw(ctx, this.game);
         }
-
-        console.log(this.game.entityDistances.length);
         // draw line to nearest target
-        if (this.game.entityDistances.length > 0) {
-            const nearest = this.game.entityDistances[0].e;
-            ctx.strokeStyle = "red";
-            ctx.lineWidth = 2;
-            line(ctx, this.BB.center().x - this.game.cameraX, this.BB.center().y - this.game.cameraY, nearest.BB.center().x - this.game.cameraX, nearest.BB.center().y - this.game.cameraY);
-        }
+        // if (this.game.entityDistances.length > 0) {
+        //     const nearest = this.game.entityDistances[0].e;
+        //     ctx.strokeStyle = "red";
+        //     ctx.lineWidth = 2;
+        //     line(ctx, this.BB.center().x - this.game.cameraX, this.BB.center().y - this.game.cameraY, nearest.BB.center().x - this.game.cameraX, nearest.BB.center().y - this.game.cameraY);
+        // }
 	};
 
     drawHealthBar(ctx){

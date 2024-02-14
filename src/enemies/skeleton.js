@@ -60,6 +60,10 @@ class Skeleton {
         });
     }
 
+    takeDamage(damage) {
+        this.currentHP -= damage;
+    }
+
     handleCollision(entity, scalarForce) {
         // basically treats other entity like a repelling force field
         let toEntityCenter = this.BB.center().sub(entity.BB.center()).norm().mul(scalarForce);

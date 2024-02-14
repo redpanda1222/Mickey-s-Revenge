@@ -164,6 +164,8 @@ class Projectile {
         this.targetX = x;
         this.targetY = y;
 
+        this.prevHitEntity = null;
+
         if (targetEntity) {
             this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
         }
@@ -179,8 +181,11 @@ class Projectile {
     }
 
     handleCollision(entity) { // TODO: pierce is bugged
-        entity.takeDamage(this.projDamage); // uncomment this later
-        this.projPierce--;
+        if (this.prevHitEntity !== entity) {
+            entity.takeDamage(this.projDamage); // uncomment this later
+            this.projPierce--;
+        }
+        this.prevHitEntity = entity;
         
         if (this.projPierce < 1) {
             this.removeFromWorld = true;
@@ -225,15 +230,17 @@ class Projectile {
 
         // collision against entities
         this.game.entities.forEach(entity => {
-            if (entity !== this && this.isFriendly) {
+            if (this.isFriendly) {
                 // friendly projectile can not harm Mickey, it harms only enemies
-                if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
+                if (this.BB.collideBB(entity.BB) && entity !== this.mickey && !(entity instanceof Gem)) {
                     this.handleCollision(entity);
+                    // return;
                 }
             } else {
                 // not friendly projectile only harms Mickey
-                if (this.BB.collideBB(entity.BB) && entity === this.mickey) {
+                if (this.BB.collideBB(entity.BB) && entity === this.mickey && !(entity instanceof Gem)) {
                     this.handleCollision(entity);
+                    // return;
                 }
             }
         });
@@ -268,6 +275,27 @@ class Warning {
     }
 }
 
+class Rasengan extends Projectile {
+    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians) {
+        super(game, mickey, isFriendly, x, y, 94, 93, projDamage, projSpeed, projDuration, projPierce, false, targetLocation);
+
+        this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/rasenganBall.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
+        this.offsetBB = { x: 22, y: 24, w: -48, h: -48 };
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+
+        this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
+    }
+
+    draw(ctx) {
+        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
+
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx, this.game);
+        }
+    };
+}
+
 class Shockwave extends Projectile {
     constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation) {
         super(game, mickey, isFriendly, x, y, 113, 95, projDamage, projSpeed, projDuration, projPierce, true, targetLocation);
@@ -296,8 +324,8 @@ class Shockwave extends Projectile {
 }
 
 class Blast extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians, isHoming, targetEntity, isRevolving, isClockwise, radius) {
-        super(game, mickey, isFriendly, x, y, 32, 32, projDamage, projSpeed, projDuration, projPierce, false, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius);
+    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians) {
+        super(game, mickey, isFriendly, x, y, 32, 32, projDamage, projSpeed, projDuration, projPierce, false, targetLocation);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/blast.png"), 0, 0, this.width, this.height, 5, 0.5, 0, false, false);
 
