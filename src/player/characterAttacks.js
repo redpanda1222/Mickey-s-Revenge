@@ -189,7 +189,7 @@ class Projectile {
         this.targetX = x;
         this.targetY = y;
 
-        this.prevHitEntity = null;
+        this.prevHits = new Map();
 
         if (targetEntity) {
             this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
@@ -206,15 +206,11 @@ class Projectile {
     }
 
     handleCollision(entity) { // TODO: pierce is bugged
-        if (this.prevHitEntity !== entity) {
-            entity.takeDamage(this.projDamage); // uncomment this later
+        if (!this.prevHits.has(entity)) {
+            entity.takeDamage(this.projDamage);
+            this.prevHits.set(entity, true);
             this.projPierce--;
         }
-        this.prevHitEntity = entity;
-        
-        if (this.projPierce < 1) {
-            this.removeFromWorld = true;
-        } 
     }
 
     updateTargetLocation(x, y) {
@@ -228,6 +224,7 @@ class Projectile {
         // projectile duration
         if (this.elapsed >= this.projDuration) {
             this.removeFromWorld = true;
+            return;
         }
 
         if (this.targetEntity && (this.isHoming || this.isRevolving)) {
@@ -253,22 +250,28 @@ class Projectile {
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
-        // collision against entities
-        this.game.entities.forEach(entity => {
-            if (this.isFriendly) {
-                // friendly projectile can not harm Mickey, it harms only enemies
-                if (this.BB.collideBB(entity.BB) && entity !== this.mickey && !(entity instanceof Gem)) {
+        if (this.isFriendly) {
+            // friendly projectile can not harm Mickey, it harms only enemies
+            for (let i = 1; i < this.game.entities.length; i++) {
+                const entity = this.game.entities[i];
+
+                if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
                     this.handleCollision(entity);
-                    // return;
+                } else {
+                   this.prevHits.delete(entity); 
                 }
-            } else {
-                // not friendly projectile only harms Mickey
-                if (this.BB.collideBB(entity.BB) && entity === this.mickey && !(entity instanceof Gem)) {
-                    this.handleCollision(entity);
-                    // return;
+
+                if (this.projPierce < 1) {
+                    this.removeFromWorld = true;
+                    return;
                 }
             }
-        });
+        } else {
+            // not friendly projectile only harms Mickey
+            if (this.BB.collideBB(this.mickey.BB)) {
+                this.handleCollision(this.mickey);
+            }
+        }
     }
 }
 

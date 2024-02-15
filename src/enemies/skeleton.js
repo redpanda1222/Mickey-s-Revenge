@@ -124,7 +124,7 @@ class Skeleton {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }

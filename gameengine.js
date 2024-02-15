@@ -8,9 +8,11 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entityDistances = [];
+
         this.entities = [];
         this.backgroundEntities = [];
         this.attackEntities = [];
+        this.gemEntities = [];
         this.background = null;
 
         this.transition = null;
@@ -157,6 +159,10 @@ class GameEngine {
         this.attackEntities.push(entity);
     };
 
+    addGemEntity(entity) {
+        this.gemEntities.push(entity);
+    };
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -167,20 +173,26 @@ class GameEngine {
             this.background.draw(this.ctx);
         }
 
+        let i;
 
         // Draw latest entities things first
-        for (let i = this.entities.length - 1; i >= 0; i--) {
+        for (i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
 
         // Draw latest background entities things first
-        for (let i = this.backgroundEntities.length - 1; i >= 0; i--) {
+        for (i = this.backgroundEntities.length - 1; i >= 0; i--) {
             this.backgroundEntities[i].draw(this.ctx, this);
         }
 
         // Draw latest attack entities things first
-        for (let i = this.attackEntities.length - 1; i >= 0; i--) {
+        for (i = this.attackEntities.length - 1; i >= 0; i--) {
             this.attackEntities[i].draw(this.ctx, this);
+        }
+
+        // Draw latest attack entities things first
+        for (i = this.gemEntities.length - 1; i >= 0; i--) {
+            this.gemEntities[i].draw(this.ctx, this);
         }
 
         this.camera.draw(this.ctx);
@@ -249,6 +261,14 @@ class GameEngine {
             }
         }
 
+        for (i = 0; i < this.gemEntities.length; i++) {
+            let entity = this.gemEntities[i];
+
+            if (!entity.removeFromWorld) {
+                entity.update();
+            }
+        }
+
         this.camera.update();
 
         // removing if they are marked with removeFromWorld
@@ -261,6 +281,12 @@ class GameEngine {
         for (i = entitiesCount - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
                 this.entities.splice(i, 1);
+            }
+        }
+
+        for (i = this.gemEntities.length - 1; i >= 0; --i) {
+            if (this.gemEntities[i].removeFromWorld) {
+                this.gemEntities.splice(i, 1);
             }
         }
 

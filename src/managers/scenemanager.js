@@ -15,7 +15,7 @@ class SceneManager {
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
-        this.MaxEnemies = 100;
+        this.MaxEnemies = 1000;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -124,6 +124,12 @@ class SceneManager {
             // put entities here for testing
             // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
             // this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
+
+            // stress test
+            for (let i = 0; i < 2000; i++) {
+                this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
+            }
+            // 41 fps consistent
         };
     };
     updateAudio() {
@@ -170,11 +176,11 @@ class SceneManager {
             } 
 
             // uncomment conditional below to allow game over (lose)
-            if (this.mickey.currentHP <= 0) {
-                this.gameover = true;
-                this.loadScene(null, true, false);
-                this.reset();
-            }
+            // if (this.mickey.currentHP <= 0) {
+            //     this.gameover = true;
+            //     this.loadScene(null, true, false);
+            //     this.reset();
+            // }
         }
     
         this.updateAudio();

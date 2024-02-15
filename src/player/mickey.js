@@ -103,7 +103,7 @@ class Mickey {
         //console.log(this.Level);
         //update his level
         if (this.experiencePoints >= this.Level * 10) {
-            this.Level +=1; //add level if experience points met
+            this.Level += 1; //add level if experience points met
             //should we reset player's exp points?
             this.experiencePoints = 0;
             this.sceneManager.upgradeScreen.visible = true;
@@ -141,15 +141,15 @@ class Mickey {
             //this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), 2));
 
             //check Fire Slash Upgrades
-            if (this.fireSlashLevel > 0) this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
+            // if (this.fireSlashLevel > 0) this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
             //check Fire Breath Upgrades
-            if (this.fireBreathLevel > 0) this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
+            // if (this.fireBreathLevel > 0) this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
 
             if (this.game.entityDistances.length > 0) {
                 const nearest = this.game.entityDistances[0].e;
                 this.game.addAttackEntity(new Rasengan(
                     this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    100, 8, 4, 2, // attributes (dmg, spd, duration, pierce)
+                    100, 8, 4, 5, // attributes (dmg, spd, duration, pierce)
                     nearest.BB.center(), 0
                 ));
             }
