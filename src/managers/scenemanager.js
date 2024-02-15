@@ -100,10 +100,10 @@ class SceneManager {
                 }
             }
             // put entities here for testing
-            // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
+            this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
             // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
             this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
-
+            this.game.addEntity(new GiantBird(this.game, this.mickey, 20, 20));
             this.spawnmanager.loadWaves(level.waves, level.formations);
 
             this.mickey.removeFromWorld = false;
