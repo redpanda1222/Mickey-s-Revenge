@@ -74,10 +74,16 @@ class Mickey {
     }
 
     reset() {
-        this.currentHP = this.MaxHP;
         this.x = this.initialX;
         this.y = this.initialY;
         
+        //CHARACTER STATS
+        this.MaxHP = 100;
+        this.currentHP = this.MaxHP;
+        this.Level = 1;
+        this.experiencePoints = 0;
+
+        //Player Attack Stats
         this.fireSlashLevel = 0;
         this.fireBreathLevel = 0;
 
