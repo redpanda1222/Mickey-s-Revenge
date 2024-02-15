@@ -12,7 +12,7 @@ class Mickey {
         this.initialY = y;
 		this.x = x;
 		this.y = y;
-        this.sizeScale = 3
+        this.sizeScale = 2
         this.width = 26 * this.sizeScale;
         this.height = 40 * this.sizeScale;
         this.movementSpeed = 5;
@@ -38,7 +38,7 @@ class Mickey {
         this.enemiesCounter = 0;
 
         //Rectangle bounding box
-        this.offsetBB = {x: 20, y: 30, w: -38, h: -33};
+        this.offsetBB = {x: 18, y: 50, w: -36, h: -53};
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 	};
 

@@ -8,6 +8,7 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entityDistances = [];
+        this.renderOrder = [];
 
         this.entities = [];
         this.backgroundEntities = [];
@@ -144,7 +145,7 @@ class GameEngine {
     };
 
     addEntityDistances(entity, distance) {
-        this.entityDistances.push({e: entity, d: distance});
+        this.entityDistances.push({ e: entity, d: distance });
     }
 
     addEntity(entity) {
@@ -163,6 +164,71 @@ class GameEngine {
         this.gemEntities.push(entity);
     };
 
+    update() {
+        if (this.transition) {
+            this.transition.update();
+            return;
+        } else if (this.pause) { // don't update if paused
+            if (this.upgrade != null) this.upgrade.update();
+            return;
+        }
+        
+        this.entityDistances.length = 0;
+        this.renderOrder.length = 0;
+
+        const entitiesCount = this.entities.length;
+        const attackEntitiesCount = this.attackEntities.length;
+        const gemEntitiesCount = this.gemEntities.length;
+        let i;
+
+        // updating entities, execpt for mickey, which is at index 0
+        for (i = entitiesCount - 1; i > 0; --i) {
+            if (this.entities[i].removeFromWorld) {
+                this.entities[i] = this.entities[this.entities.length - 1];
+                this.entities.length--;
+            } else {
+                this.entities[i].update();
+                this.renderOrder.push({ y: this.entities[i].BB.y, e: this.entities[i] });
+            }
+        }
+
+        for (i = attackEntitiesCount - 1; i >= 0; --i) {
+            if (this.attackEntities[i].removeFromWorld) {
+                this.attackEntities[i] = this.attackEntities[this.attackEntities.length - 1];
+                this.attackEntities.length--;
+            } else {
+                this.attackEntities[i].update();
+            }
+        }
+
+        for (i = gemEntitiesCount - 1; i >= 0; --i) {
+            if (this.gemEntities[i].removeFromWorld) {
+                this.gemEntities[i] = this.gemEntities[this.gemEntities.length - 1];
+                this.gemEntities.length--;
+            } else {
+                this.gemEntities[i].update();
+            }
+        }
+
+        this.camera.update();
+
+        // proximity detection
+        this.entityDistances.sort((a, b) => a.d - b.d);
+
+        // update mickey
+        if (this.entities.length > 0) {
+            this.entities[0].update();
+            this.renderOrder.push({ y: this.entities[0].BB.y, e: this.entities[0] });
+        }
+
+        // y-sorting
+        this.backgroundEntities.forEach(be => {
+            this.renderOrder.push({ y: be.BB.y, e: be });
+        });
+
+        this.renderOrder.sort((a, b) => a.y - b.y);
+    };
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -175,25 +241,21 @@ class GameEngine {
 
         let i;
 
-        // Draw latest entities things first
-        for (i = this.entities.length - 1; i >= 0; i--) {
-            this.entities[i].draw(this.ctx, this);
+        // Draw latest gem entities things first
+        for (i = this.gemEntities.length - 1; i >= 0; i--) {
+            this.gemEntities[i].draw(this.ctx, this);
         }
 
-        // Draw latest background entities things first
-        for (i = this.backgroundEntities.length - 1; i >= 0; i--) {
-            this.backgroundEntities[i].draw(this.ctx, this);
-        }
+        // draw entities and background entities by their y-value
+        this.renderOrder.forEach(order => {
+            order.e.draw(this.ctx, this);
+        });
 
         // Draw latest attack entities things first
         for (i = this.attackEntities.length - 1; i >= 0; i--) {
             this.attackEntities[i].draw(this.ctx, this);
         }
 
-        // Draw latest attack entities things first
-        for (i = this.gemEntities.length - 1; i >= 0; i--) {
-            this.gemEntities[i].draw(this.ctx, this);
-        }
 
         this.camera.draw(this.ctx);
 
@@ -219,120 +281,22 @@ class GameEngine {
             this.ctx.fillText("Time: " + Math.floor(this.camera.spawnmanager.elapsed), 5, 64);
             this.ctx.fillText("X: " + this.camera.mickey.x + " Y:" + this.camera.mickey.y, 5, 80);
             this.ctx.textAlign = "center";
-            
+
             if (this.elapsed >= 1) {
                 this.lastFps = this.fps;
                 this.elapsed = 0;
                 this.fps = 0;
             }
-            
+
             this.fps++;
             this.elapsed += this.clockTick;
         }
     };
 
-    update() {
-        if (this.transition) {
-            this.transition.update();
-            return;
-        } else if (this.pause) { // don't update if paused
-            if (this.upgrade != null ) this.upgrade.update();
-            return;
-        } 
-
-        const entitiesCount = this.entities.length;
-        const attackEntitiesCount = this.attackEntities.length;
-        const gemEntitiesCount = this.gemEntities.length;
-        let i;
-
-        // updating entities, execpt for mickey, which is at index 0
-        // for (i = 1; i < entitiesCount; i++) {
-        //     let entity = this.entities[i];
-
-        //     if (!entity.removeFromWorld) {
-        //         entity.update();
-        //     }
-        // }
-        for (i = entitiesCount - 1; i > 0; --i) {
-            if (this.entities[i].removeFromWorld) {
-                this.entities[i] = this.entities[this.entities.length - 1];
-                this.entities.length--;
-            } else {
-                this.entities[i].update();
-            }
-        }
-
-        for (i = attackEntitiesCount - 1; i >= 0; --i) {
-            if (this.attackEntities[i].removeFromWorld) {
-                this.attackEntities[i] = this.attackEntities[this.attackEntities.length - 1];
-                this.attackEntities.length--;
-            } else {
-                this.attackEntities[i].update();
-            }
-        }
-
-        for (i = gemEntitiesCount - 1; i >= 0; --i) {
-            if (this.gemEntities[i].removeFromWorld) {
-                this.gemEntities[i] = this.gemEntities[this.gemEntities.length - 1];
-                this.gemEntities.length--;
-            } else {
-                this.gemEntities[i].update();
-            }
-        }
-
-        // for (i = 0; i < attackEntitiesCount; i++) {
-        //     let entity = this.attackEntities[i];
-
-        //     if (!entity.removeFromWorld) {
-        //         entity.update();
-        //     }
-        // }
-
-        // for (i = 0; i < this.gemEntities.length; i++) {
-        //     let entity = this.gemEntities[i];
-
-        //     if (!entity.removeFromWorld) {
-        //         entity.update();
-        //     }
-        // }
-
-        this.camera.update();
-
-        // removing if they are marked with removeFromWorld
-
-        // for (i = entitiesCount - 1; i >= 0; --i) {
-        //     if (this.entities[i].removeFromWorld) {
-        //         this.entities[i] = this.entities[this.entities.length - 1];
-        //         this.entities.length--;
-        //     } else {
-        //         this.entities[i].update();
-        //     }
-        // }
-
-        // for (i = attackEntitiesCount - 1; i >= 0; --i) {
-        //     if (this.attackEntities[i].removeFromWorld) {
-        //         this.attackEntities.splice(i, 1);
-        //     }
-        // }
-
-        // for (i = this.gemEntities.length - 1; i >= 0; --i) {
-        //     if (this.gemEntities[i].removeFromWorld) {
-        //         this.gemEntities.splice(i, 1);
-        //     }
-        // }
-
-        // proximity detection
-        this.entityDistances.sort((a, b) => a.d - b.d);
-
-        // update mickey
-        if (this.entities.length > 0) this.entities[0].update();
-    };
-
     loop() {
-        this.clockTick = this.timer.tick();        
+        this.clockTick = this.timer.tick();
         this.update();
         this.draw();
-        this.entityDistances.length = 0;
     };
 
 };
