@@ -240,55 +240,86 @@ class GameEngine {
             return;
         } 
 
-        let entitiesCount = this.entities.length;
-        let attackEntitiesCount = this.attackEntities.length;
+        const entitiesCount = this.entities.length;
+        const attackEntitiesCount = this.attackEntities.length;
+        const gemEntitiesCount = this.gemEntities.length;
         let i;
 
         // updating entities, execpt for mickey, which is at index 0
-        for (i = 1; i < entitiesCount; i++) {
-            let entity = this.entities[i];
+        // for (i = 1; i < entitiesCount; i++) {
+        //     let entity = this.entities[i];
 
-            if (!entity.removeFromWorld) {
-                entity.update();
+        //     if (!entity.removeFromWorld) {
+        //         entity.update();
+        //     }
+        // }
+        for (i = entitiesCount - 1; i > 0; --i) {
+            if (this.entities[i].removeFromWorld) {
+                this.entities[i] = this.entities[this.entities.length - 1];
+                this.entities.length--;
+            } else {
+                this.entities[i].update();
             }
         }
 
-        for (i = 0; i < attackEntitiesCount; i++) {
-            let entity = this.attackEntities[i];
-
-            if (!entity.removeFromWorld) {
-                entity.update();
+        for (i = attackEntitiesCount - 1; i >= 0; --i) {
+            if (this.attackEntities[i].removeFromWorld) {
+                this.attackEntities[i] = this.attackEntities[this.attackEntities.length - 1];
+                this.attackEntities.length--;
+            } else {
+                this.attackEntities[i].update();
             }
         }
 
-        for (i = 0; i < this.gemEntities.length; i++) {
-            let entity = this.gemEntities[i];
-
-            if (!entity.removeFromWorld) {
-                entity.update();
+        for (i = gemEntitiesCount - 1; i >= 0; --i) {
+            if (this.gemEntities[i].removeFromWorld) {
+                this.gemEntities[i] = this.gemEntities[this.gemEntities.length - 1];
+                this.gemEntities.length--;
+            } else {
+                this.gemEntities[i].update();
             }
         }
+
+        // for (i = 0; i < attackEntitiesCount; i++) {
+        //     let entity = this.attackEntities[i];
+
+        //     if (!entity.removeFromWorld) {
+        //         entity.update();
+        //     }
+        // }
+
+        // for (i = 0; i < this.gemEntities.length; i++) {
+        //     let entity = this.gemEntities[i];
+
+        //     if (!entity.removeFromWorld) {
+        //         entity.update();
+        //     }
+        // }
 
         this.camera.update();
 
         // removing if they are marked with removeFromWorld
-        for (i = attackEntitiesCount - 1; i >= 0; --i) {
-            if (this.attackEntities[i].removeFromWorld) {
-                this.attackEntities.splice(i, 1);
-            }
-        }
 
-        for (i = entitiesCount - 1; i >= 0; --i) {
-            if (this.entities[i].removeFromWorld) {
-                this.entities.splice(i, 1);
-            }
-        }
+        // for (i = entitiesCount - 1; i >= 0; --i) {
+        //     if (this.entities[i].removeFromWorld) {
+        //         this.entities[i] = this.entities[this.entities.length - 1];
+        //         this.entities.length--;
+        //     } else {
+        //         this.entities[i].update();
+        //     }
+        // }
 
-        for (i = this.gemEntities.length - 1; i >= 0; --i) {
-            if (this.gemEntities[i].removeFromWorld) {
-                this.gemEntities.splice(i, 1);
-            }
-        }
+        // for (i = attackEntitiesCount - 1; i >= 0; --i) {
+        //     if (this.attackEntities[i].removeFromWorld) {
+        //         this.attackEntities.splice(i, 1);
+        //     }
+        // }
+
+        // for (i = this.gemEntities.length - 1; i >= 0; --i) {
+        //     if (this.gemEntities[i].removeFromWorld) {
+        //         this.gemEntities.splice(i, 1);
+        //     }
+        // }
 
         // proximity detection
         this.entityDistances.sort((a, b) => a.d - b.d);

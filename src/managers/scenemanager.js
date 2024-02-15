@@ -126,7 +126,7 @@ class SceneManager {
             // this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
 
             // stress test
-            for (let i = 0; i < 2000; i++) {
+            for (let i = 0; i < 1000; i++) {
                 this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
             }
             // 41 fps consistent

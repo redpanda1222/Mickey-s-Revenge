@@ -252,7 +252,7 @@ class Projectile {
 
         if (this.isFriendly) {
             // friendly projectile can not harm Mickey, it harms only enemies
-            for (let i = 1; i < this.game.entities.length; i++) {
+            for (let i = this.game.entities.length - 1; i > 0; --i) {
                 const entity = this.game.entities[i];
 
                 if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
