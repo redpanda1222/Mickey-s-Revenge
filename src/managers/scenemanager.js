@@ -15,6 +15,7 @@ class SceneManager {
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
+        this.MaxEnemies = 100;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -145,7 +146,7 @@ class SceneManager {
         else if (!this.gameover) {
 
             // Bosses spawn
-            if (this.mickey.enemiesCounter >= 20) {
+            if (this.mickey.enemiesCounter >= this.MaxEnemies) {
                 if (!this.bossSpawned) {
                     this.skeletonBoss.setPosition(this.mickey.x + 400, this.mickey.y + 400);
                     this.huskyBoss.setPosition(this.mickey.x - 400, this.mickey.y - 400);
