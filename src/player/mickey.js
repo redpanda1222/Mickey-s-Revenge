@@ -90,6 +90,8 @@ class Mickey {
 
         this.immunityCurrent = 0;
         this.immune = false;
+
+        this.enemiesCounter = 0;
     }
 
 	update()
@@ -142,6 +144,16 @@ class Mickey {
             if (this.fireSlashLevel > 0) this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
             //check Fire Breath Upgrades
             if (this.fireBreathLevel > 0) this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
+
+            if (this.game.entityDistances.length > 0) {
+                const nearest = this.game.entityDistances[0].e;
+                this.game.addAttackEntity(new Rasengan(
+                    this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
+                    100, 8, 4, 2, // attributes (dmg, spd, duration, pierce)
+                    nearest.BB.center(), 0
+                ));
+            }
+
             this.attacking = true
         }
 
@@ -184,6 +196,13 @@ class Mickey {
             // draws bounding box
             this.BB.draw(ctx, this.game);
         }
+        // draw line to nearest target
+        // if (this.game.entityDistances.length > 0) {
+        //     const nearest = this.game.entityDistances[0].e;
+        //     ctx.strokeStyle = "red";
+        //     ctx.lineWidth = 2;
+        //     line(ctx, this.BB.center().x - this.game.cameraX, this.BB.center().y - this.game.cameraY, nearest.BB.center().x - this.game.cameraX, nearest.BB.center().y - this.game.cameraY);
+        // }
 	};
 
     drawHealthBar(ctx){

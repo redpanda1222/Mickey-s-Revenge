@@ -56,11 +56,15 @@ class SkeletonMage {
             if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
                 this.handleCollision(entity, 0.75);
             }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
         });
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDmg);
+        }
+    }
+
+    takeDamage(damage) {
+        this.currentHP -= damage;
     }
 
     handleCollision(entity, scalarForce) {
@@ -107,6 +111,7 @@ class SkeletonMage {
 
         let toMickey = this.mickey.BB.center().sub(this.BB.center());
         const distance = toMickey.mag();
+        this.game.addEntityDistances(this, distance);
 
         if (this.moveVec) {
             this.applyForce(this.moveVec);

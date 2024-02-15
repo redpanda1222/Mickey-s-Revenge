@@ -7,6 +7,7 @@ class GameEngine {
         this.ctx = null;
 
         // Everything that will be updated and drawn each frame
+        this.entityDistances = [];
         this.entities = [];
         this.backgroundEntities = [];
         this.attackEntities = [];
@@ -139,6 +140,10 @@ class GameEngine {
         this.ctx.canvas.addEventListener("keyup", that.keyup, false);
     };
 
+    addEntityDistances(entity, distance) {
+        this.entityDistances.push({e: entity, d: distance});
+    }
+
     addEntity(entity) {
         this.entities.push(entity);
     };
@@ -201,6 +206,7 @@ class GameEngine {
             this.ctx.fillText("Time: " + Math.floor(this.camera.spawnmanager.elapsed), 5, 64);
             this.ctx.fillText("X: " + this.camera.mickey.x + " Y:" + this.camera.mickey.y, 5, 80);
             this.ctx.textAlign = "center";
+            
             if (this.elapsed >= 1) {
                 this.lastFps = this.fps;
                 this.elapsed = 0;
@@ -225,8 +231,8 @@ class GameEngine {
         let attackEntitiesCount = this.attackEntities.length;
         let i;
 
-        // updating entities
-        for (i = 0; i < entitiesCount; i++) {
+        // updating entities, execpt for mickey, which is at index 0
+        for (i = 1; i < entitiesCount; i++) {
             let entity = this.entities[i];
 
             if (!entity.removeFromWorld) {
@@ -256,12 +262,19 @@ class GameEngine {
                 this.entities.splice(i, 1);
             }
         }
+
+        // proximity detection
+        this.entityDistances.sort((a, b) => a.d - b.d);
+
+        // update mickey
+        if (this.entities.length > 0) this.entities[0].update();
     };
 
     loop() {
         this.clockTick = this.timer.tick();        
         this.update();
         this.draw();
+        this.entityDistances.length = 0;
     };
 
 };
