@@ -60,6 +60,8 @@ class UpgradeScreen {
 
         if (this.game.mouse && this.visible) {
             this.game.pause = true;
+            this.game.pausable = false;
+            this.game.showPause = false;
             if (mouseOver(this.game.mouse, upgradeButtonLeft.x - upgradeButtonDimensions.w / 2,
                 upgradeButtonLeft.y - upgradeButtonDimensions.h / 2,
                 upgradeButtonDimensions.w, upgradeButtonDimensions.h)) {
@@ -67,7 +69,9 @@ class UpgradeScreen {
                 if (this.game.click) {
                     this.handleUpgrade(this.upgrade1);
                     this.visible = false;
+                    this.game.pausable = true;
                     this.game.pause = false;
+                    this.game.showPause = true;
                 }
             }
             if (mouseOver(this.game.mouse, upgradeButtonMid.x - upgradeButtonDimensions.w / 2,
@@ -77,7 +81,9 @@ class UpgradeScreen {
                 if (this.game.click) {
                     this.handleUpgrade(this.upgrade2);
                     this.visible = false;
+                    this.game.pausable = true;
                     this.game.pause = false;
+                    this.game.showPause = true;
                 }
             }
             if (mouseOver(this.game.mouse, upgradeButtonRight.x - upgradeButtonDimensions.w / 1.3,
@@ -87,7 +93,9 @@ class UpgradeScreen {
                 if (this.game.click) {
                     this.handleUpgrade(this.upgrade3);
                     this.visible = false;
+                    this.game.pausable = true;
                     this.game.pause = false;
+                    this.game.showPause = true;
                 }
             }
             this.game.click = null;
@@ -96,6 +104,9 @@ class UpgradeScreen {
 
     draw(ctx) {
         if (this.visible) {
+            ctx.fillStyle = rgba(0,0,0,0.5);
+            ctx.fillRect(0, 0, PARAMS.WIDTH, PARAMS.HEIGHT);
+
             ctx.textAlign = "center";
             centerRect(ctx, upgradeButtonLeft.x, upgradeButtonLeft.y + 20, upgradeButtonDimensions.w, upgradeButtonDimensions.h, upgradeButtonLeft.color, "black");
             centerRect(ctx, upgradeButtonMid.x, upgradeButtonMid.y + 20, upgradeButtonDimensions.w, upgradeButtonDimensions.h, upgradeButtonMid.color, "black");

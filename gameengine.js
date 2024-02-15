@@ -30,6 +30,7 @@ class GameEngine {
         this.cameraY = 0;
         this.pausable = false;
         this.pause = false;
+        this.showPause = true;
         this.fps = 0;
         this.lastFps = 0;
         this.elapsed = 0;
@@ -184,7 +185,7 @@ class GameEngine {
 
         this.camera.draw(this.ctx);
 
-        if (this.pause) {
+        if (this.pause && this.showPause) {
             this.ctx.font = '50px Arial';
             this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
             this.ctx.fillText("PAUSED", PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2);
