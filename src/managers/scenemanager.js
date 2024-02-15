@@ -38,11 +38,11 @@ class SceneManager {
         this.game.backgroundEntities.length = 0;
     };
 
-    loadScene(level, isTransition, isGameover) {
-        if (isGameover) {
+    loadScene(level, isTransition, isGameWin) {
+        if (isGameWin) {
             this.game.transition = new TransitionScreen(this.game, level, true);
         } 
-        else if (isGameover === false) {
+        else if (isGameWin === false) {
             this.game.transition = new TransitionScreen(this.game);
         } 
         else if (isTransition) {
@@ -149,6 +149,8 @@ class SceneManager {
                 if (!this.bossSpawned) {
                     this.skeletonBoss.setPosition(this.mickey.x + 400, this.mickey.y + 400);
                     this.huskyBoss.setPosition(this.mickey.x - 400, this.mickey.y - 400);
+                    this.huskyBoss.removeFromWorld = false;
+                    this.skeletonBoss.removeFromWorld = false;
                     this.game.addEntity(this.huskyBoss);
                     this.game.addEntity(this.skeletonBoss);
                     this.bossSpawned = true;
@@ -161,13 +163,17 @@ class SceneManager {
 
             if (this.areBossesDead()) {
                 // win feature
+                this.gamewin = true;
+                this.loadScene(null, true, true);
+                this.reset();
             } 
 
             // uncomment conditional below to allow game over
-            // if (this.mickey.currentHP <= 0) {
-            //     this.gameover = true;
-            //     this.reset();
-            // }
+            if (this.mickey.currentHP <= 0) {
+                this.gameover = true;
+                this.loadScene(null, true, false);
+                this.reset();
+            }
         }
     
         this.updateAudio();
@@ -177,12 +183,15 @@ class SceneManager {
     reset() {
         this.game.pausable = false;
         this.clearAllEntities();
-        this.loadScene(null, true, true);
         ASSET_MANAGER.pauseBackgroundMusic();
 
         this.game.background.updateTileGrid(false);
         this.mickey.reset();
         this.spawnmanager.reset();
+        this.huskyBoss.reset();
+        this.skeletonBoss.reset();
+
+        this.bossSpawned = false;
     }
 
     draw(ctx) {

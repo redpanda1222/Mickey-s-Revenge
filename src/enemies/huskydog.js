@@ -161,6 +161,8 @@ class GiantHuskydog {
         this.game = game;
         this.mickey = mickey;
 
+        this.initialX = x;
+        this.initialY = y;
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
@@ -415,12 +417,21 @@ class GiantHuskydog {
 
         if (this.currentHP <= 0) {
             this.removeFromWorld = true;
-            this.game.camera.gamewin = true;
         }
 
         // this should be last thing to update
         this.move();
     };
+
+    reset() {
+        this.currentHP = this.MaxHP;
+        this.pos.x = this.initialX;
+        this.pos.y = this.initialY;
+
+        this.barkAtkClock.reset();
+        this.dashAtkClock.reset();
+        this.jumpAtkClock.reset();
+    }
 
     drawHealthBar(ctx) {
         const camX = this.pos.x + 15 - this.game.cameraX;

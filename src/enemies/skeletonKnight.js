@@ -2,6 +2,8 @@ class SkeletonKnight {
     constructor(game, mickey, x, y) {
         Object.assign(this, { game, mickey });
 
+        this.initialX = x;
+        this.initialY = y;
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
@@ -46,6 +48,10 @@ class SkeletonKnight {
         this.pos.y = y;
     }
 
+    takeDamage(damage) {
+        this.currentHP -= damage;
+    }
+
     handleCollision(entity, scalarForce) {
         // basically treats other entity like a repelling force field
         let toEntityCenter = this.BB.center().sub(entity.BB.center()).norm().mul(scalarForce);
@@ -68,7 +74,7 @@ class SkeletonKnight {
 
     fireLaser() {
         // Create and add laser ball entities to the game world
-        this.game.addEntity(new LaserBall(this.game, this, this.mickey));
+        this.game.addAttackEntity(new LaserBall(this.game, this, this.mickey));
     }
 
     spawnSkeletons() {
@@ -160,6 +166,12 @@ class SkeletonKnight {
         // this should be last thing to update
         this.move();
     };
+
+    reset() {
+        this.currentHP = this.MaxHP;
+        this.pos.x = this.initialX;
+        this.pos.y = this.initialY;
+    }
 
     drawHealthBar(ctx) {
         const camX = this.pos.x + 15 - this.game.cameraX;

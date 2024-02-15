@@ -80,6 +80,8 @@ class Mickey {
 
         this.immunityCurrent = 0;
         this.immune = false;
+
+        this.enemiesCounter = 0;
     }
 
 	update()
@@ -137,11 +139,11 @@ class Mickey {
                 const nearest = this.game.entityDistances[0].e;
                 this.game.addAttackEntity(new Rasengan(
                     this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    100, 8, 4, 2, // attributes (dmg, spd, duration, pierce)
+                    1000, 8, 4, 2, // attributes (dmg, spd, duration, pierce)
                     nearest.BB.center(), 0
                 ));
             }
-            
+
             this.attacking = true
         }
 

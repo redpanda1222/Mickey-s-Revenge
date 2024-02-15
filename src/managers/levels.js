@@ -48,38 +48,38 @@ var levelOne = {
     waves: [
         {
             time: 0,       // spawn listed enemies after this time (seconds)
-            spawnrate: 10, // lower for faster spawnrate (60 = 1 second)
+            spawnrate: 60, // lower for faster spawnrate (60 = 1 second)
             skeleton: 1    // enemyType and its weight (higher weight means higher chance to spawn)
         },
-        // {
-        //     time: 20,
-        //     spawnrate: 60,
-        //     huskydog: 1
-        // },
-        // {
-        //     time: 40,
-        //     spawnrate: 60,
-        //     skeleton: 3, // skeleton has 3 / 5 chance to spawn
-        //     bird: 1,     // bird has 1 / 5 chance to spawn
-        //     huskydog: 1  // huskydog has 1 / 5 chance to spawn
-        // },
-        // {
-        //     time: 60,
-        //     spawnrate: 30, // (30 = 0.5 second, 15 = 0.25 second, etc.)
-        //     skeleton: 5,
-        //     bird: 2,
-        //     huskydog: 3,
-        //     skeletonmage: 1
-        // },
-        // {
-        //     time: 80,
-        //     spawnrate: 60,
-        //     skeletonmage: 1
-        // },
-        // {
-        //     time: 100,
-        //     spawnrate: 1000
-        // }
+        {
+            time: 20,
+            spawnrate: 60,
+            huskydog: 1
+        },
+        {
+            time: 40,
+            spawnrate: 60,
+            skeleton: 3, // skeleton has 3 / 5 chance to spawn
+            bird: 1,     // bird has 1 / 5 chance to spawn
+            huskydog: 1  // huskydog has 1 / 5 chance to spawn
+        },
+        {
+            time: 60,
+            spawnrate: 30, // (30 = 0.5 second, 15 = 0.25 second, etc.)
+            skeleton: 5,
+            bird: 2,
+            huskydog: 3,
+            skeletonmage: 1
+        },
+        {
+            time: 80,
+            spawnrate: 60,
+            skeletonmage: 1
+        },
+        {
+            time: 100,
+            spawnrate: 1000
+        }
     ],
 
     formations: [
