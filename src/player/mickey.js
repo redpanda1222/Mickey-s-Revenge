@@ -77,6 +77,10 @@ class Mickey {
         this.currentHP = this.MaxHP;
         this.x = this.initialX;
         this.y = this.initialY;
+        
+        this.fireSlashLevel = 0;
+        this.fireBreathLevel = 0;
+
 
         this.immunityCurrent = 0;
         this.immune = false;
@@ -139,7 +143,7 @@ class Mickey {
                 const nearest = this.game.entityDistances[0].e;
                 this.game.addAttackEntity(new Rasengan(
                     this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    1000, 8, 4, 2, // attributes (dmg, spd, duration, pierce)
+                    100, 8, 4, 2, // attributes (dmg, spd, duration, pierce)
                     nearest.BB.center(), 0
                 ));
             }

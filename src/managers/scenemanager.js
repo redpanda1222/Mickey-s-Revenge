@@ -145,7 +145,7 @@ class SceneManager {
         else if (!this.gameover) {
 
             // Bosses spawn
-            if (this.mickey.enemiesCounter >= 100) {
+            if (this.mickey.enemiesCounter >= 20) {
                 if (!this.bossSpawned) {
                     this.skeletonBoss.setPosition(this.mickey.x + 400, this.mickey.y + 400);
                     this.huskyBoss.setPosition(this.mickey.x - 400, this.mickey.y - 400);
@@ -168,7 +168,7 @@ class SceneManager {
                 this.reset();
             } 
 
-            // uncomment conditional below to allow game over
+            // uncomment conditional below to allow game over (lose)
             if (this.mickey.currentHP <= 0) {
                 this.gameover = true;
                 this.loadScene(null, true, false);
