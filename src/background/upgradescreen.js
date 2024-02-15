@@ -53,9 +53,9 @@ class UpgradeScreen {
 
     update() {
         if (this.upgrade1 == null || this.upgrade2 == null || this.upgrade3 == null) {
-            this.upgrade1 = this.upgrades[Math.floor((Math.random() * this.upgrades.length + 1))];
-            this.upgrade2 = this.upgrades[Math.floor((Math.random() * this.upgrades.length + 1))];
-            this.upgrade3 = this.upgrades[Math.floor((Math.random() * this.upgrades.length + 1))];
+            this.upgrade1 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
+            this.upgrade2 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
+            this.upgrade3 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
         }
 
         if (this.game.mouse && this.visible) {
