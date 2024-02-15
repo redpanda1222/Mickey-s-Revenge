@@ -77,6 +77,10 @@ class Mickey {
         this.currentHP = this.MaxHP;
         this.x = this.initialX;
         this.y = this.initialY;
+        
+        this.fireSlashLevel = 0;
+        this.fireBreathLevel = 0;
+
 
         this.immunityCurrent = 0;
         this.immune = false;

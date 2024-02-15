@@ -158,16 +158,16 @@ class SceneManager {
             } 
 
             // uncomment conditional below to allow game over
-            // if (this.mickey.currentHP <= 0) {
-            //     this.game.pausable = false;
-            //     this.gameover = true;
-            //     this.clearAllEntities();
-            //     this.game.transition = new TransitionScreen(this.game);
-            //     ASSET_MANAGER.pauseBackgroundMusic();
+            if (this.mickey.currentHP <= 0) {
+                this.game.pausable = false;
+                this.gameover = true;
+                this.clearAllEntities();
+                this.game.transition = new TransitionScreen(this.game);
+                ASSET_MANAGER.pauseBackgroundMusic();
 
-            //     this.game.background.updateTileGrid(false);
-            //     this.mickey.reset();
-            // }
+                this.game.background.updateTileGrid(false);
+                this.mickey.reset();
+            }
         }
     
         this.updateAudio();
