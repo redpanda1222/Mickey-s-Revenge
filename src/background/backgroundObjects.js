@@ -26,7 +26,7 @@ class DestroyedDesertTower extends BackgroundObject {
         super(game, x, y, 393, 399, 0.5);
         this.updateSpritesheet("./assets/background/destroyedDesertTower.png");
         // change BB
-        this.offsetBB = { x: 44, y: 10, w: -80, h: -20 };
+        this.offsetBB = { x: 44, y: 90, w: -80, h: -110 };
         this.updateBB(this.offsetBB);
     }
 }
@@ -35,7 +35,7 @@ class BarbedWire extends BackgroundObject {
     constructor(game, x, y) {
         super(game, x, y, 83, 56, 1);
         this.updateSpritesheet("./assets/background/barbedwire1.png");
-        this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
+        this.offsetBB = { x: 0, y: 20, w: 0, h: -20 };
         this.updateBB(this.offsetBB);
     }
 }
@@ -44,7 +44,7 @@ class DesertTower extends BackgroundObject {
     constructor(game, x, y) {
         super(game, x, y, 311, 324, 0.5);
         this.updateSpritesheet("./assets/background/deserttower.png");
-        this.offsetBB = { x: 34, y: 0, w: -61, h: 0 };
+        this.offsetBB = { x: 34, y: 100, w: -61, h: -100 };
         this.updateBB(this.offsetBB);
     }
 }
@@ -53,7 +53,7 @@ class DeadTree extends BackgroundObject {
     constructor(game, x, y) {
         super(game, x, y, 1920, 1920, 0.05);
         this.updateSpritesheet("./assets/background/deadtree.png");
-        this.offsetBB = { x: 32, y: 8, w: -64, h: -10 };
+        this.offsetBB = { x: 32, y: 80, w: -64, h: -80 };
         this.updateBB(this.offsetBB);
     }
 }
@@ -71,7 +71,7 @@ class EmptyBarrel extends BackgroundObject {
     constructor(game, x, y) {
         super(game, x, y, 72, 64, 1);
         this.updateSpritesheet("./assets/background/emptybarrel1.png");
-        this.offsetBB = { x: 22, y: 24, w: -46, h: -28 };
+        this.offsetBB = { x: 22, y: 54, w: -46, h: -58 };
         this.updateBB(this.offsetBB);
     }
 }
@@ -80,7 +80,7 @@ class WallmartStoneHenge extends BackgroundObject {
     constructor(game, x, y) {
         super(game, x, y, 446, 370, 0.5);
         this.updateSpritesheet("./assets/background/walmartStoneHenge.png");
-        this.offsetBB = { x: 37, y: 9, w: -68, h: -30 };
+        this.offsetBB = { x: 37, y: 40, w: -68, h: -60 };
         this.updateBB(this.offsetBB);
     }
 }

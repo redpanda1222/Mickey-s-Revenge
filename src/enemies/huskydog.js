@@ -87,7 +87,7 @@ class Huskydog {
     }
 
     updateFacing() {
-        if ((this.pos.x - this.mickey.x - 30) > 0) {
+        if ((this.pos.x - this.mickey.x - 5) > 0) {
             this.flipLeft = true // Flip the sprite if moving left
             this.xStart = 0;
         } else {
@@ -124,7 +124,7 @@ class Huskydog {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
@@ -243,6 +243,7 @@ class GiantHuskydog {
     }
 
     takeDamage(damage) {
+        if (this.isAirborne) return;
         this.currentHP -= damage;
     }
 
@@ -400,7 +401,7 @@ class GiantHuskydog {
                 this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
                         new Shockwave(
                             this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                            10, 0, 0.8, 1000,          // attributes (dmg, spd, duration, pierce)
+                            10, 0.8, 1000,          // attributes (dmg, duration, pierce)
                             this.mickey.BB.center() // destination vector (x, y)
                 )));
             } else {

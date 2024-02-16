@@ -48,7 +48,7 @@ var levelOne = {
     waves: [
         {
             time: 0,       // spawn listed enemies after this time (seconds)
-            spawnrate: 60, // lower for faster spawnrate (60 = 1 second)
+            spawnrate: 60, // lower for faster spawnrate (60 = 1 second, 30 = 0.5 second, 15 = 0.25 second, etc.)
             skeleton: 1    // enemyType and its weight (higher weight means higher chance to spawn)
         },
         {
@@ -65,7 +65,7 @@ var levelOne = {
         },
         {
             time: 60,
-            spawnrate: 30, // (30 = 0.5 second, 15 = 0.25 second, etc.)
+            spawnrate: 30, 
             skeleton: 5,
             bird: 2,
             huskydog: 3,
@@ -79,6 +79,7 @@ var levelOne = {
         {
             time: 100,
             spawnrate: 1000
+            // no spawning
         }
     ],
 

@@ -13,69 +13,71 @@ class SpawnManager {
         this.waves = waves;
         let i;
 
-        waves.forEach(wave => {
-            let weights = [];
-            let spawns = [];
-
-            if (wave.skeleton) {
-                spawns.push(0);
-                for (i = 0; i < wave.skeleton; i++) {
-                    weights.push(spawns.length - 1);
+        if (waves) {
+            waves.forEach(wave => {
+                let weights = [];
+                let spawns = [];
+    
+                if (wave.skeleton) {
+                    spawns.push(0);
+                    for (i = 0; i < wave.skeleton; i++) {
+                        weights.push(spawns.length - 1);
+                    }
                 }
-            }
-
-            if (wave.bird) {
-                spawns.push(1);
-                for (i = 0; i < wave.bird; i++) {
-                    weights.push(spawns.length - 1);
+    
+                if (wave.bird) {
+                    spawns.push(1);
+                    for (i = 0; i < wave.bird; i++) {
+                        weights.push(spawns.length - 1);
+                    }
                 }
-            }
-
-            if (wave.huskydog) {
-                spawns.push(2);
-                for (i = 0; i < wave.huskydog; i++) {
-                    weights.push(spawns.length - 1);
+    
+                if (wave.huskydog) {
+                    spawns.push(2);
+                    for (i = 0; i < wave.huskydog; i++) {
+                        weights.push(spawns.length - 1);
+                    }
                 }
-            }
-
-            if (wave.skeletonmage) {
-                spawns.push(3);
-                for (i = 0; i < wave.skeletonmage; i++) {
-                    weights.push(spawns.length - 1);
+    
+                if (wave.skeletonmage) {
+                    spawns.push(3);
+                    for (i = 0; i < wave.skeletonmage; i++) {
+                        weights.push(spawns.length - 1);
+                    }
                 }
-            }
+    
+                this.allWeights.push(weights);
+                this.allSpawns.push(spawns);
+            });
+        }
 
-            this.allWeights.push(weights);
-            this.allSpawns.push(spawns);
-        });
-
-        if (!formations) return;
-
-        formations.forEach(f => {
-            if (f.skeleton) {
-                f.spawntime.forEach(t => {
-                    this.formations.push(new BatchSpawns(t, 0, f.skeleton, f.moveVector, f.despawnTime));
-                });
-            } 
-            else if (f.bird) {
-                f.spawntime.forEach(t => {
-                    this.formations.push(new BatchSpawns(t, 1, f.bird, f.moveVector, f.despawnTime));
-                });
-            }
-            else if (f.huskydog) {
-                f.spawntime.forEach(t => {
-                    this.formations.push(new BatchSpawns(t, 2, f.huskydog, f.moveVector, f.despawnTime));
-                });
-            }
-            else if (f.skeletonmage) {
-                f.spawntime.forEach(t => {
-                    this.formations.push(new BatchSpawns(t, 3, f.skeletonmage, f.moveVector, f.despawnTime));
-                });
-            }
-        });
-        this.formations.sort((a, b) => {
-            return a.time - b.time;
-        });
+        if (formations) {
+            formations.forEach(f => {
+                if (f.skeleton) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 0, f.skeleton, f.moveVector, f.despawnTime));
+                    });
+                } 
+                else if (f.bird) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 1, f.bird, f.moveVector, f.despawnTime));
+                    });
+                }
+                else if (f.huskydog) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 2, f.huskydog, f.moveVector, f.despawnTime));
+                    });
+                }
+                else if (f.skeletonmage) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 3, f.skeletonmage, f.moveVector, f.despawnTime));
+                    });
+                }
+            });
+            this.formations.sort((a, b) => {
+                return a.time - b.time;
+            });
+        }
 
         // console.log(this.formations);
     }

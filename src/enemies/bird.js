@@ -88,7 +88,7 @@ class Bird {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 35 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 1120;
         } else {
@@ -125,7 +125,7 @@ class Bird {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
