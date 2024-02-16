@@ -181,8 +181,8 @@ class FireBreath{
 }
 
 class Projectile {
-    constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, isStopping, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius, theta) {
-        Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, isStopping, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius, theta });
+    constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce) {
+        Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce });
 
         this.elapsed = 0;
 
@@ -191,21 +191,46 @@ class Projectile {
 
         this.prevHits = new Map();
 
-        if (targetEntity) {
-            this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
-        }
-        else if (targetLocation) {
-            this.updateTargetLocation(targetLocation.x, targetLocation.y);
-        }
+        // if (targetEntity) {
+        //     this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
+        // }
+        // else if (targetLocation) {
+        //     this.updateTargetLocation(targetLocation.x, targetLocation.y);
+        // }
 
-        if (isRevolving) {
-            this.rotSpeed = degreeToRad(this.projSpeed * (this.isClockwise ? 1 : -1));
-            this.x = Math.cos(this.theta) * this.radius;
-            this.y = Math.sin(this.theta) * this.radius;
-        }
+        // if (isRevolving) {
+        //     this.rotSpeed = degreeToRad(this.projSpeed * (this.isClockwise ? 1 : -1));
+        //     this.x = Math.cos(this.theta) * this.radius;
+        //     this.y = Math.sin(this.theta) * this.radius;
+        // }
     }
 
-    handleCollision(entity) { // TODO: pierce is bugged
+    checkCollision() {
+         if (this.isFriendly) {
+             // friendly projectile can not harm Mickey, it harms only enemies
+             for (let i = this.game.entities.length - 1; i > 0; --i) {
+                 const entity = this.game.entities[i];
+ 
+                 if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
+                     this.handleCollision(entity);
+                 } else {
+                    this.prevHits.delete(entity); 
+                 }
+ 
+                 if (this.projPierce < 1) {
+                     this.removeFromWorld = true;
+                     return;
+                 }
+             }
+         } else {
+             // not friendly projectile only harms Mickey
+             if (this.BB.collideBB(this.mickey.BB)) {
+                 this.handleCollision(this.mickey);
+             }
+         }
+    }
+
+    handleCollision(entity) {
         if (!this.prevHits.has(entity)) {
             entity.takeDamage(this.projDamage);
             this.prevHits.set(entity, true);
@@ -218,61 +243,47 @@ class Projectile {
         this.targetY = y;
     }
 
-    update() {
+    checkDuration() {
         this.elapsed += this.game.clockTick;
 
         // projectile duration
         if (this.elapsed >= this.projDuration) {
             this.removeFromWorld = true;
-            return;
+            return true;
         }
-
-        if (this.targetEntity && (this.isHoming || this.isRevolving)) {
-            this.updateTargetLocation(this.targetEntity.BB.center().x, this.targetEntity.BB.center().y);
-        }
-
-        if (this.isRevolving) {
-            this.theta += this.rotSpeed;
-            if (this.theta > Math.PI * 2) {
-                this.theta -= Math.PI * 2;
-            }
-            this.x = this.targetX + Math.cos(this.theta) * this.radius;
-            this.y = this.targetY + Math.sin(this.theta) * this.radius;
-        } else {
-            if (this.isStopping) {
-                this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x);
-            }
-            // move towards target location
-            this.x += Math.cos(this.targetDirection) * this.projSpeed;
-            this.y += Math.sin(this.targetDirection) * this.projSpeed;
-        }
-
-        // update bounding box
-        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
-
-        if (this.isFriendly) {
-            // friendly projectile can not harm Mickey, it harms only enemies
-            for (let i = this.game.entities.length - 1; i > 0; --i) {
-                const entity = this.game.entities[i];
-
-                if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
-                    this.handleCollision(entity);
-                } else {
-                   this.prevHits.delete(entity); 
-                }
-
-                if (this.projPierce < 1) {
-                    this.removeFromWorld = true;
-                    return;
-                }
-            }
-        } else {
-            // not friendly projectile only harms Mickey
-            if (this.BB.collideBB(this.mickey.BB)) {
-                this.handleCollision(this.mickey);
-            }
-        }
+        return false;
     }
+
+    moveStraight(stop) {
+        if (stop) {
+            this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x);
+        }
+        // move towards target location
+        this.x += Math.cos(this.targetDirection) * this.projSpeed;
+        this.y += Math.sin(this.targetDirection) * this.projSpeed;
+    }
+
+    revolve() {
+        this.theta += this.rotSpeed;
+        if (this.theta > Math.PI * 2) {
+            this.theta -= Math.PI * 2;
+        }
+        this.x = this.targetX + Math.cos(this.theta) * this.radius;
+        this.y = this.targetY + Math.sin(this.theta) * this.radius;
+    }
+
+    draw(ctx) {
+        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
+
+        if (PARAMS.DEBUG) {
+            // draws bounding box
+            this.BB.draw(ctx, this.game);
+        }
+    };
+
+    // if (this.targetEntity && (this.isHoming || this.isRevolving)) {
+    //     this.updateTargetLocation(this.targetEntity.BB.center().x, this.targetEntity.BB.center().y);
+    // }
 }
 
 class Warning {
@@ -305,28 +316,30 @@ class Warning {
 
 class Rasengan extends Projectile {
     constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians) {
-        super(game, mickey, isFriendly, x, y, 94, 93, projDamage, projSpeed, projDuration, projPierce, false, targetLocation);
+        super(game, mickey, isFriendly, x, y, 94, 93, projDamage, projSpeed, projDuration, projPierce);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/rasenganBall.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
         this.offsetBB = { x: 22, y: 24, w: -48, h: -48 };
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 
+        this.updateTargetLocation(targetLocation.x, targetLocation.y);
         this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
     }
 
-    draw(ctx) {
-        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
-
-        if (PARAMS.DEBUG) {
-            // draws bounding box
-            this.BB.draw(ctx, this.game);
+    update() {
+        if (this.checkDuration()) {
+            return;
         }
-    };
+
+        this.moveStraight();
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+        this.checkCollision();
+    }
 }
 
 class Shockwave extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation) {
-        super(game, mickey, isFriendly, x, y, 113, 95, projDamage, projSpeed, projDuration, projPierce, true, targetLocation);
+    constructor(game, mickey, isFriendly, x, y, projDamage, projDuration, projPierce, targetLocation) {
+        super(game, mickey, isFriendly, x, y, 113, 95, projDamage, 0, projDuration, projPierce);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/shockwave.png"), 0, 0, this.width, this.height, 8, 0.1, 0, false, false);
 
@@ -340,20 +353,24 @@ class Shockwave extends Projectile {
         //Rectangle bounding box
         this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+
+        this.updateTargetLocation(targetLocation.x, targetLocation.y);
     }
 
-    draw(ctx) {
-        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
-
-        if (PARAMS.DEBUG) {
-            this.BB.draw(ctx, this.game);
+    update() {
+        if (this.checkDuration()) {
+            return;
         }
-    };
+
+        this.moveStraight(true);
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+        this.checkCollision();
+    }
 }
 
 class Fireblade extends Projectile {
     constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, targetEntity, isClockwise, radius, theta) {
-        super(game, mickey, isFriendly, x, y, 80, 90, projDamage, projSpeed, projDuration, 4095, false, null, false, targetEntity, true, isClockwise, radius, theta);
+        super(game, mickey, isFriendly, x, y, 80, 90, projDamage, projSpeed, projDuration, 4095);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireblade.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
 
@@ -364,13 +381,33 @@ class Fireblade extends Projectile {
         //Rectangle bounding box
         this.offsetBB = { x: 12 - this.width / 2, y: 16 - this.height / 2, w: -24, h: -32 };
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+
+        this.targetEntity = targetEntity;
+        this.radius = radius;
+        this.theta = theta;
+        this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
+
+        this.rotSpeed = degreeToRad(this.projSpeed * (isClockwise ? 1 : -1));
+        this.x = this.targetX + Math.cos(this.theta) * this.radius;
+        this.y = this.targetY + Math.sin(this.theta) * this.radius;
+    }
+
+    update() {
+        if (this.checkDuration()) {
+            return;
+        }
+
+        this.updateTargetLocation(this.targetEntity.BB.center().x, this.targetEntity.BB.center().y);
+
+        this.revolve();
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+        this.checkCollision();
     }
 
     draw(ctx) {
         this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.width / 2 - this.game.cameraX, this.y - this.height / 2 - this.game.cameraY, this.width, this.height);
 
         if (PARAMS.DEBUG) {
-            // draws bounding box
             this.BB.draw(ctx, this.game);
         }
     };
@@ -378,7 +415,7 @@ class Fireblade extends Projectile {
 
 class Blast extends Projectile {
     constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians) {
-        super(game, mickey, isFriendly, x, y, 32, 32, projDamage, projSpeed, projDuration, projPierce, false, targetLocation);
+        super(game, mickey, isFriendly, x, y, 32, 32, projDamage, projSpeed, projDuration, projPierce);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/blast.png"), 0, 0, this.width, this.height, 5, 0.5, 0, false, false);
 
@@ -390,68 +427,18 @@ class Blast extends Projectile {
         this.offsetBB = { x: 16, y: 16, w: -32, h: -32 };
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 
+        this.updateTargetLocation(targetLocation.x, targetLocation.y);
         this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
     }
-
-    draw(ctx) {
-        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
-
-        if (PARAMS.DEBUG) {
-            // draws bounding box
-            this.BB.draw(ctx, this.game);
-        }
-    };
-}
-
-class Meteor extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius) {
-        super(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, true, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius);
-
-        this.meteorArrive = false;
-        this.meteorArriveTime = 0;
-        this.meteorSpd = 15;
-        this.meteorY = -180;
-
-        this.spritesheet = [];
-        this.meteorSize = { w: 64, h: 180 };
-        this.explosionSize = { w: 140, h: 130 };
-        this.spritesheet.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/meteor.png"), 0, 0, this.meteorSize.w, this.meteorSize.h, 6, 0.1, 1, true, false));
-        this.spritesheet.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/explosion.png"), 0, 0, this.explosionSize.w, this.explosionSize.h, 9, 0.1, 1, false, false));
-
-        //Rectangle bounding box
-        this.offsetBB = { x: -this.width / 2, y: -this.height / 2, w: 0, h: 0 };
-        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
-    }
-
+    
     update() {
-        if (this.meteorArrive) {
-            super.update();
-        } else {
-            this.meteorY += this.meteorSpd;
-            if (this.meteorY + this.meteorSize.h / 2 >= this.y) {
-                this.meteorY = this.y + this.meteorSize.h / 2;
-                this.meteorArrive = true;
-            }
+        if (this.checkDuration()) {
+            return;
         }
+
+        this.moveStraight();
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+        this.checkCollision();
     }
-
-    draw(ctx) {
-        if (this.meteorArrive) {
-            if (this.elapsed > this.meteorArriveTime + 0.9) {
-                this.removeFromWorld = true;
-                return;
-            }
-            this.spritesheet[1].drawFrame(this.game.clockTick, ctx, this.x - this.explosionSize.w - this.game.cameraX, this.y - this.meteorSize.h - 50 - this.game.cameraY, this.explosionSize.w * 2, this.explosionSize.h * 2);
-        } else {
-            this.meteorArriveTime = this.elapsed;
-            this.spritesheet[0].drawFrame(this.game.clockTick, ctx, this.x - this.meteorSize.w / 2 - this.game.cameraX, this.meteorY - this.game.cameraY, this.meteorSize.w, this.meteorSize.h);
-        }
-
-
-        if (PARAMS.DEBUG) {
-            // draws bounding box
-            this.BB.draw(ctx, this.game);
-        }
-    };
 }
 

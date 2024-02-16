@@ -400,7 +400,7 @@ class GiantHuskydog {
                 this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
                         new Shockwave(
                             this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                            10, 0, 0.8, 1000,          // attributes (dmg, spd, duration, pierce)
+                            10, 0.8, 1000,          // attributes (dmg, duration, pierce)
                             this.mickey.BB.center() // destination vector (x, y)
                 )));
             } else {

@@ -36,7 +36,7 @@ class Mickey {
         this.fireSlashCD = new Clock(game, 8); // 8 sec cd
         this.fireBreathLevel = 0;
         this.fireBreathCD = new Clock(game, 5); // 5 sec cd
-        this.fireBladeLevel = 5;
+        this.fireBladeLevel = 0;
         this.fireBladeCD = new Clock(game, 6);
         this.rasenganLevel = 0;
         this.rasenganCD = new Clock(game, 2);
@@ -167,12 +167,12 @@ class Mickey {
             }
         }
 
-        if (this.rasenganLevel > 0) {
-            if (this.rasenganCD.doneTicking() && this.game.entityDistances.length > 0) {
-                const nearest = this.game.entityDistances[0].e;
+        if (this.rasenganLevel > 0 && this.rasenganCD.doneTicking()) {
+            for (let i = 0; i < this.rasenganLevel && i < this.game.entityDistances.length; i++) {
+                const nearest = this.game.entityDistances[i].e;
                 this.game.addAttackEntity(new Rasengan(
                     this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    100, 8, 3, 2, // attributes (dmg, spd, duration, pierce)
+                    50 * this.rasenganLevel, 8, 3, 2, // attributes (dmg, spd, duration, pierce)
                     nearest.BB.center(), 0
                 ));
             }
