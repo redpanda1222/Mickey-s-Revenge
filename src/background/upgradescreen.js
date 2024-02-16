@@ -67,13 +67,11 @@ class UpgradeScreen {
         this.game.pausable = true;
         this.game.pause = false;
         this.game.showPause = true;
-        console.log("picked");
     }
 
     update() {
         if (!this.visible) return;
 
-        console.log("watashi wa koko desu!!!!");
         if (this.upgrade1 == null || this.upgrade2 == null || this.upgrade3 == null) {
             this.upgrade1 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
             this.upgrade2 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
