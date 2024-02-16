@@ -192,7 +192,7 @@ class GameEngine {
                 this.renderOrder.push({ y: this.entities[i].BB.y, e: this.entities[i] });
             }
         }
-
+        // updating attacks
         for (i = attackEntitiesCount - 1; i >= 0; --i) {
             if (this.attackEntities[i].removeFromWorld) {
                 this.attackEntities[i] = this.attackEntities[this.attackEntities.length - 1];
@@ -201,7 +201,7 @@ class GameEngine {
                 this.attackEntities[i].update();
             }
         }
-
+        // updating gems
         for (i = gemEntitiesCount - 1; i >= 0; --i) {
             if (this.gemEntities[i].removeFromWorld) {
                 this.gemEntities[i] = this.gemEntities[this.gemEntities.length - 1];
@@ -211,11 +211,11 @@ class GameEngine {
             }
         }
 
-        // proximity detection
+        // proximity sorting
         this.entityDistances.sort((a, b) => a.d - b.d);
 
         // update mickey last
-        if (this.entities.length > 0) {
+        if (this.entities[0]) {
             if (this.entities[0].removeFromWorld) this.entities.length = 0;
             else {
                 this.entities[0].update();
@@ -298,6 +298,7 @@ class GameEngine {
         this.clockTick = this.timer.tick();
         this.update();
         this.draw();
+        this.click = null;
     };
 
 };

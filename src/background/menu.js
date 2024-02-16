@@ -74,7 +74,6 @@ class MenuScreen {
                         this.menuSelect.credits = false;
                     }
                 }
-                this.game.click = null;
             }
         }
     };

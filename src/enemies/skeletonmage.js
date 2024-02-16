@@ -88,7 +88,7 @@ class SkeletonMage {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 25 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             // Flip the sprite if moving left
             this.xStart = 1;
             this.yStart = 48;

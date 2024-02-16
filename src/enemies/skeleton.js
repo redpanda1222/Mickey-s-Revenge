@@ -91,7 +91,7 @@ class Skeleton {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 30 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 515;
             this.yStart = 73;

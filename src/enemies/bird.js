@@ -88,7 +88,7 @@ class Bird {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 35 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 1120;
         } else {

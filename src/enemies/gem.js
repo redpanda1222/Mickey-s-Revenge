@@ -47,7 +47,7 @@ class Gem {
         } 
         // magnet pull towards mickey if within range
         else if (toMickey.mag() < this.mickey.pickupRadius) {
-            toMickey = toMickey.norm().mul(2);
+            toMickey = toMickey.norm().mul(3);
             this.x += toMickey.x;
             this.y += toMickey.y;
             this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);

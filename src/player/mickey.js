@@ -26,7 +26,7 @@ class Mickey {
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
-        this.movementSpeed = 5;
+        this.movementSpeed = 4;
         this.pickupRadius = 70;
         this.Level = 1;
         this.experiencePoints = 0;
