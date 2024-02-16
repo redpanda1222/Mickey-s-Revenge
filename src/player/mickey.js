@@ -165,7 +165,7 @@ class Mickey {
         // mickey only collide with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity); 
+                this.handleCollision(backEntity);
             }
         });
 
