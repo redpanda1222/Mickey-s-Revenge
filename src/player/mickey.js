@@ -26,7 +26,7 @@ class Mickey {
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
-        this.movementSpeed = 4;
+        this.movementSpeed = 2;
         this.pickupRadius = 70;
         this.Level = 1;
         this.experiencePoints = 0;
@@ -34,13 +34,13 @@ class Mickey {
 
         //Player Attack Stats
         this.fireSlashLevel = 0;
-        this.fireSlashCD = new Clock(game, 8); // 8 sec cd
+        this.fireSlashCD = new Clock(game, 5); // 8 sec cd
         this.fireBreathLevel = 0;
-        this.fireBreathCD = new Clock(game, 5); // 5 sec cd
+        this.fireBreathCD = new Clock(game, 4); // 5 sec cd
         this.fireBladeLevel = 0;
-        this.fireBladeCD = new Clock(game, 6);
+        this.fireBladeCD = new Clock(game, 3);
         this.rasenganLevel = 1;
-        this.rasenganCD = new Clock(game, 2);
+        this.rasenganCD = new Clock(game, 1);
 
         // Killed enemies counter
         this.enemiesCounter = 0;
@@ -137,7 +137,7 @@ class Mickey {
         //console.log(this.experiencePoints);
         //console.log(this.Level);
         //update his level
-        if (this.experiencePoints >= this.Level * 10) {
+        if (this.experiencePoints >= this.Level * 30) {
             this.Level += 1; //add level if experience points met
             //should we reset player's exp points?
             this.experiencePoints = 0;
@@ -179,7 +179,7 @@ class Mickey {
                 const nearest = this.game.entityDistances[i].e;
                 this.game.addAttackEntity(new Rasengan(
                     this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    50 * this.rasenganLevel, 8, 3, 2, // attributes (dmg, spd, duration, pierce)
+                    50 * this.rasenganLevel, 5, 3, 10, // attributes (dmg, spd, duration, pierce)
                     nearest.BB.center(), 0
                 ));
             }
@@ -229,7 +229,7 @@ class Mickey {
 	};
 
     drawHealthBar(ctx){
-        const camX = this.x + 15 - this.game.cameraX;
+        const camX = this.x - 12 - this.game.cameraX;
         const camY = this.y - 8 - this.game.cameraY;
         //drawing health box
         //--BACKGROUND FOR MAX HP

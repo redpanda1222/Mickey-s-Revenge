@@ -26,7 +26,7 @@ class FireSlash {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.currentHP -= 9 + (Math.floor(this.mickey.Level / 100));
+                entity.currentHP -= 5 + (Math.floor(this.mickey.Level / 100));
             }
         });
 
@@ -123,14 +123,14 @@ class FireBreath {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.currentHP -= 9 + (Math.floor(this.mickey.Level / 100));
+                entity.currentHP -= 2 + (Math.floor(this.mickey.Level / 100));
             }
         });
         if (this.BB2 != null) {
             this.game.entities.forEach(entity => {
                 //check if the cooldown is less than 3, if so, deal damage upon collision
                 if (entity != this.mickey && this.BB2.collideBB(entity.BB) && this.coolDown <= 3) {
-                    entity.currentHP -= 9 + (Math.floor(this.mickey.Level / 100));
+                    entity.currentHP -= 2 + (Math.floor(this.mickey.Level / 100));
                 }
             });
         }

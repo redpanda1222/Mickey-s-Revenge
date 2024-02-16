@@ -8,7 +8,7 @@ class Bird {
         this.acc = new Vector2(0, 0);
         this.w = 50;
         this.h = 50;
-        this.speed = 2; // must be at least 1
+        this.speed = 2.2; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;

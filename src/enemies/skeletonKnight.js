@@ -23,20 +23,20 @@ class SkeletonKnight {
         this.width = 32;
         this.height = 43;
 
-        this.MaxHP = 500;
-        this.currentHP = 500;
+        this.MaxHP = 5000;
+        this.currentHP = 5000;
 
         // damage
-        this.collideDamage = 10;
+        this.collideDamage = 5;
 
         // Laser ball properties
         this.laserCooldown = 0; // Cooldown for firing laser balls
         this.laserFire = 0;
-        this.laserInterval = 2; // Interval between volleys of laser balls in seconds
+        this.laserInterval = 5; // Interval between volleys of laser balls in seconds
 
         // Skeleton spawning properties
         this.spawnCooldown = 0; // Cooldown for spawning skeletons
-        this.spawnInterval = 10; // Interval between skeleton spawns in seconds
+        this.spawnInterval = 12; // Interval between skeleton spawns in seconds
 
         //Rectangle bounding box
         this.offsetBB = { x: 23, y: 13, w: -50, h: -10 };
