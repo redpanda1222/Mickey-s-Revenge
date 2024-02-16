@@ -2,6 +2,8 @@ class SkeletonKnight {
     constructor(game, mickey, x, y) {
         Object.assign(this, { game, mickey });
 
+        this.initialX = x;
+        this.initialY = y;
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
@@ -21,8 +23,11 @@ class SkeletonKnight {
         this.width = 32;
         this.height = 43;
 
-        this.MaxHP = 1000;
-        this.currentHP = 1000;
+        this.MaxHP = 500;
+        this.currentHP = 500;
+
+        // damage
+        this.collideDamage = 10;
 
         // Laser ball properties
         this.laserCooldown = 0; // Cooldown for firing laser balls
@@ -41,6 +46,10 @@ class SkeletonKnight {
     setPosition(x, y) {
         this.pos.x = x;
         this.pos.y = y;
+    }
+
+    takeDamage(damage) {
+        this.currentHP -= damage;
     }
 
     handleCollision(entity, scalarForce) {
@@ -65,7 +74,7 @@ class SkeletonKnight {
 
     fireLaser() {
         // Create and add laser ball entities to the game world
-        this.game.addEntity(new LaserBall(this.game, this, this.mickey));
+        this.game.addAttackEntity(new LaserBall(this.game, this, this.mickey));
     }
 
     spawnSkeletons() {
@@ -116,7 +125,7 @@ class SkeletonKnight {
             }
             // colliding with mickey and attacking mickey
             if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(10);
+                this.mickey.takeDamage(this.collideDamage);
             }
         }); 
 
@@ -157,6 +166,12 @@ class SkeletonKnight {
         // this should be last thing to update
         this.move();
     };
+
+    reset() {
+        this.currentHP = this.MaxHP;
+        this.pos.x = this.initialX;
+        this.pos.y = this.initialY;
+    }
 
     drawHealthBar(ctx) {
         const camX = this.pos.x + 15 - this.game.cameraX;
@@ -225,19 +240,23 @@ class LaserBall {
         this.dx /= this.distance;
         this.dy /= this.distance;
 
-        this.speed = 10;
+        this.speed = 8;
+        this.collideDamage = 10;
 
+        // animation
         this.elapsedTime = 0;
         this.frameDuration = 0.1;
         this.frameCount = 3;
         this.totalTime = this.frameCount * this.frameDuration;
 
+        // information from sprite sheet
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/attack/lasers.png");
         this.xStart = 1269;
         this.yStart = 1730;
         this.width = 160;
         this.height = 150;
 
+        // remove from world if allowed time is up
         this.timer = 0;
         this.totalAllowedTime = 5;
 
@@ -258,7 +277,7 @@ class LaserBall {
         }
 
         if (this.BB.collideBB(this.mickey.BB)) {
-            this.mickey.currentHP -= 10;
+            this.mickey.takeDamage(this.collideDamage);
             this.removeFromWorld = true; 
         }
     }

@@ -27,7 +27,7 @@ class Bird {
 
         // attributes
         this.currentHP = 100;
-        this.collideDmg = 2;
+        this.collideDmg = 5;
 
         this.flipLeft = false;
 
@@ -55,11 +55,16 @@ class Bird {
             if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
                 this.handleCollision(entity, 0.75);
             }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
         });
+
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDmg);
+        }
+    }
+
+    takeDamage(damage) {
+        this.currentHP -= damage;
     }
 
     handleCollision(entity, scalarForce) {
@@ -83,7 +88,7 @@ class Bird {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 35 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 1120;
         } else {
@@ -102,12 +107,14 @@ class Bird {
             }
         }
 
+        let toMickey = this.mickey.BB.center().sub(this.BB.center());
+        this.game.addEntityDistances(this, toMickey.mag());
+
         if (this.moveVec) {
             this.applyForce(this.moveVec.norm());
         } else {
             // applies force to move towards center of mickey
-            let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
-            this.applyForce(toMickey);
+            this.applyForce(toMickey.norm());
             this.updateFacing();
         }
 
@@ -118,7 +125,7 @@ class Bird {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }

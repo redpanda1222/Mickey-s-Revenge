@@ -4,15 +4,18 @@ class SceneManager {
         this.game.camera = this;
         
         this.level = null;
-        this.mickey = new Mickey(this.game, PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2); // 800 400 is initial x and y
+        this.mickey = new Mickey(this.game, PARAMS.WIDTH / 2, PARAMS.HEIGHT / 2, this); // 800 400 is initial x and y
         this.spawnmanager = new SpawnManager(this.game, this.mickey);
+        this.upgradeScreen = new UpgradeScreen(this.game, this);
+        this.game.upgrade = this.upgradeScreen;
+        this.gameover = false;
+        this.gamewin = false;
 
-        // Bosses
+        // Enemy Bosses
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
-
-        this.gameover = false;
+        this.MaxEnemies = 100;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -34,13 +37,20 @@ class SceneManager {
         });
 
         this.game.backgroundEntities.length = 0;
+        this.game.gemEntities.length = 0;
     };
 
-    loadScene(level, isTransition) {
-        
-        if (isTransition) {
+    loadScene(level, isTransition, isGameWin) {
+        if (isGameWin) {
+            this.game.transition = new TransitionScreen(this.game, level, true);
+        } 
+        else if (isGameWin === false) {
+            this.game.transition = new TransitionScreen(this.game);
+        } 
+        else if (isTransition) {
             this.game.transition = new TransitionScreen(this.game, level);
-        } else if (this.menu.isInMenu == false) {
+        } 
+        else if (this.menu.isInMenu == false) {
             this.game.pausable = true;
             //load music
             if (level.music && !this.title) {
@@ -108,12 +118,17 @@ class SceneManager {
                     this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
                 }
             }
-            // put entities here for testing
-            // this.game.addEntity(new SkeletonMage(this.game, this.mickey, 50, 50));
             this.spawnmanager.loadWaves(level.waves, level.formations);
-
             this.mickey.removeFromWorld = false;
-            this.game.addEntity(this.mickey);
+            this.game.addEntity(this.mickey); // mickey is always the first entity in game.entities
+
+            // put entities here for testing
+            // this.game.addEntity(this.huskyBoss);
+
+            // stress test
+            // for (let i = 0; i < 10; i++) {
+            //     this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
+            // }
         };
     };
     updateAudio() {
@@ -130,39 +145,61 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.update();
         }
+        else if (this.gamewin) {
+            this.reset();
+        }
         else if (!this.gameover) {
-            if (this.mickey.enemiesCounter >= 100) {
+
+            // Bosses spawn
+            if (this.mickey.enemiesCounter >= this.MaxEnemies) {
                 if (!this.bossSpawned) {
                     this.skeletonBoss.setPosition(this.mickey.x + 400, this.mickey.y + 400);
                     this.huskyBoss.setPosition(this.mickey.x - 400, this.mickey.y - 400);
+                    this.huskyBoss.removeFromWorld = false;
+                    this.skeletonBoss.removeFromWorld = false;
                     this.game.addEntity(this.huskyBoss);
                     this.game.addEntity(this.skeletonBoss);
                     this.bossSpawned = true;
                 }
             } else {
-                this.spawnmanager.update();
+                this.spawnmanager.update(); 
             }
 
-            // uncomment conditional below to allow game over
-            // if (this.mickey.currentHP <= 0) {
-            //     this.game.pausable = false;
-            //     this.gameover = true;
-            //     this.clearAllEntities();
-            //     this.game.transition = new TransitionScreen(this.game);
-            //     ASSET_MANAGER.pauseBackgroundMusic();
+            this.upgradeScreen.update();
 
-            //     this.game.background.updateTileGrid(false);
-            //     this.mickey.reset();
-            // }
+            // game win
+            if (this.areBossesDead()) {
+                this.gamewin = true;
+                this.loadScene(null, true, true);
+                this.reset();
+            } 
+
+            // uncomment conditional below to allow game over (mickey dying)
+            if (this.mickey.currentHP <= 0) {
+                this.gameover = true;
+                this.loadScene(null, true, false);
+                this.reset();
+            }
         }
-        if (this.areBossesDead()) {
-            // win feature
-        } 
         
     
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;
     };
+
+    reset() {
+        this.game.pausable = false;
+        this.clearAllEntities();
+        ASSET_MANAGER.pauseBackgroundMusic();
+
+        this.game.background.updateTileGrid(false);
+        this.mickey.reset();
+        this.spawnmanager.reset();
+        this.huskyBoss.reset();
+        this.skeletonBoss.reset();
+
+        this.bossSpawned = false;
+    }
 
     draw(ctx) {
         if (this.menu.isInMenu) {
