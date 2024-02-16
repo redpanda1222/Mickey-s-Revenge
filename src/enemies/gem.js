@@ -22,6 +22,8 @@ class Gem {
     }
 
     update() {
+        let toMickey = this.mickey.BB.center().sub(this.BB.center());
+
         if (this.BB.collideBB(this.mickey.BB)) {
             //red = 0 gives base exp, blue = 1 gives exp 2X , green = 2 gives exp
             if (this.gemType == 0){ 
@@ -42,7 +44,15 @@ class Gem {
             }
             
             this.removeFromWorld = true;
+        } 
+        // magnet pull towards mickey if within range
+        else if (toMickey.mag() < this.mickey.magnetRadius) {
+            toMickey = toMickey.norm().mul(2);
+            this.x += toMickey.x;
+            this.y += toMickey.y;
+            this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
         }
+        
     }
 
     draw(ctx) {

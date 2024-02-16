@@ -129,7 +129,6 @@ class SceneManager {
             for (let i = 0; i < 10; i++) {
                 this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
             }
-            // 41 fps consistent
         };
     };
     updateAudio() {

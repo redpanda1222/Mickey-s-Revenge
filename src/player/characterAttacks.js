@@ -181,8 +181,8 @@ class FireBreath{
 }
 
 class Projectile {
-    constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, isStopping, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius) {
-        Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, isStopping, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius });
+    constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, isStopping, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius, theta) {
+        Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce, isStopping, targetLocation, isHoming, targetEntity, isRevolving, isClockwise, radius, theta });
 
         this.elapsed = 0;
 
@@ -199,9 +199,9 @@ class Projectile {
         }
 
         if (isRevolving) {
-            this.x += radius;
-            this.theta = 0;
             this.rotSpeed = degreeToRad(this.projSpeed * (this.isClockwise ? 1 : -1));
+            this.x = Math.cos(this.theta) * this.radius;
+            this.y = Math.sin(this.theta) * this.radius;
         }
     }
 
@@ -346,6 +346,31 @@ class Shockwave extends Projectile {
         this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
 
         if (PARAMS.DEBUG) {
+            this.BB.draw(ctx, this.game);
+        }
+    };
+}
+
+class Fireblade extends Projectile {
+    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, targetEntity, isClockwise, radius, theta) {
+        super(game, mickey, isFriendly, x, y, 80, 90, projDamage, projSpeed, projDuration, 4095, false, null, false, targetEntity, true, isClockwise, radius, theta);
+
+        this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireblade.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
+
+        this.sizeScale = 0.5;
+        this.width  *= this.sizeScale;
+        this.height *= this.sizeScale;
+
+        //Rectangle bounding box
+        this.offsetBB = { x: 12 - this.width / 2, y: 16 - this.height / 2, w: -24, h: -32 };
+        this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
+    }
+
+    draw(ctx) {
+        this.spritesheet.drawFrame(this.game.clockTick, ctx, this.x - this.width / 2 - this.game.cameraX, this.y - this.height / 2 - this.game.cameraY, this.width, this.height);
+
+        if (PARAMS.DEBUG) {
+            // draws bounding box
             this.BB.draw(ctx, this.game);
         }
     };

@@ -29,10 +29,17 @@ class Mickey {
         this.currentHP = this.MaxHP;
         this.Level = 1;
         this.experiencePoints = 0;
+        this.magnetRadius = 70;
 
         //Player Attack Stats
         this.fireSlashLevel = 0;
+        this.fireSlashCD = new Clock(game, 8); // 8 sec cd
         this.fireBreathLevel = 0;
+        this.fireBreathCD = new Clock(game, 5); // 5 sec cd
+        this.fireBladeLevel = 5;
+        this.fireBladeCD = new Clock(game, 6);
+        this.rasenganLevel = 0;
+        this.rasenganCD = new Clock(game, 2);
 
         // Killed enemies counter
         this.enemiesCounter = 0;
@@ -94,25 +101,9 @@ class Mickey {
         this.enemiesCounter = 0;
     }
 
-	update()
-	{
-        this.elapsedTime += this.game.clockTick;
+    movement() {
         this.status = 0;
-
-        //console.log(this.experiencePoints);
-        //console.log(this.Level);
-        //update his level
-        if (this.experiencePoints >= this.Level * 10) {
-            this.Level += 1; //add level if experience points met
-            //should we reset player's exp points?
-            this.experiencePoints = 0;
-            this.sceneManager.upgradeScreen.visible = true;
-        }
-
-        this.game.cameraX = this.x - PARAMS.WIDTH/2 + this.width/2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT/2 + this.height/2;
-
-		if (this.game.left){
+        if (this.game.left){
             this.x -= this.movementSpeed;
             this.facing = 1;
             this.status = 1;
@@ -130,36 +121,61 @@ class Mickey {
             this.y += this.movementSpeed;
             this.status = 1;
         };
+    }
 
+	update()
+	{
+        this.elapsedTime += this.game.clockTick;
+
+        //console.log(this.experiencePoints);
+        //console.log(this.Level);
+        //update his level
+        if (this.experiencePoints >= this.Level * 10) {
+            this.Level += 1; //add level if experience points met
+            //should we reset player's exp points?
+            this.experiencePoints = 0;
+            this.sceneManager.upgradeScreen.visible = true;
+        }
+
+        this.game.cameraX = this.x - PARAMS.WIDTH/2 + this.width/2;
+        this.game.cameraY = this.y - PARAMS.HEIGHT/2 + this.height/2;
+
+		this.movement();
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
 
-        //add attack
-        if (Math.floor(this.elapsedTime) < 2 && !this.attacking){
-            //this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), 4));
-            //this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), 2));
+        //add attacks
+        if (this.fireSlashLevel > 0) {
+            if (this.fireSlashCD.doneTicking()) {
+                this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
+            }
+        }
 
-            //check Fire Slash Upgrades
-            // if (this.fireSlashLevel > 0) this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
-            //check Fire Breath Upgrades
-            // if (this.fireBreathLevel > 0) this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
+        if (this.fireBreathLevel > 0) {
+            if (this.fireBreathCD.doneTicking()) {
+                this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
+            }
+        }
 
-            if (this.game.entityDistances.length > 0) {
+        if (this.fireBladeLevel > 0 && this.fireBladeCD.doneTicking()) {
+            for (let i = 0; i < this.fireBladeLevel; i++) {
+                this.game.addAttackEntity(new Fireblade(
+                    this.game, this, true, this.BB.center().x, this.BB.center().y, 
+                    50 * this.fireBladeLevel, this.fireBladeLevel + 2, 4,         // attributes (dmg, spd, duration)
+                    this, true, 100, degreeToRad(360 / this.fireBladeLevel * i)));
+            }
+        }
+
+        if (this.rasenganLevel > 0) {
+            if (this.rasenganCD.doneTicking() && this.game.entityDistances.length > 0) {
                 const nearest = this.game.entityDistances[0].e;
                 this.game.addAttackEntity(new Rasengan(
                     this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    100, 8, 4, 5, // attributes (dmg, spd, duration, pierce)
+                    100, 8, 3, 2, // attributes (dmg, spd, duration, pierce)
                     nearest.BB.center(), 0
                 ));
             }
-
-            this.attacking = true
-        }
-
-        if (Math.floor(this.elapsedTime) > 1 && this.attacking){
-            this.elapsedTime = 0;
-            this.attacking = false;
         }
 
         // mickey only collide with background objects
