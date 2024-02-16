@@ -15,7 +15,7 @@ class SceneManager {
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
-        this.MaxEnemies = 1000;
+        this.MaxEnemies = 100;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -37,6 +37,7 @@ class SceneManager {
         });
 
         this.game.backgroundEntities.length = 0;
+        this.game.gemEntities.length = 0;
     };
 
     loadScene(level, isTransition, isGameWin) {
@@ -122,13 +123,12 @@ class SceneManager {
             this.game.addEntity(this.mickey); // mickey is always the first entity in game.entities
 
             // put entities here for testing
-            // this.game.addEntity(new GiantHuskydog(this.game, this.mickey, 0, 0));
-            // this.game.addEntity(new SkeletonKnight(this.game, this.mickey, 0, 0));
+            // this.game.addEntity(this.huskyBoss);
 
             // stress test
-            for (let i = 0; i < 10; i++) {
-                this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
-            }
+            // for (let i = 0; i < 10; i++) {
+            //     this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
+            // }
         };
     };
     updateAudio() {
@@ -167,19 +167,19 @@ class SceneManager {
 
             this.upgradeScreen.update();
 
+            // game win
             if (this.areBossesDead()) {
-                // win feature
                 this.gamewin = true;
                 this.loadScene(null, true, true);
                 this.reset();
             } 
 
-            // uncomment conditional below to allow game over (lose)
-            // if (this.mickey.currentHP <= 0) {
-            //     this.gameover = true;
-            //     this.loadScene(null, true, false);
-            //     this.reset();
-            // }
+            // uncomment conditional below to allow game over (mickey dying)
+            if (this.mickey.currentHP <= 0) {
+                this.gameover = true;
+                this.loadScene(null, true, false);
+                this.reset();
+            }
         }
     
         this.updateAudio();

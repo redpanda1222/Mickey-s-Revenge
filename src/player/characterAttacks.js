@@ -1,16 +1,15 @@
-class FireSlash{
-    constructor(game, mickey, sizeScale, Level){
-        Object.assign(this, {game, mickey, sizeScale, Level});
+class FireSlash {
+    constructor(game, mickey, sizeScale, Level) {
+        Object.assign(this, { game, mickey, sizeScale, Level });
         this.elapsedTime = 0;
         this.removeFromWorld = false;
         this.coolDown = 30;
-        this.BB = new BoundingBox(mickey.x-((mickey.width*3)/2.5), mickey.y-((mickey.height*3)/2.5), mickey.width*3 * this.sizeScale, mickey.height*3 * this.sizeScale);
+        this.BB = new BoundingBox(mickey.x - ((mickey.width * 3) / 2.5), mickey.y - ((mickey.height * 3) / 2.5), mickey.width * 3 * this.sizeScale, mickey.height * 3 * this.sizeScale);
         this.attackAnimations = [];
         this.loadAttackAnimations();
     }
 
-    loadAttackAnimations()
-    {
+    loadAttackAnimations() {
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireslash.png"), 3060, 0, 340, 334, 10, 0.04, 0, false, true));
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireslash2.png"), 0, 0, 340, 334, 10, 0.04, 0, false, false));
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/redfireslash.png"), 3060, 0, 340, 334, 10, 0.04, 0, false, true));
@@ -21,52 +20,49 @@ class FireSlash{
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/purplefireslash2.png"), 0, 0, 340, 334, 10, 0.04, 0, false, false));
     }
 
-
-
-    update()
-    {
-        this.BB.updateBB(this.mickey.x-((this.mickey.width*3)/2.5), this.mickey.y-((this.mickey.height*3)/2.5));
+    update() {
+        this.BB.updateBB(this.mickey.x - ((this.mickey.width * 3) / 2.5), this.mickey.y - ((this.mickey.height * 3) / 2.5));
 
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.currentHP -= 9 + (Math.floor(this.mickey.Level/100));
+                entity.currentHP -= 9 + (Math.floor(this.mickey.Level / 100));
             }
         });
 
         //if the cooldown is greater than 3 reduce cooldown
         if (this.coolDown > 3) {
             this.coolDown -= 1;
-        }else if (this.coolDown <= 0) {
+        } else if (this.coolDown <= 0) {
             this.coolDown = 30;
         }
     }
 
-    draw(ctx){
+    draw(ctx) {
         this.elapsedTime += this.game.clockTick;
-        if (this.Level == 1){
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+        if (this.Level == 1) {
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
-        }else if (this.Level == 2){
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[2].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[3].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+        } else if (this.Level == 2) {
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[2].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[3].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
-        }else if (this.Level == 3){
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[4].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[5].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+        } else if (this.Level == 3) {
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[4].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[5].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
-        }else if (this.Level == 4){
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[6].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5)- this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[7].drawFrame(this.game.clockTick, ctx, this.mickey.x-((this.mickey.width*3)/2.5) - this.game.cameraX, this.mickey.y-((this.mickey.height*3)/2.5) - this.game.cameraY, this.mickey.width*3*this.sizeScale, this.mickey.height*3*this.sizeScale);
+        } else if (this.Level == 4) {
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[6].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[7].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
         }
 
@@ -79,9 +75,9 @@ class FireSlash{
     }
 }
 
-class FireBreath{
-    constructor(game, mickey, sizeScale, Level){
-        Object.assign(this, {game, mickey, sizeScale, Level});
+class FireBreath {
+    constructor(game, mickey, sizeScale, Level) {
+        Object.assign(this, { game, mickey, sizeScale, Level });
         this.elapsedTime = 0;
         this.removeFromWorld = false;
         this.width = 200
@@ -89,41 +85,37 @@ class FireBreath{
         this.coolDown = 15;
 
         this.offsetBB = { x: 0, y: 30, w: 0, h: -45 };
-        this.BB = new BoundingBox(this.mickey.x + this.width/2 - this.game.cameraX + this.offsetBB.x, this.mickey.y - this.game.cameraY + this.offsetBB.y, this.width + this.offsetBB.w * this.sizeScale, this.height + this.offsetBB.h * this.sizeScale);
+        this.BB = new BoundingBox(this.mickey.x + this.width / 2 - this.game.cameraX + this.offsetBB.x, this.mickey.y - this.game.cameraY + this.offsetBB.y, this.width + this.offsetBB.w * this.sizeScale, this.height + this.offsetBB.h * this.sizeScale);
         this.BB2 = null;
         this.BB3 = null;
         this.BB4 = null;
 
-        if (Level == 2){
-            this.BB2 = new BoundingBox(this.mickey.x + this.width/2 - this.game.cameraX + this.offsetBB.x, this.mickey.y - this.game.cameraY + this.offsetBB.y, this.width + this.offsetBB.w * this.sizeScale, this.height + this.offsetBB.h * this.sizeScale);
+        if (Level == 2) {
+            this.BB2 = new BoundingBox(this.mickey.x + this.width / 2 - this.game.cameraX + this.offsetBB.x, this.mickey.y - this.game.cameraY + this.offsetBB.y, this.width + this.offsetBB.w * this.sizeScale, this.height + this.offsetBB.h * this.sizeScale);
         }
 
         this.attackAnimations = [];
         this.loadAttackAnimations();
     }
 
-    loadAttackAnimations()
-    {
+    loadAttackAnimations() {
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/firebreath.png"), 0, 0, 120, 65, 10, 0.08, 0, true, false));
         this.attackAnimations.push(new Animator(ASSET_MANAGER.getAsset("./assets/attack/firebreath2.png"), 1200, 0, 120, 65, 10, 0.08, 0, true, true));
     }
 
-
-
-    update()
-    {
-        if (this.Level == 1){
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.BB.updateBB(this.mickey.x + this.width/2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
+    update() {
+        if (this.Level == 1) {
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.BB.updateBB(this.mickey.x + this.width / 2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
                 this.BB.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             }
         } else if (this.Level == 2) {
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.BB.updateBB(this.mickey.x + this.width/2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.BB.updateBB(this.mickey.x + this.width / 2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
                 this.BB2.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-                this.BB.updateBB(this.mickey.x + this.width/2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
+                this.BB.updateBB(this.mickey.x + this.width / 2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
                 this.BB2.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             }
         }
@@ -131,14 +123,14 @@ class FireBreath{
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.currentHP -= 9 + (Math.floor(this.mickey.Level/100));
+                entity.currentHP -= 9 + (Math.floor(this.mickey.Level / 100));
             }
         });
         if (this.BB2 != null) {
             this.game.entities.forEach(entity => {
                 //check if the cooldown is less than 3, if so, deal damage upon collision
                 if (entity != this.mickey && this.BB2.collideBB(entity.BB) && this.coolDown <= 3) {
-                    entity.currentHP -= 9 + (Math.floor(this.mickey.Level/100));
+                    entity.currentHP -= 9 + (Math.floor(this.mickey.Level / 100));
                 }
             });
         }
@@ -146,29 +138,28 @@ class FireBreath{
         //if the cooldown is greater than 3 reduce cooldown
         if (this.coolDown > 3) {
             this.coolDown -= 1;
-        }else if (this.coolDown == 0) {
+        } else if (this.coolDown == 0) {
             this.coolDown = 15;
         }
     }
 
-    draw(ctx){
+    draw(ctx) {
         this.elapsedTime += this.game.clockTick;
         if (this.Level == 1) {
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width/2 - this.game.cameraX, this.mickey.y- this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-                 this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width  - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width / 2 - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
             }
         } else if (this.Level == 2) {
-            if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width/2 - this.game.cameraX, this.mickey.y- this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
-                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width  - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
-            }else if (Math.floor(this.elapsedTime%3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width/2 - this.game.cameraX, this.mickey.y- this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
-                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width  - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+            if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width / 2 - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+            } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width / 2 - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
             }
         }
-
 
         if (this.elapsedTime > 1) this.removeFromWorld = true;
 
@@ -185,10 +176,8 @@ class Projectile {
         Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce });
 
         this.elapsed = 0;
-
         this.targetX = x;
         this.targetY = y;
-
         this.prevHits = new Map();
 
         // if (targetEntity) {
@@ -197,37 +186,35 @@ class Projectile {
         // else if (targetLocation) {
         //     this.updateTargetLocation(targetLocation.x, targetLocation.y);
         // }
-
-        // if (isRevolving) {
-        //     this.rotSpeed = degreeToRad(this.projSpeed * (this.isClockwise ? 1 : -1));
-        //     this.x = Math.cos(this.theta) * this.radius;
-        //     this.y = Math.sin(this.theta) * this.radius;
+        // if (this.targetEntity && (this.isHoming || this.isRevolving)) {
+        //     this.updateTargetLocation(this.targetEntity.BB.center().x, this.targetEntity.BB.center().y);
         // }
     }
 
     checkCollision() {
-         if (this.isFriendly) {
-             // friendly projectile can not harm Mickey, it harms only enemies
-             for (let i = this.game.entities.length - 1; i > 0; --i) {
-                 const entity = this.game.entities[i];
- 
-                 if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
-                     this.handleCollision(entity);
-                 } else {
-                    this.prevHits.delete(entity); 
-                 }
- 
-                 if (this.projPierce < 1) {
-                     this.removeFromWorld = true;
-                     return;
-                 }
-             }
-         } else {
-             // not friendly projectile only harms Mickey
-             if (this.BB.collideBB(this.mickey.BB)) {
-                 this.handleCollision(this.mickey);
-             }
-         }
+        if (this.isFriendly) {
+            // friendly projectile can not harm Mickey, it harms only enemies
+            for (let i = this.game.entities.length - 1; i > 0; --i) {
+                const entity = this.game.entities[i];
+
+                if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
+                    this.handleCollision(entity);
+                } else {
+                    this.prevHits.delete(entity);
+                }
+
+                if (this.projPierce < 1) {
+                    this.removeFromWorld = true;
+                    return;
+                }
+            }
+        } else {
+            // not friendly projectile only harms Mickey
+            if (this.BB.collideBB(this.mickey.BB)) {
+                this.handleCollision(this.mickey);
+                this.removeFromWorld = this.projPierce < 1;
+            }
+        }
     }
 
     handleCollision(entity) {
@@ -280,15 +267,11 @@ class Projectile {
             this.BB.draw(ctx, this.game);
         }
     };
-
-    // if (this.targetEntity && (this.isHoming || this.isRevolving)) {
-    //     this.updateTargetLocation(this.targetEntity.BB.center().x, this.targetEntity.BB.center().y);
-    // }
 }
 
 class Warning {
     constructor(game, x, y, w, h, duration, projectile) {
-        Object.assign(this, {game, x, y, w, h, duration, projectile});
+        Object.assign(this, { game, x, y, w, h, duration, projectile });
 
         this.clock = new Clock(this.game, this.duration);
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/attack/red.png");
@@ -299,8 +282,7 @@ class Warning {
     }
 
     update() {
-        this.clock.update();
-        if (this.clock.isDone()) {
+        if (this.clock.doneTicking()) {
             this.removeFromWorld = true;
             this.game.addAttackEntity(this.projectile);
         }
@@ -319,7 +301,11 @@ class Rasengan extends Projectile {
         super(game, mickey, isFriendly, x, y, 94, 93, projDamage, projSpeed, projDuration, projPierce);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/rasenganBall.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
-        this.offsetBB = { x: 22, y: 24, w: -48, h: -48 };
+        this.sizeScale = 0.75;
+        this.width *= this.sizeScale;
+        this.height *= this.sizeScale;
+
+        this.offsetBB = { x: 20, y: 22, w: -44, h: -42 };
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 
         this.updateTargetLocation(targetLocation.x, targetLocation.y);
@@ -327,9 +313,7 @@ class Rasengan extends Projectile {
     }
 
     update() {
-        if (this.checkDuration()) {
-            return;
-        }
+        if (this.checkDuration()) return;
 
         this.moveStraight();
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
@@ -344,7 +328,7 @@ class Shockwave extends Projectile {
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/shockwave.png"), 0, 0, this.width, this.height, 8, 0.1, 0, false, false);
 
         this.sizeScale = 4;
-        this.width  *= this.sizeScale;
+        this.width *= this.sizeScale;
         this.height *= this.sizeScale;
 
         this.x -= this.width / 2;
@@ -373,9 +357,8 @@ class Fireblade extends Projectile {
         super(game, mickey, isFriendly, x, y, 80, 90, projDamage, projSpeed, projDuration, 4095);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireblade.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
-
         this.sizeScale = 0.5;
-        this.width  *= this.sizeScale;
+        this.width *= this.sizeScale;
         this.height *= this.sizeScale;
 
         //Rectangle bounding box
@@ -393,9 +376,7 @@ class Fireblade extends Projectile {
     }
 
     update() {
-        if (this.checkDuration()) {
-            return;
-        }
+        if (this.checkDuration()) return;
 
         this.updateTargetLocation(this.targetEntity.BB.center().x, this.targetEntity.BB.center().y);
 
@@ -418,9 +399,8 @@ class Blast extends Projectile {
         super(game, mickey, isFriendly, x, y, 32, 32, projDamage, projSpeed, projDuration, projPierce);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/blast.png"), 0, 0, this.width, this.height, 5, 0.5, 0, false, false);
-
         this.sizeScale = 2;
-        this.width  *= this.sizeScale;
+        this.width *= this.sizeScale;
         this.height *= this.sizeScale;
 
         //Rectangle bounding box
@@ -430,11 +410,9 @@ class Blast extends Projectile {
         this.updateTargetLocation(targetLocation.x, targetLocation.y);
         this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
     }
-    
+
     update() {
-        if (this.checkDuration()) {
-            return;
-        }
+        if (this.checkDuration()) return;
 
         this.moveStraight();
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);

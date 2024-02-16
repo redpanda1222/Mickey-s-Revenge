@@ -124,7 +124,7 @@ class Huskydog {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
@@ -243,6 +243,7 @@ class GiantHuskydog {
     }
 
     takeDamage(damage) {
+        if (this.isAirborne) return;
         this.currentHP -= damage;
     }
 

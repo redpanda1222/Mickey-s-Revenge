@@ -168,13 +168,14 @@ class GameEngine {
         if (this.transition) {
             this.transition.update();
             return;
-        } else if (this.pause) { // don't update if paused
-            if (this.upgrade != null) this.upgrade.update();
-            return;
-        }
+        } 
+        else if (this.upgrade) this.upgrade.update();
+        if (this.pause) return; // don't update if paused 
         
         this.entityDistances.length = 0;
         this.renderOrder.length = 0;
+
+        this.camera.update();
 
         const entitiesCount = this.entities.length;
         const attackEntitiesCount = this.attackEntities.length;
@@ -210,22 +211,22 @@ class GameEngine {
             }
         }
 
-        this.camera.update();
-
         // proximity detection
         this.entityDistances.sort((a, b) => a.d - b.d);
 
-        // update mickey
+        // update mickey last
         if (this.entities.length > 0) {
-            this.entities[0].update();
-            this.renderOrder.push({ y: this.entities[0].BB.y, e: this.entities[0] });
+            if (this.entities[0].removeFromWorld) this.entities.length = 0;
+            else {
+                this.entities[0].update();
+                this.renderOrder.push({ y: this.entities[0].BB.y, e: this.entities[0] });
+            }
         }
 
         // y-sorting
         this.backgroundEntities.forEach(be => {
             this.renderOrder.push({ y: be.BB.y, e: be });
         });
-
         this.renderOrder.sort((a, b) => a.y - b.y);
     };
 

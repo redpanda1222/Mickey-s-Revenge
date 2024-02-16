@@ -15,7 +15,6 @@ class Mickey {
         this.sizeScale = 2
         this.width = 26 * this.sizeScale;
         this.height = 40 * this.sizeScale;
-        this.movementSpeed = 5;
         this.animations = [];
         this.loadAnimations();
 
@@ -27,9 +26,11 @@ class Mickey {
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
+        this.movementSpeed = 5;
+        this.pickupRadius = 70;
         this.Level = 1;
         this.experiencePoints = 0;
-        this.magnetRadius = 70;
+        
 
         //Player Attack Stats
         this.fireSlashLevel = 0;
@@ -38,7 +39,7 @@ class Mickey {
         this.fireBreathCD = new Clock(game, 5); // 5 sec cd
         this.fireBladeLevel = 0;
         this.fireBladeCD = new Clock(game, 6);
-        this.rasenganLevel = 0;
+        this.rasenganLevel = 1;
         this.rasenganCD = new Clock(game, 2);
 
         // Killed enemies counter
@@ -93,7 +94,13 @@ class Mickey {
         //Player Attack Stats
         this.fireSlashLevel = 0;
         this.fireBreathLevel = 0;
+        this.fireBladeLevel = 0;
+        this.rasenganLevel = 1;
 
+        this.fireSlashCD.reset()
+        this.fireBreathCD.reset()
+        this.fireBladeCD.reset()
+        this.rasenganCD.reset()
 
         this.immunityCurrent = 0;
         this.immune = false;

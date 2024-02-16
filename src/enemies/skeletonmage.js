@@ -136,7 +136,7 @@ class SkeletonMage {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
