@@ -88,7 +88,7 @@ class SkeletonMage {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 25 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             // Flip the sprite if moving left
             this.xStart = 1;
             this.yStart = 48;
@@ -136,7 +136,7 @@ class SkeletonMage {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }

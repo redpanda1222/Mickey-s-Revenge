@@ -49,11 +49,17 @@ class Skeleton {
             }
         });
         // collision with other enemies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+        for (let i = this.game.entities.length - 1; i > 0; --i) {
+            const entity = this.game.entities[i];
+            if (entity !== this && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 0.75);
             }
-        });
+        }
+        // this.game.entities.forEach(entity => {
+        //     if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+        //         this.handleCollision(entity, 0.75);
+        //     }
+        // });
         // colliding with mickey and attacking mickey
         if (this.BB.collideBB(this.mickey.BB)) {
             this.mickey.takeDamage(this.collideDmg);
@@ -85,7 +91,7 @@ class Skeleton {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 30 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 515;
             this.yStart = 73;
@@ -124,7 +130,7 @@ class Skeleton {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
