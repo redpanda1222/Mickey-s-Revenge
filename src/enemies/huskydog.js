@@ -201,7 +201,7 @@ class GiantHuskydog {
         this.isBarking = false;
 
         // jump attack
-        this.jumpAtkClock = new Clock(game, 40); // jump every 20 sec
+        this.jumpAtkClock = new Clock(game, 20); // jump every 20 sec
         this.jumpingClock = new Clock(game, 0.6); // how long jumping lasts
         this.airBorneClock = new Clock(game, 1); // how long airborne lasts
         this.landingClock = new Clock(game, 0.8);
@@ -303,7 +303,7 @@ class GiantHuskydog {
         if (!this.isDashing && !this.isBarking && !this.isJumping && this.barkAtkClock.isDone()) {
             // Start barking towards Mickey
             this.isBarking = true;
-            this.spdMul = 0.5;
+            this.spdMul = 0.25;
         }
         else if (this.isBarking) {
             if (this.firingClock.doneTicking()) {

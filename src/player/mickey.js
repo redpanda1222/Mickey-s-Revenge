@@ -34,11 +34,11 @@ class Mickey {
 
         //Player Attack Stats
         this.fireSlashLevel = 0;
-        this.fireSlashCD = new Clock(game, 5); // 8 sec cd
+        this.fireSlashCD = new Clock(game, 6); //sec cd
         this.fireBreathLevel = 0;
-        this.fireBreathCD = new Clock(game, 4); // 5 sec cd
+        this.fireBreathCD = new Clock(game, 4); //sec cd
         this.fireBladeLevel = 0;
-        this.fireBladeCD = new Clock(game, 3);
+        this.fireBladeCD = new Clock(game, 4);
         this.rasenganLevel = 1;
         this.rasenganCD = new Clock(game, 1);
 
@@ -137,7 +137,7 @@ class Mickey {
         //console.log(this.experiencePoints);
         //console.log(this.Level);
         //update his level
-        if (this.experiencePoints >= this.Level * 30) {
+        if (this.experiencePoints >= this.Level * 35) {
             this.Level += 1; //add level if experience points met
             //should we reset player's exp points?
             this.experiencePoints = 0;
@@ -155,13 +155,13 @@ class Mickey {
         //add attacks
         if (this.fireSlashLevel > 0) {
             if (this.fireSlashCD.doneTicking()) {
-                this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
+                this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
             }
         }
 
         if (this.fireBreathLevel > 0) {
             if (this.fireBreathCD.doneTicking()) {
-                this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
+                this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
             }
         }
 

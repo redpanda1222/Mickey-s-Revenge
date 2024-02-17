@@ -25,13 +25,13 @@ class FireSlash {
 
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
-            if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
+            if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 10) {
                 entity.currentHP -= 5 + (Math.floor(this.mickey.Level / 100));
             }
         });
 
         //if the cooldown is greater than 3 reduce cooldown
-        if (this.coolDown > 3) {
+        if (this.coolDown > 0) {
             this.coolDown -= 1;
         } else if (this.coolDown <= 0) {
             this.coolDown = 30;
@@ -80,11 +80,12 @@ class FireBreath {
         Object.assign(this, { game, mickey, sizeScale, Level });
         this.elapsedTime = 0;
         this.removeFromWorld = false;
-        this.width = 200
-        this.height = 100
+        this.width = 220;
+        this.height = 120
         this.coolDown = 15;
 
         this.offsetBB = { x: 0, y: 30, w: 0, h: -45 };
+
         this.BB = new BoundingBox(this.mickey.x + this.width / 2 - this.game.cameraX + this.offsetBB.x, this.mickey.y - this.game.cameraY + this.offsetBB.y, this.width + this.offsetBB.w * this.sizeScale, this.height + this.offsetBB.h * this.sizeScale);
         this.BB2 = null;
         this.BB3 = null;
@@ -106,16 +107,16 @@ class FireBreath {
     update() {
         if (this.Level == 1) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.BB.updateBB(this.mickey.x + this.width / 2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+                this.BB.updateBB(this.mickey.x + (this.width / 2) + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
                 this.BB.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             }
         } else if (this.Level == 2) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.BB.updateBB(this.mickey.x + this.width / 2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+                this.BB.updateBB(this.mickey.x + (this.width / 2) + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
                 this.BB2.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
-                this.BB.updateBB(this.mickey.x + this.width / 2 + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+                this.BB.updateBB(this.mickey.x + (this.width / 2) + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
                 this.BB2.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             }
         }
@@ -123,14 +124,14 @@ class FireBreath {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.currentHP -= 2 + (Math.floor(this.mickey.Level / 100));
+                entity.currentHP -= 4 * this.mickey.Level;
             }
         });
         if (this.BB2 != null) {
             this.game.entities.forEach(entity => {
                 //check if the cooldown is less than 3, if so, deal damage upon collision
                 if (entity != this.mickey && this.BB2.collideBB(entity.BB) && this.coolDown <= 3) {
-                    entity.currentHP -= 2 + (Math.floor(this.mickey.Level / 100));
+                    entity.currentHP -= 3 *this.mickey.Level;
                 }
             });
         }
@@ -139,7 +140,7 @@ class FireBreath {
         if (this.coolDown > 3) {
             this.coolDown -= 1;
         } else if (this.coolDown == 0) {
-            this.coolDown = 15;
+            this.coolDown = 30;
         }
     }
 
