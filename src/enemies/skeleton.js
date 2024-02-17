@@ -8,7 +8,7 @@ class Skeleton {
         this.acc = new Vector2(0, 0);
         this.w = 60;
         this.h = 60;
-        this.speed = 1; // must be at least 1
+        this.speed = 2.5; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -24,8 +24,8 @@ class Skeleton {
         this.height = 68;
 
         // attributes
-        this.currentHP = 100;
-        this.collideDmg = 5;
+        this.currentHP = 100 * this.mickey.Level;
+        this.collideDmg = 2 * this.mickey.Level;
 
         this.flipLeft = false;
 

@@ -83,8 +83,12 @@ var levelOne = {
         },
         {
             time: 100,
-            spawnrate: 1000
-            // no spawning
+            spawnrate: 1000,
+            // no spawning?
+            skeleton: 5,
+            bird: 2,
+            huskydog: 3,
+            skeletonmage: 1
         }
     ],
 

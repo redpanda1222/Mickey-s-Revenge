@@ -34,13 +34,13 @@ class Mickey {
 
         //Player Attack Stats
         this.fireSlashLevel = 0;
-        this.fireSlashCD = new Clock(game, 8); // 8 sec cd
+        this.fireSlashCD = new Clock(game, 6); //sec cd
         this.fireBreathLevel = 0;
-        this.fireBreathCD = new Clock(game, 5); // 5 sec cd
+        this.fireBreathCD = new Clock(game, 4); //sec cd
         this.fireBladeLevel = 0;
-        this.fireBladeCD = new Clock(game, 6);
+        this.fireBladeCD = new Clock(game, 4);
         this.rasenganLevel = 1;
-        this.rasenganCD = new Clock(game, 2);
+        this.rasenganCD = new Clock(game, 1);
 
         // Killed enemies counter
         this.enemiesCounter = 0;
@@ -133,11 +133,11 @@ class Mickey {
 	update()
 	{
         this.elapsedTime += this.game.clockTick;
-
+        console.log(this.enemiesCounter);
         //console.log(this.experiencePoints);
         //console.log(this.Level);
         //update his level
-        if (this.experiencePoints >= this.Level * 10) {
+        if (this.experiencePoints >= this.Level * 35) {
             this.Level += 1; //add level if experience points met
             //should we reset player's exp points?
             this.experiencePoints = 0;
@@ -155,13 +155,13 @@ class Mickey {
         //add attacks
         if (this.fireSlashLevel > 0) {
             if (this.fireSlashCD.doneTicking()) {
-                this.game.addAttackEntity(new FireSlash(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireSlashLevel));
+                this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
             }
         }
 
         if (this.fireBreathLevel > 0) {
             if (this.fireBreathCD.doneTicking()) {
-                this.game.addAttackEntity(new FireBreath(this.game, this, 1 + (Math.floor(this.Level/50)), this.fireBreathLevel));
+                this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
             }
         }
 
@@ -179,7 +179,7 @@ class Mickey {
                 const nearest = this.game.entityDistances[i].e;
                 this.game.addAttackEntity(new Rasengan(
                     this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    50 * this.rasenganLevel, 8, 3, 2, // attributes (dmg, spd, duration, pierce)
+                    50 * this.rasenganLevel, 5, 3, 10, // attributes (dmg, spd, duration, pierce)
                     nearest.BB.center(), 0
                 ));
             }
@@ -229,7 +229,7 @@ class Mickey {
 	};
 
     drawHealthBar(ctx){
-        const camX = this.x + 15 - this.game.cameraX;
+        const camX = this.x - 12 - this.game.cameraX;
         const camY = this.y - 8 - this.game.cameraY;
         //drawing health box
         //--BACKGROUND FOR MAX HP

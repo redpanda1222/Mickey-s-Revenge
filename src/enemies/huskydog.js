@@ -8,7 +8,7 @@ class Huskydog {
         this.acc = new Vector2(0, 0);
         this.w = 50;
         this.h = 50;
-        this.speed = 1.5; // must be at least 1
+        this.speed = 3.2; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -176,9 +176,9 @@ class GiantHuskydog {
         this.animations = [];
         this.loadAnimations();
 
-        this.MaxHP = 1000;
-        this.currentHP = 1000;
-        this.collideDmg = 10;
+        this.MaxHP = 5000;
+        this.currentHP = 5000;
+        this.collideDmg = 5;
 
         this.flipLeft = false;
 
@@ -190,7 +190,7 @@ class GiantHuskydog {
         this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
 
         // attacks
-        this.dashAtkClock = new Clock(game, 5); // dash every 5 sec
+        this.dashAtkClock = new Clock(game, 30); // dash every 5 sec
         this.dashingClock = new Clock(game, 1); // how long to dash for (1 sec)
         this.isDashing = false;
 
@@ -303,7 +303,7 @@ class GiantHuskydog {
         if (!this.isDashing && !this.isBarking && !this.isJumping && this.barkAtkClock.isDone()) {
             // Start barking towards Mickey
             this.isBarking = true;
-            this.spdMul = 0.5;
+            this.spdMul = 0.25;
         }
         else if (this.isBarking) {
             if (this.firingClock.doneTicking()) {

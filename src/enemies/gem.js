@@ -27,10 +27,10 @@ class Gem {
         if (this.BB.collideBB(this.mickey.BB)) {
             //red = 0 gives base exp, blue = 1 gives exp 2X , green = 2 gives exp
             if (this.gemType == 0){ 
-                this.mickey.experiencePoints += 1;
+                this.mickey.experiencePoints += 3;
             }
             else if (this.gemType == 1){
-                 this.mickey.experiencePoints +=  5;
+                 this.mickey.experiencePoints +=  6;
                 }
             else if (this.gemType == 2){
                 //check for overflow
