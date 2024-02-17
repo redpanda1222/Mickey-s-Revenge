@@ -70,6 +70,14 @@ class SceneManager {
                     this.game.addBackgroundEntity(new BarbedWire(this.game, obj.x, obj.y));
                 }
             }
+
+            // vertical barbedwires
+            if (level.verticalbarbedwires) {
+                for (i = 0; i < level.verticalbarbedwires.length; i++) {
+                    obj = level.verticalbarbedwires[i];
+                    this.game.addBackgroundEntity(new VerticalBarbedWire(this.game, obj.x, obj.y));
+                }
+            }
             
             // deadtrees
             if (level.deadtrees) {
@@ -162,7 +170,7 @@ class SceneManager {
                     this.bossSpawned = true;
                 }
             } else {
-                this.spawnmanager.update(); 
+               this.spawnmanager.update(); 
             }
 
             this.upgradeScreen.update();

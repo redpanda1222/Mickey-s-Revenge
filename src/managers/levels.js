@@ -1,3 +1,4 @@
+
 var levelOne = {
     music: "./audio/escape.mp3",
 
@@ -19,6 +20,10 @@ var levelOne = {
     // overlay on top of background (these are collidable)
     barbedwires: [
         { x: 100, y: 392 }
+    ],
+
+    verticalbarbedwires: [
+        { x: 200, y: 300 }
     ],
 
     deadbodies: [
@@ -169,5 +174,14 @@ var levelOne = {
         }
     ]
 
+};
+
+for (let i = 0; i < 25; i++) {
+    levelOne.barbedwires.push({x: -1000 + 83 * i, y: -1000});
+    levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1078});
 }
 
+for (let i = 0; i < 25; i++) {
+    levelOne.verticalbarbedwires.push({x: -1000, y: -970 + 83 * i});
+    levelOne.verticalbarbedwires.push({x: 1025, y: -970 + 83 * i});
+}

@@ -5,6 +5,7 @@ const imageQueue = [
 	"./assets/background/sand.png",
 	"./assets/background/sandtile.png",
 	"./assets/background/barbedwire1.png",
+	"./assets/background/barbedwire2.png",
 	"./assets/background/deadbodies1.png",
 	"./assets/background/deadtree.png",
 	"./assets/background/desertsand.png",

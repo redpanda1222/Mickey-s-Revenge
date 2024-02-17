@@ -17,35 +17,35 @@ class SpawnManager {
             waves.forEach(wave => {
                 let weights = [];
                 let spawns = [];
-    
+
                 if (wave.skeleton) {
                     spawns.push(0);
                     for (i = 0; i < wave.skeleton; i++) {
                         weights.push(spawns.length - 1);
                     }
                 }
-    
+
                 if (wave.bird) {
                     spawns.push(1);
                     for (i = 0; i < wave.bird; i++) {
                         weights.push(spawns.length - 1);
                     }
                 }
-    
+
                 if (wave.huskydog) {
                     spawns.push(2);
                     for (i = 0; i < wave.huskydog; i++) {
                         weights.push(spawns.length - 1);
                     }
                 }
-    
+
                 if (wave.skeletonmage) {
                     spawns.push(3);
                     for (i = 0; i < wave.skeletonmage; i++) {
                         weights.push(spawns.length - 1);
                     }
                 }
-    
+
                 this.allWeights.push(weights);
                 this.allSpawns.push(spawns);
             });
@@ -57,7 +57,7 @@ class SpawnManager {
                     f.spawntime.forEach(t => {
                         this.formations.push(new BatchSpawns(t, 0, f.skeleton, f.moveVector, f.despawnTime));
                     });
-                } 
+                }
                 else if (f.bird) {
                     f.spawntime.forEach(t => {
                         this.formations.push(new BatchSpawns(t, 1, f.bird, f.moveVector, f.despawnTime));
@@ -95,9 +95,35 @@ class SpawnManager {
     }
 
     spawnEnemy(id, x, y, move, lifespan) {
-        const posX = this.game.cameraX + (x !== undefined ? x : randomInt(PARAMS.WIDTH));
-        const posY = this.game.cameraY + (y !== undefined ? y : randomInt(PARAMS.HEIGHT));
-        switch(id) {
+
+        // Define the rectangle dimensions
+        const minX = -1000 - this.game.cameraX; // Minimum x-coordinate
+        const maxX = 1025 - this.game.cameraX; // Maximum x-coordinate
+        const minY = -1000 - this.game.cameraY; // Minimum y-coordinate
+        const maxY = 1078 - this.game.cameraY; // Maximum y-coordinate
+
+        // Generate a random value within the defined rectangle
+        let randomX = randomInt(PARAMS.WIDTH);
+        let randomY = randomInt(PARAMS.HEIGHT);
+
+        if (randomX <= minX) {
+            randomX = minX + 30; // Ensure randomX is within the rectangle
+        }
+        if (randomY <= minY) {
+            randomY = minY + 30; // Ensure randomY is within the rectangle
+        }
+        if (randomX >= maxX) {
+            randomX = maxX - 30; // Ensure randomX is within the rectangle
+        }
+        if (randomY >= maxY) {
+            randomY = maxY - 30; // Ensure randomY is within the rectangle
+        }
+
+        // Calculate the final position
+        const posX = this.game.cameraX + (x !== undefined ? x : randomX);
+        const posY = this.game.cameraY + (y !== undefined ? y : randomY);
+
+        switch (id) {
             case 0:
                 this.game.addEntity(new Skeleton(this.game, this.mickey, posX, posY, move, lifespan));
                 break;
@@ -117,7 +143,7 @@ class SpawnManager {
     update() {
         if (!this.waves) return;
 
-        if (this.wavesIndex < this.waves.length - 1  && this.elapsed > this.waves[this.wavesIndex + 1].time) {
+        if (this.wavesIndex < this.waves.length - 1 && this.elapsed > this.waves[this.wavesIndex + 1].time) {
             this.wavesIndex++;
             this.tickCounter = 0;
             console.log("Wave: " + this.wavesIndex);
@@ -138,7 +164,7 @@ class SpawnManager {
             this.formationsIndex++;
         }
 
-        this.tickCounter = (this.tickCounter + 1) % this.waves[this.wavesIndex].spawnrate; 
+        this.tickCounter = (this.tickCounter + 1) % this.waves[this.wavesIndex].spawnrate;
         this.elapsed += this.game.clockTick;
     }
 }
