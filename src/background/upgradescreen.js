@@ -125,9 +125,9 @@ class UpgradeScreen {
 
             ctx.fillStyle = "white";
             ctx.font = (upgradeButtonDimensions.h/3) + 'px Arial';
-            ctx.fillText(this.upgrade1, upgradeButtonLeft.x, upgradeButtonLeft.y + 10 , upgradeButtonDimensions.w * 0.80);
-            ctx.fillText(this.upgrade2, upgradeButtonMid.x, upgradeButtonMid.y + 10, upgradeButtonDimensions.w * 0.80);
-            ctx.fillText(this.upgrade3, upgradeButtonRight.x, upgradeButtonRight.y + 10, upgradeButtonDimensions.w * 0.80);
+            ctx.fillText(this.upgrade1, upgradeButtonLeft.x, upgradeButtonLeft.y + 40 , upgradeButtonDimensions.w * 0.80);
+            ctx.fillText(this.upgrade2, upgradeButtonMid.x, upgradeButtonMid.y + 40, upgradeButtonDimensions.w * 0.80);
+            ctx.fillText(this.upgrade3, upgradeButtonRight.x, upgradeButtonRight.y + 40, upgradeButtonDimensions.w * 0.80);
         }
     }
 }

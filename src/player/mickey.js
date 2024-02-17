@@ -26,7 +26,7 @@ class Mickey {
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
-        this.movementSpeed = 2;
+        this.movementSpeed = 4;
         this.pickupRadius = 70;
         this.Level = 1;
         this.experiencePoints = 0;
@@ -133,7 +133,7 @@ class Mickey {
 	update()
 	{
         this.elapsedTime += this.game.clockTick;
-
+        console.log(this.enemiesCounter);
         //console.log(this.experiencePoints);
         //console.log(this.Level);
         //update his level

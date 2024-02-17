@@ -9,7 +9,7 @@ class SkeletonKnight {
         this.acc = new Vector2(0, 0);
         this.w = 150;
         this.h = 150;
-        this.speed = 1;
+        this.speed = 3.5;
         this.drag = -1 / (this.speed); // dont question
 
         this.elapsedTime = 0;

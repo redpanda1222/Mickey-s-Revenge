@@ -80,8 +80,8 @@ class FireBreath {
         Object.assign(this, { game, mickey, sizeScale, Level });
         this.elapsedTime = 0;
         this.removeFromWorld = false;
-        this.width = 220;
-        this.height = 120
+        this.width = 200;
+        this.height = 100
         this.coolDown = 15;
 
         this.offsetBB = { x: 0, y: 30, w: 0, h: -45 };
