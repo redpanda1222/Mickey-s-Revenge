@@ -25,7 +25,7 @@ class Skeleton {
 
         // attributes
         this.currentHP = 100;
-        this.collideDmg = 10;
+        this.collideDmg = 5;
 
         this.flipLeft = false;
 
@@ -49,15 +49,25 @@ class Skeleton {
             }
         });
         // collision with other enemies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+        for (let i = this.game.entities.length - 1; i > 0; --i) {
+            const entity = this.game.entities[i];
+            if (entity !== this && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 0.75);
             }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDmg);
-            }
-        });
+        }
+        // this.game.entities.forEach(entity => {
+        //     if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+        //         this.handleCollision(entity, 0.75);
+        //     }
+        // });
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDmg);
+        }
+    }
+
+    takeDamage(damage) {
+        this.currentHP -= damage;
     }
 
     handleCollision(entity, scalarForce) {
@@ -81,7 +91,7 @@ class Skeleton {
     }
 
     updateFacing() {
-        if (this.pos.x - this.mickey.x - 30 > 0) {
+        if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
             this.xStart = 515;
             this.yStart = 73;
@@ -102,12 +112,14 @@ class Skeleton {
             }
         }
 
+        let toMickey = this.mickey.BB.center().sub(this.BB.center());
+        this.game.addEntityDistances(this, toMickey.mag());
+
         if (this.moveVec) {
             this.applyForce(this.moveVec);
         } else {
             // applies force to move towards center of mickey
-            let toMickey = this.mickey.BB.center().sub(this.BB.center()).norm();
-            this.applyForce(toMickey);
+            this.applyForce(toMickey.norm());
             this.updateFacing();
         }
 
@@ -118,7 +130,8 @@ class Skeleton {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
+            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
+            this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
 

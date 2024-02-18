@@ -60,6 +60,7 @@ class MenuScreen {
                         // clicked on start
                         this.isInMenu = false;
                         this.sceneManager.gameover = false;
+                        this.sceneManager.gamewin = false;
                         this.sceneManager.loadScene(levelOne, true);
                     }
                 }
@@ -73,7 +74,6 @@ class MenuScreen {
                         this.menuSelect.credits = false;
                     }
                 }
-                this.game.click = null;
             }
         }
     };
@@ -94,7 +94,7 @@ class MenuScreen {
 
             ctx.font = (vertspacing * 2 / 3) + 'px Arial';
             ctx.fillText("Creators:", PARAMS.WIDTH / 2, creatorY - vertspacing * 2.5);
-            ctx.fillText("Mark Rubio", PARAMS.WIDTH / 2, creatorY - vertspacing);
+            ctx.fillText("Mark Andrey Rubio", PARAMS.WIDTH / 2, creatorY - vertspacing);
             ctx.fillText("Soe Lin", PARAMS.WIDTH / 2, creatorY);
             ctx.fillText("Yasin Ibrahim", PARAMS.WIDTH / 2, creatorY + vertspacing);
             ctx.fillText("Bairu Li", PARAMS.WIDTH / 2, creatorY + vertspacing * 2);
