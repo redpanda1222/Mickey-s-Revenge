@@ -12,7 +12,7 @@ class Mickey {
         this.initialY = y;
         this.x = x;
         this.y = y;
-        this.sizeScale = 2
+        this.sizeScale = 2;
         this.width = 26 * this.sizeScale;
         this.height = 40 * this.sizeScale;
         this.animations = [];
@@ -84,6 +84,8 @@ class Mickey {
     reset() {
         this.x = this.initialX;
         this.y = this.initialY;
+        this.cameraX = this.x;
+        this.cameraY = this.initialY;
 
         //CHARACTER STATS
         this.MaxHP = 100;
@@ -149,9 +151,9 @@ class Mickey {
         const minY = -1000;
         const maxY = 1500;      // Maximum y-coordinate allowed
 
-        // Store Mickey's previous position
-        const prevX = this.x;
-        const prevY = this.y;
+        // // Store Mickey's previous position
+        // const prevX = this.x;
+        // const prevY = this.y;
 
         // the left boundary
         if (this.game.left && this.x > minX) {
@@ -176,13 +178,8 @@ class Mickey {
             this.status = 1;
         }
 
-
-    // Update the camera position relative to Mickey's position
-        this.game.cameraX += this.x - prevX;
-        this.game.cameraY += this.y - prevY;
-
-        // this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        // this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
+        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
+        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
 
         // this.movement();
         // update bounding box
