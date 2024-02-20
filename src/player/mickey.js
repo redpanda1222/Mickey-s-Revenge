@@ -111,25 +111,35 @@ class Mickey {
     }
 
     movement() {
+        // Define boundaries
+        const minX = -1000;
+        const maxX = 1600;      // Maximum x-coordinate allowed
+        const minY = -1000;
+        const maxY = 1500;      // Maximum y-coordinate allowed
+
         this.status = 0;
-        if (this.game.left) {
-            this.x -= this.movementSpeed;
+        // the left boundary
+        if (this.game.left && this.x > minX) {
+            this.x = Math.max(this.x - this.movementSpeed, minX);
             this.facing = 1;
             this.status = 1;
-        };
-        if (this.game.right) {
-            this.x += this.movementSpeed
+        }
+        // right boundary
+        if (this.game.right && this.x < maxX) {
+            this.x = Math.min(this.x + this.movementSpeed, maxX);
             this.facing = 0;
             this.status = 1;
-        };
-        if (this.game.up) {
-            this.y -= this.movementSpeed;
+        }
+        // the top boundary
+        if (this.game.up && this.y > minY) {
+            this.y = Math.max(this.y - this.movementSpeed, minY); 
             this.status = 1;
-        };
-        if (this.game.down) {
-            this.y += this.movementSpeed;
+        }
+        // the bottom boundary
+        if (this.game.down && this.y < maxY) {
+            this.y = Math.min(this.y + this.movementSpeed, maxY); 
             this.status = 1;
-        };
+        }
     }
 
     update() {
@@ -145,43 +155,14 @@ class Mickey {
             this.sceneManager.upgradeScreen.visible = true;
         }
 
-        // Define boundaries
-        const minX = -1000;
-        const maxX = 1600;      // Maximum x-coordinate allowed
-        const minY = -1000;
-        const maxY = 1500;      // Maximum y-coordinate allowed
-
         // // Store Mickey's previous position
         // const prevX = this.x;
         // const prevY = this.y;
 
-        // the left boundary
-        if (this.game.left && this.x > minX) {
-            this.x = Math.max(this.x - this.movementSpeed, minX);
-            this.facing = 1;
-            this.status = 1;
-        }
-        // right boundary
-        else if (this.game.right && this.x < maxX) {
-            this.x = Math.min(this.x + this.movementSpeed, maxX);
-            this.facing = 0;
-            this.status = 1;
-        }
-        // the top boundary
-        else if (this.game.up && this.y > minY) {
-            this.y = Math.max(this.y - this.movementSpeed, minY); 
-            this.status = 1;
-        }
-        // the bottom boundary
-        else if (this.game.down && this.y < maxY) {
-            this.y = Math.min(this.y + this.movementSpeed, maxY); 
-            this.status = 1;
-        }
-
         this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
         this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
 
-        // this.movement();
+        this.movement();
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
