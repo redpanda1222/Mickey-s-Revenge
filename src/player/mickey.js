@@ -1,6 +1,6 @@
 class Mickey {
-    constructor(game, x, y , sceneManager){
-		this.game = game;
+    constructor(game, x, y, sceneManager) {
+        this.game = game;
 
         // this.game.mickey = this;
         this.sceneManager = sceneManager;
@@ -10,9 +10,9 @@ class Mickey {
         this.elapsedTime = 0;
         this.initialX = x;
         this.initialY = y;
-		this.x = x;
-		this.y = y;
-        this.sizeScale = 2
+        this.x = x;
+        this.y = y;
+        this.sizeScale = 2;
         this.width = 26 * this.sizeScale;
         this.height = 40 * this.sizeScale;
         this.animations = [];
@@ -22,7 +22,7 @@ class Mickey {
         this.immunityFrames = 20;
         this.immunityCurrent = 0;
         this.immune = false;
- 
+
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
@@ -30,7 +30,7 @@ class Mickey {
         this.pickupRadius = 70;
         this.Level = 1;
         this.experiencePoints = 0;
-        
+
 
         //Player Attack Stats
         this.fireSlashLevel = 0;
@@ -46,9 +46,9 @@ class Mickey {
         this.enemiesCounter = 0;
 
         //Rectangle bounding box
-        this.offsetBB = {x: 18, y: 50, w: -36, h: -53};
+        this.offsetBB = { x: 18, y: 50, w: -36, h: -53 };
         this.BB = new BoundingBox(this.x + this.offsetBB.x, this.y + this.offsetBB.y, this.width + this.offsetBB.w, this.height + this.offsetBB.h);
-	};
+    };
 
     handleCollision(entity) {
         let overlap = this.BB.overlapBB(entity.BB);
@@ -63,16 +63,16 @@ class Mickey {
 
     loadAnimations() 
     { 
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 0, 26, 40, 4, 0.09, 1, true, false));
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 0, 26, 40, 4, 0.2, 1, true, false));
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 0, 41, 26, 40, 6, 0.09, 1, false, false));
         //reversed images
-        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 2, 26, 40, 4, 0.09, 1, true, true));
+        this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 2, 26, 40, 4, 0.2, 1, true, true));
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/character/mickeymouse.png"), 27 * 6, 41 * 3, 26, 40, 6, 0.09, 1, false, true));
     };
 
     takeDamage(damage) {
         if (this.immune) return;
-        if (this.currentHP <= 0){
+        if (this.currentHP <= 0) {
             this.currentHP = 0;
             return;
         }
@@ -84,7 +84,9 @@ class Mickey {
     reset() {
         this.x = this.initialX;
         this.y = this.initialY;
-        
+        this.cameraX = this.x;
+        this.cameraY = this.initialY;
+
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
@@ -109,29 +111,38 @@ class Mickey {
     }
 
     movement() {
+        // Define boundaries
+        const minX = -1000;
+        const maxX = 1600;      // Maximum x-coordinate allowed
+        const minY = -1000;
+        const maxY = 1500;      // Maximum y-coordinate allowed
+
         this.status = 0;
-        if (this.game.left){
-            this.x -= this.movementSpeed;
+        // the left boundary
+        if (this.game.left && this.x > minX) {
+            this.x = Math.max(this.x - this.movementSpeed, minX);
             this.facing = 1;
             this.status = 1;
-        };
-        if (this.game.right) {
-            this.x += this.movementSpeed
+        }
+        // right boundary
+        if (this.game.right && this.x < maxX) {
+            this.x = Math.min(this.x + this.movementSpeed, maxX);
             this.facing = 0;
             this.status = 1;
-        };
-        if (this.game.up){
-            this.y -= this.movementSpeed;
+        }
+        // the top boundary
+        if (this.game.up && this.y > minY) {
+            this.y = Math.max(this.y - this.movementSpeed, minY); 
             this.status = 1;
-        };
-        if (this.game.down) {
-            this.y += this.movementSpeed;
+        }
+        // the bottom boundary
+        if (this.game.down && this.y < maxY) {
+            this.y = Math.min(this.y + this.movementSpeed, maxY); 
             this.status = 1;
-        };
+        }
     }
 
-	update()
-	{
+    update() {
         this.elapsedTime += this.game.clockTick;
         console.log(this.enemiesCounter);
         //console.log(this.experiencePoints);
@@ -144,10 +155,14 @@ class Mickey {
             this.sceneManager.upgradeScreen.visible = true;
         }
 
-        this.game.cameraX = this.x - PARAMS.WIDTH/2 + this.width/2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT/2 + this.height/2;
+        // // Store Mickey's previous position
+        // const prevX = this.x;
+        // const prevY = this.y;
 
-		this.movement();
+        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
+        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
+
+        this.movement();
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
@@ -168,7 +183,7 @@ class Mickey {
         if (this.fireBladeLevel > 0 && this.fireBladeCD.doneTicking()) {
             for (let i = 0; i < this.fireBladeLevel; i++) {
                 this.game.addAttackEntity(new Fireblade(
-                    this.game, this, true, this.BB.center().x, this.BB.center().y, 
+                    this.game, this, true, this.BB.center().x, this.BB.center().y,
                     50 * this.fireBladeLevel, this.fireBladeLevel + 2, 4,         // attributes (dmg, spd, duration)
                     this, true, 100, degreeToRad(360 / this.fireBladeLevel * i)));
             }
@@ -188,7 +203,7 @@ class Mickey {
         // mickey only collide with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity);
+                this.handleCollision(backEntity); 
             }
         });
 
@@ -199,18 +214,17 @@ class Mickey {
                 this.immune = false;
             }
         }
-	};
+    };
 
-	draw(ctx)
-	{
-        if (this.status == 0 && this.facing == 0){
-            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
-        }else if (this.status == 0 && this.facing == 1){
-            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
-        }else if (this.status == 1 && this.facing == 0){
-            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
-        }else if (this.status == 1 && this.facing == 1){
-            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width,this.height);
+    draw(ctx) {
+        if (this.status == 0 && this.facing == 0) {
+            this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
+        } else if (this.status == 0 && this.facing == 1) {
+            this.animations[2].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
+        } else if (this.status == 1 && this.facing == 0) {
+            this.animations[1].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
+        } else if (this.status == 1 && this.facing == 1) {
+            this.animations[3].drawFrame(this.game.clockTick, ctx, this.x - this.game.cameraX, this.y - this.game.cameraY, this.width, this.height);
         };
 
         this.drawHealthBar(ctx);
@@ -226,7 +240,7 @@ class Mickey {
         //     ctx.lineWidth = 2;
         //     line(ctx, this.BB.center().x - this.game.cameraX, this.BB.center().y - this.game.cameraY, nearest.BB.center().x - this.game.cameraX, nearest.BB.center().y - this.game.cameraY);
         // }
-	};
+    };
 
     drawHealthBar(ctx){
         const camX = this.x - 12 - this.game.cameraX;
@@ -237,14 +251,14 @@ class Mickey {
         ctx.fillRect(camX, camY, 80, 10);
 
         //--Calculating Current HP and changing color with appropriate indicators for health percentage.
-        let healthRatio = this.currentHP/this.MaxHP;
+        let healthRatio = this.currentHP / this.MaxHP;
         let healthBarSize = 80 * healthRatio;
         if (healthRatio > 0.75) ctx.fillStyle = 'green';
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-        if (healthRatio >= 0){ ctx.fillRect(camX, camY, healthBarSize, 10)}
-        else {ctx.fillRect(camX, camY, 0, 10)}
+        if (healthRatio >= 0) { ctx.fillRect(camX, camY, healthBarSize, 10) }
+        else { ctx.fillRect(camX, camY, 0, 10) }
     }
-    
+
 }
