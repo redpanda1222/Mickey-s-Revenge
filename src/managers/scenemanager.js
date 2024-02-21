@@ -204,5 +204,5 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.draw(ctx);
         }
-    };
+    }
 };

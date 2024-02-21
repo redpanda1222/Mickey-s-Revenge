@@ -41,6 +41,8 @@ class Mickey {
         this.fireBladeCD = new Clock(game, 4);
         this.rasenganLevel = 1;
         this.rasenganCD = new Clock(game, 1);
+        this.laserLevel = 0;
+        this.laserCD = new Clock(game, 2);
 
         // Killed enemies counter
         this.enemiesCounter = 0;
@@ -140,11 +142,17 @@ class Mickey {
             this.y = Math.min(this.y + this.movementSpeed, maxY); 
             this.status = 1;
         }
+        // update bounding box
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+        // this.game.cameraX = 0;
+        // this.game.cameraY = 0;
+        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
+        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
     }
 
     update() {
         this.elapsedTime += this.game.clockTick;
-        console.log(this.enemiesCounter);
+        //console.log(this.enemiesCounter);
         //console.log(this.experiencePoints);
         //console.log(this.Level);
         //update his level
@@ -155,29 +163,15 @@ class Mickey {
             this.sceneManager.upgradeScreen.visible = true;
         }
 
-        // // Store Mickey's previous position
-        // const prevX = this.x;
-        // const prevY = this.y;
-
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
-
         this.movement();
-        // update bounding box
-        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
-
-
+        
         //add attacks
-        if (this.fireSlashLevel > 0) {
-            if (this.fireSlashCD.doneTicking()) {
-                this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
-            }
+        if (this.fireSlashLevel > 0 && this.fireSlashCD.doneTicking()) {
+            this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
         }
 
-        if (this.fireBreathLevel > 0) {
-            if (this.fireBreathCD.doneTicking()) {
-                this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
-            }
+        if (this.fireBreathLevel > 0 && this.fireBreathCD.doneTicking()) {
+            this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
         }
 
         if (this.fireBladeLevel > 0 && this.fireBladeCD.doneTicking()) {
@@ -198,6 +192,10 @@ class Mickey {
                     nearest.BB.center(), 0
                 ));
             }
+        }
+
+        if (this.laserLevel > 0 && this.laserCD.doneTicking()) {
+            this.game.addAttackEntity(new Laser(this.game, this, this.laserLevel));
         }
 
         // mickey only collide with background objects

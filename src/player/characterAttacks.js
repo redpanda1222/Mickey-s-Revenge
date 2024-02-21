@@ -131,7 +131,7 @@ class FireBreath {
             this.game.entities.forEach(entity => {
                 //check if the cooldown is less than 3, if so, deal damage upon collision
                 if (entity != this.mickey && this.BB2.collideBB(entity.BB) && this.coolDown <= 3) {
-                    entity.currentHP -= 3 *this.mickey.Level;
+                    entity.currentHP -= 3 * this.mickey.Level;
                 }
             });
         }
@@ -421,3 +421,130 @@ class Blast extends Projectile {
     }
 }
 
+class Laser {
+    constructor(game, mickey, level) {
+        Object.assign(this, { game, mickey, level });
+        this.elapsed = 0;
+        const mouse = new Vector2(game.mouse.x, game.mouse.y).add(new Vector2(game.cameraX, game.cameraY));
+        const toMouse = mouse.sub(this.mickey.BB.center()).norm().mul(1023).add(this.mickey.BB.center());
+
+        let toMouseTan = mouse.sub(this.mickey.BB.center()).norm();
+        toMouseTan = new Vector2(toMouseTan.y * -1, toMouseTan.x).mul(4);
+
+        const toMouse1 = toMouse.add(toMouseTan);
+        const mic1 = this.mickey.BB.center().add(toMouseTan);
+        const toMouse2 = toMouse.add(toMouseTan.mul(-1));
+        const mic2 = this.mickey.BB.center().add(toMouseTan.mul(-1));
+
+        this.line1 = new Line2(mic1.x, mic1.y, toMouse1.x, toMouse1.y);
+        this.line2 = new Line2(mic2.x, mic2.y, toMouse2.x, toMouse2.y);
+
+        this.attributes();
+    }
+
+    attributes() {
+        switch(this.level) {
+            // case 1:
+            //     this.projDamage = 5;
+            //     this.projDuration = 0.05;
+            //     this.r = 100;
+            //     this.g = 0;
+            //     this.b = 0;
+            //     this.dr = 30;
+            //     this.dg = 40;
+            //     this.db = 20;
+            //     break;
+            case 1:
+                this.projDamage = 5;
+                this.projDuration = 0.05;
+                this.r = 0;
+                this.g = 100;
+                this.b = 0;
+                this.dr = 40;
+                this.dg = -25;
+                this.db = 20;
+                break;
+            case 2:
+                this.projDamage = 8;
+                this.projDuration = 0.1;
+                this.r = 0;
+                this.g = 100;
+                this.b = 0;
+                this.dr = 45;
+                this.dg = 20;
+                this.db = 10;
+                break;
+            case 3:
+                this.projDamage = 12;
+                this.projDuration = 0.1;
+                this.r = 0;
+                this.g = 0;
+                this.b = 100;
+                this.dr = 97;
+                this.dg = 39;
+                this.db = 15;
+                break;
+            case 4:
+                this.projDamage = 15;
+                this.projDuration = 0.2;
+                this.r = 130;
+                this.g = 0;
+                this.b = 0;
+                this.dr = 10;
+                this.dg = 20;
+                this.db = 20;
+                break;
+            default:
+                this.projDamage = 20;
+                this.projDuration = 0.25;
+                this.r = 0;
+                this.g = 150;
+                this.b = 200;
+                this.dr = 15;
+                this.dg = 7.25;
+                this.db = 3.1;
+        }
+    }
+
+    update() {
+        if (this.elapsed > this.projDuration) {
+            this.removeFromWorld = true;
+            return;
+        }
+        this.elapsed += this.game.clockTick;
+
+        this.game.entities.forEach(entity => {
+            const inter1 = linearIntersection(entity.BB.getSides()[0], this.line1) ||
+                linearIntersection(entity.BB.getSides()[1], this.line1) ||
+                linearIntersection(entity.BB.getSides()[2], this.line1) ||
+                linearIntersection(entity.BB.getSides()[3], this.line1);
+
+            let inter2 = false;
+            if (!inter1) {
+                inter2 = linearIntersection(entity.BB.getSides()[0], this.line2) ||
+                    linearIntersection(entity.BB.getSides()[1], this.line2) ||
+                    linearIntersection(entity.BB.getSides()[2], this.line2) ||
+                    linearIntersection(entity.BB.getSides()[3], this.line2);
+            }
+
+            if (entity !== this.mickey && (inter1 || inter2)) {
+                entity.takeDamage(this.projDamage);
+            }
+        });
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = rgb(this.r % 255, this.g % 255, this.b % 255);
+        this.r += this.dr;
+        this.g += this.dg;
+        this.b += this.db;
+        // line(ctx, this.line1.x1 - this.game.cameraX, this.line1.y1 - this.game.cameraY, this.line1.x2 - this.game.cameraX, this.line1.y2 - this.game.cameraY);
+        // line(ctx, this.line2.x1 - this.game.cameraX, this.line2.y1 - this.game.cameraY, this.line2.x2 - this.game.cameraX, this.line2.y2 - this.game.cameraY);
+        ctx.beginPath();
+        ctx.moveTo(this.line1.x1 - this.game.cameraX, this.line1.y1 - this.game.cameraY);
+        ctx.lineTo(this.line1.x2 - this.game.cameraX, this.line1.y2 - this.game.cameraY);
+        ctx.lineTo(this.line2.x2 - this.game.cameraX, this.line2.y2 - this.game.cameraY);
+        ctx.lineTo(this.line2.x1 - this.game.cameraX, this.line2.y1 - this.game.cameraY);
+        ctx.fill();
+    }
+}

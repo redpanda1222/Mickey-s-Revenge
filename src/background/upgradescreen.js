@@ -28,16 +28,33 @@ class UpgradeScreen {
         this.mickey = sceneManager.mickey;
         this.visible = false;
 
-        this.upgrades = ["Fire Slash Upgrade", "Fire Breath Upgrade", "Rasengan Upgrade", "Fire Blade Upgrade", "Increased Health: +100"];
+        this.upgrades = ["Fire Slash Upgrade", "Fire Breath Upgrade", "Rasengan Upgrade", "Fire Blade Upgrade", "Increased Health: +100", "Laser Upgrade"];
 
-        this.upgrade1 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
-        this.upgrade2 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
-        this.upgrade3 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
+        this.generateUpgrades();
 
         this.fireSlashMaxLevel = 4;
         this.fireBreathMaxLevel = 2;
         this.fireBladeMaxLevel = 5;
         this.rasenganMaxLevel = 5;
+        this.laserMaxLevel = 5;
+    }
+
+    generateUpgrades() { // does not allow duplicates
+        const rand1 = randomInt(this.upgrades.length);
+        let rand2 = randomInt(this.upgrades.length);
+        let rand3 = randomInt(this.upgrades.length);
+
+        while (rand2 === rand1) {
+            rand2 = randomInt(this.upgrades.length);
+        }
+        
+        while (rand3 === rand1 || rand3 === rand2) {
+            rand3 = randomInt(this.upgrades.length);
+        }
+
+        this.upgrade1 = this.upgrades[rand1];
+        this.upgrade2 = this.upgrades[rand2];
+        this.upgrade3 = this.upgrades[rand3];
     }
 
     handleUpgrade(Upgrade) {
@@ -52,6 +69,9 @@ class UpgradeScreen {
         }
         else if (Upgrade == "Fire Blade Upgrade" && this.mickey.fireBladeLevel < this.fireBladeMaxLevel) {
             this.mickey.fireBladeLevel += 1;
+        }
+        else if (Upgrade == "Laser Upgrade" && this.mickey.laserLevel < this.laserMaxLevel) {
+            this.mickey.laserLevel += 1;
         }
         else if (Upgrade == "Increased Health: +100") {
             this.mickey.MaxHP += 100;
@@ -72,10 +92,8 @@ class UpgradeScreen {
     update() {
         if (!this.visible) return;
 
-        if (this.upgrade1 == null || this.upgrade2 == null || this.upgrade3 == null) {
-            this.upgrade1 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
-            this.upgrade2 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
-            this.upgrade3 = this.upgrades[Math.floor((Math.random() * this.upgrades.length))];
+        if (this.upgrade1 === null || this.upgrade2 === null || this.upgrade3 === null) {
+            this.generateUpgrades();
         }
 
         if (this.game.mouse) {
