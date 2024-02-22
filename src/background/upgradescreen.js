@@ -60,6 +60,8 @@ class UpgradeScreen {
     handleUpgrade(Upgrade) {
         if (Upgrade == "Fire Slash Upgrade" && this.mickey.fireSlashLevel < this.fireSlashMaxLevel) {
             this.mickey.fireSlashLevel += 1;
+            // example of changing CD
+            if (this.mickey.fireSlashLevel == 3) this.mickey.fireSlashCD.timesUp = 4; // change cd to 4 sec
         }
         else if (Upgrade == "Fire Breath Upgrade" && this.mickey.fireBreathLevel < this.fireBreathMaxLevel) {
             this.mickey.fireBreathLevel += 1;

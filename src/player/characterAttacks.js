@@ -298,8 +298,8 @@ class Warning {
 }
 
 class Rasengan extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians) {
-        super(game, mickey, isFriendly, x, y, 94, 93, projDamage, projSpeed, projDuration, projPierce);
+    constructor(game, mickey, x, y, level, targetLocation, aimOffsetRadians) {
+        super(game, mickey, true, x, y, 94, 93, 0, 0, 0, 0);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/rasenganBall.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
         this.sizeScale = 0.75;
@@ -311,6 +311,42 @@ class Rasengan extends Projectile {
 
         this.updateTargetLocation(targetLocation.x, targetLocation.y);
         this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
+
+        this.attributes(level);
+    }
+
+    attributes(level) {
+        switch(level) {
+            case 1:
+                this.projDamage = 34;
+                this.projDuration = 2;
+                this.projPierce = 3;
+                this.projSpeed = 5;
+                break;
+            case 2:
+                this.projDamage = 34;
+                this.projDuration = 2;
+                this.projPierce = 5;
+                this.projSpeed = 5;
+                break;
+            case 3:
+                this.projDamage = 50;
+                this.projDuration = 3;
+                this.projPierce = 5;
+                this.projSpeed = 6;
+                break;
+            case 4:
+                this.projDamage = 100;
+                this.projDuration = 3;
+                this.projPierce = 10;
+                this.projSpeed = 6;
+                break;
+            default:
+                this.projDamage = 100;
+                this.projDuration = 3;
+                this.projPierce = 10;
+                this.projSpeed = 6;
+        }
     }
 
     update() {
@@ -354,8 +390,8 @@ class Shockwave extends Projectile {
 }
 
 class Fireblade extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, targetEntity, isClockwise, radius, theta) {
-        super(game, mickey, isFriendly, x, y, 80, 90, projDamage, projSpeed, projDuration, 4095);
+    constructor(game, mickey, isFriendly, x, y, level, targetEntity, isClockwise, radius, theta) {
+        super(game, mickey, isFriendly, x, y, 80, 90, 0, 0, 0, 4095);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireblade.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
         this.sizeScale = 0.5;
@@ -371,9 +407,40 @@ class Fireblade extends Projectile {
         this.theta = theta;
         this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
 
+        this.attributes(level);
+
         this.rotSpeed = degreeToRad(this.projSpeed * (isClockwise ? 1 : -1));
         this.x = this.targetX + Math.cos(this.theta) * this.radius;
         this.y = this.targetY + Math.sin(this.theta) * this.radius;
+    }
+
+    attributes(level) {
+        switch(level) {
+            case 1:
+                this.projDamage = 50;
+                this.projDuration = 4;
+                this.projSpeed = 3;
+                break;
+            case 2:
+                this.projDamage = 67;
+                this.projDuration = 4;
+                this.projSpeed = 4;
+                break;
+            case 3:
+                this.projDamage = 100;
+                this.projDuration = 4;
+                this.projSpeed = 5;
+                break;
+            case 4:
+                this.projDamage = 100;
+                this.projDuration = 4;
+                this.projSpeed = 6;
+                break;
+            default:
+                this.projDamage = 100;
+                this.projDuration = 4;
+                this.projSpeed = 7;
+        }
     }
 
     update() {
@@ -444,16 +511,6 @@ class Laser {
 
     attributes() {
         switch(this.level) {
-            // case 1:
-            //     this.projDamage = 5;
-            //     this.projDuration = 0.05;
-            //     this.r = 100;
-            //     this.g = 0;
-            //     this.b = 0;
-            //     this.dr = 30;
-            //     this.dg = 40;
-            //     this.db = 20;
-            //     break;
             case 1:
                 this.projDamage = 5;
                 this.projDuration = 0.05;

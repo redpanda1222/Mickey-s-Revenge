@@ -145,7 +145,7 @@ class GameEngine {
     };
 
     addEntityDistances(entity, distance) {
-        this.entityDistances.push({ e: entity, d: distance });
+        this.entityDistances.push({ e: entity, dist: distance });
     }
 
     addEntity(entity) {
@@ -212,7 +212,7 @@ class GameEngine {
         }
 
         // proximity sorting
-        this.entityDistances.sort((a, b) => a.d - b.d);
+        this.entityDistances.sort((a, b) => a.dist - b.dist);
 
         // update mickey last
         if (this.entities[0]) {
