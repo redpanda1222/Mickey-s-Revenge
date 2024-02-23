@@ -26,7 +26,7 @@ class Huskydog {
         this.height = 60;
 
         // attributes
-        this.currentHP = 100;
+        this.currentHP = 120;
         this.collideDmg = 5;
 
         this.flipLeft = false;

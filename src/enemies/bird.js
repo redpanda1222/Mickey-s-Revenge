@@ -26,7 +26,7 @@ class Bird {
         this.height = 160;
 
         // attributes
-        this.currentHP = 100;
+        this.currentHP = 70;
         this.collideDmg = 5;
 
         this.flipLeft = false;

@@ -8,7 +8,7 @@ class Rat {
         this.acc = new Vector2(0, 0);
         this.w = 64;
         this.h = 64;
-        this.speed = 2.5; // must be at least 1
+        this.speed = 2.8; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -24,7 +24,7 @@ class Rat {
         this.height = 31;
 
         // attributes
-        this.currentHP = 100 * this.mickey.Level;
+        this.currentHP = 150 * this.mickey.Level;
         this.collideDmg = 2 * this.mickey.Level;
 
         this.flipLeft = false;

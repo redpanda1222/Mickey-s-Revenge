@@ -1,4 +1,4 @@
-class Goblin {
+class Bat {
     constructor(game, mickey, x, y, move, lifespan) {
         this.game = game;
         this.mickey = mickey;
@@ -6,25 +6,25 @@ class Goblin {
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
-        this.w = 70;
-        this.h = 40;
-        this.speed = 1; // must be at least 1
+        this.w = 64;
+        this.h = 64;
+        this.speed = 2; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
         this.elapsedTime = 0;
-        this.frameCount = 4;
-        this.frameDuration = 0.1;
+        this.frameCount = 3;
+        this.frameDuration = 0.2;
 
         this.totalTime = this.frameCount * this.frameDuration;
-        this.spritesheet = ASSET_MANAGER.getAsset("./assets/enemy/goblinsmasher.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./assets/enemy/bat.png");
         this.xStart = 0;
-        this.yStart = 0
+        this.yStart = 0;
         this.width = 32;
-        this.height = 16;
+        this.height = 32;
 
         // attributes
-        this.currentHP = 150 * this.mickey.Level;
+        this.currentHP = 100 * this.mickey.Level;
         this.collideDmg = 2 * this.mickey.Level;
 
         this.flipLeft = false;
@@ -37,7 +37,7 @@ class Goblin {
         this.lifespan = lifespan ? lifespan : null;
 
         //Rectangle bounding box
-        this.offsetBB = { x: 0, y: 0, w: -28, h: 0 };
+        this.offsetBB = { x: 13, y: 13, w: -30, h: -26 };
         this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
@@ -45,7 +45,7 @@ class Goblin {
         // collision with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed + 1);
+                this.handleCollision(backEntity, this.speed + 0.25);
             }
         });
         // collision with other enemies
@@ -98,8 +98,8 @@ class Goblin {
     updateFacing() {
         if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
-            this.xStart = 128;
-            this.yStart = 17;
+            this.xStart = 96;
+            this.yStart = 32;
         } else {
             this.flipLeft = false; // Do not flip the sprite if moving right
             this.xStart = 0;

@@ -126,6 +126,8 @@ class SceneManager {
             // this.game.addEntity(this.huskyBoss);
             this.game.addEntity(new Goblin(this.game, this.mickey, 0, 0));
             this.game.addEntity(new Rat(this.game, this.mickey, 1000, 0));
+            this.game.addEntity(new Bat(this.game, this.mickey, 500, 900));
+            this.game.addEntity(new Spider(this.game, this.mickey, 0, 900));
 
             // stress test
             // for (let i = 0; i < 10; i++) {

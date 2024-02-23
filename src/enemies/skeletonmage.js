@@ -24,7 +24,7 @@ class SkeletonMage {
         this.height = 46;
 
         // attributes
-        this.currentHP = 100;
+        this.currentHP = 200;
         this.collideDmg = 5;
         this.fireBallDmg = 10;
         this.shootingRange = 400;
