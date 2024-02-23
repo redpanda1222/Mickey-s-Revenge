@@ -119,15 +119,16 @@ class SkeletonKnight {
             }
         });
         // collision detection & resolution with other enemmies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem) && !(entity instanceof LaserBall)) {
-                this.handleCollision(entity, 0.75);
-            }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDamage);
-            }
-        }); 
+        // this.game.entities.forEach(entity => {
+        //     if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem) && !(entity instanceof LaserBall)) {
+        //         this.handleCollision(entity, 0.75);
+        //     }
+        // }); 
+
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDamage);
+        }
 
         if (this.pos.x - this.mickey.x + 20> 0) {
             this.xStart = 0;

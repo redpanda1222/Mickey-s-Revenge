@@ -26,7 +26,7 @@ class FireSlash {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 10) {
-                entity.currentHP -= 5 + (Math.floor(this.mickey.Level / 100));
+                entity.takeDamage(5 + (Math.floor(this.mickey.Level / 100)));
             }
         });
 
@@ -124,14 +124,14 @@ class FireBreath {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.currentHP -= 4 * this.mickey.Level;
+                entity.takeDamage(4 * this.mickey.Level);
             }
         });
         if (this.BB2 != null) {
             this.game.entities.forEach(entity => {
                 //check if the cooldown is less than 3, if so, deal damage upon collision
                 if (entity != this.mickey && this.BB2.collideBB(entity.BB) && this.coolDown <= 3) {
-                    entity.currentHP -= 3 * this.mickey.Level;
+                    entity.takeDamage(3 * this.mickey.Level);
                 }
             });
         }
@@ -176,6 +176,7 @@ class Projectile {
     constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce) {
         Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce });
 
+        this.kb = 0;
         this.elapsed = 0;
         this.targetX = x;
         this.targetY = y;
@@ -198,7 +199,8 @@ class Projectile {
             for (let i = this.game.entities.length - 1; i > 0; --i) {
                 const entity = this.game.entities[i];
 
-                if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
+                if (this.BB.collideBB(entity.BB)) {
+                    if (this.kbAngle) this.kbForce = entity.BB.center().sub(this.BB.center()).norm().mul(this.kb);
                     this.handleCollision(entity);
                 } else {
                     this.prevHits.delete(entity);
@@ -220,7 +222,8 @@ class Projectile {
 
     handleCollision(entity) {
         if (!this.prevHits.has(entity)) {
-            entity.takeDamage(this.projDamage);
+            if (this.kbForce) entity.takeDamage(this.projDamage, this.kb, this.kbForce);
+            else              entity.takeDamage(this.projDamage, this.kb);
             this.prevHits.set(entity, true);
             this.projPierce--;
         }
@@ -313,18 +316,20 @@ class Rasengan extends Projectile {
         this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
 
         this.attributes(level);
+        this.kb = 5;
+        this.kbAngle = true;
     }
 
     attributes(level) {
         switch(level) {
             case 1:
-                this.projDamage = 34;
+                this.projDamage = 50;
                 this.projDuration = 2;
                 this.projPierce = 3;
                 this.projSpeed = 5;
                 break;
             case 2:
-                this.projDamage = 34;
+                this.projDamage = 50;
                 this.projDuration = 2;
                 this.projPierce = 5;
                 this.projSpeed = 5;

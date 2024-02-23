@@ -28,6 +28,7 @@ class Skeleton {
         this.collideDmg = 2 * this.mickey.Level;
 
         this.flipLeft = false;
+        this.dmgTxt = new DamageText(game, this, 0, 10, 30);
 
         // for formations
         if (move) {
@@ -51,23 +52,27 @@ class Skeleton {
         // collision with other enemies
         for (let i = this.game.entities.length - 1; i > 0; --i) {
             const entity = this.game.entities[i];
-            if (entity !== this && this.BB.collideBB(entity.BB)) {
+            if (entity !== this && !entity.removeFromWorld && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 0.75);
             }
         }
-        // this.game.entities.forEach(entity => {
-        //     if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
-        //         this.handleCollision(entity, 0.75);
-        //     }
-        // });
+
         // colliding with mickey and attacking mickey
         if (this.BB.collideBB(this.mickey.BB)) {
             this.mickey.takeDamage(this.collideDmg);
         }
     }
 
-    takeDamage(damage) {
+    takeDamage(damage, knockbackMultiplier, knockbackForce) {
         this.currentHP -= damage;
+        this.dmgTxt.show(damage);
+        // unless knockbackForce is specified damage will knock away from mickey
+        if (knockbackForce) {
+            this.applyForce(knockbackForce);
+        } else {
+            const toMickeyRev = this.BB.center().sub(this.mickey.BB.center()).norm();
+            this.applyForce(toMickeyRev.mul(knockbackMultiplier));
+        }
     }
 
     handleCollision(entity, scalarForce) {
@@ -103,7 +108,9 @@ class Skeleton {
     }
 
     update() {
-        if (this.lifespan){
+        if (this.dmgTxt.visible) this.dmgTxt.update();
+
+        if (this.lifespan) {
             if (this.totalElapsed > this.lifespan) {
                 this.removeFromWorld = true;
                 return;
@@ -151,10 +158,15 @@ class Skeleton {
             this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
             this.w, this.h);
 
+        // set back to default
+        // ctx.globalCompositeOperation = "source-in";
+
         if (PARAMS.DEBUG) {
             // draws bounding box
             this.BB.draw(ctx, this.game);
         }
+
+        if (this.dmgTxt.visible) this.dmgTxt.draw(ctx);
     };
 
     currentFrame() {

@@ -51,11 +51,13 @@ class Huskydog {
             }
         });
         // collision with other enemies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+        for (let i = this.game.entities.length - 1; i > 0; --i) {
+            const entity = this.game.entities[i];
+            if (entity !== this && !entity.removeFromWorld && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 0.75);
             }
-        });
+        }
+
         // colliding with mickey and attacking mickey
         if (this.BB.collideBB(this.mickey.BB)) {
             this.mickey.takeDamage(this.collideDmg);
