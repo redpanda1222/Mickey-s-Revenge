@@ -124,6 +124,8 @@ class SceneManager {
 
             // put entities here for testing
             // this.game.addEntity(this.huskyBoss);
+            this.game.addEntity(new Goblin(this.game, this.mickey, 0, 0));
+            this.game.addEntity(new Rat(this.game, this.mickey, 1000, 0));
 
             // stress test
             // for (let i = 0; i < 10; i++) {
@@ -162,7 +164,7 @@ class SceneManager {
                     this.bossSpawned = true;
                 }
             } else {
-                this.spawnmanager.update(); 
+                // this.spawnmanager.update(); 
             }
 
             this.upgradeScreen.update();

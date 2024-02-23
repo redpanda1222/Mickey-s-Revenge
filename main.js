@@ -23,6 +23,8 @@ const imageQueue = [
 	"./assets/enemy/skeleton.png",
 	"./assets/enemy/skeletonknight.png",
 	"./assets/enemy/skeletonmage.png",
+	"./assets/enemy/rat.png",
+	"./assets/enemy/goblinsmasher.png",
 	"./assets/miscellaneous/gems.png",
 	"./assets/attack/fireslash.png",
 	"./assets/attack/fireslash2.png",

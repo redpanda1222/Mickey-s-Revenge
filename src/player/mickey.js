@@ -37,11 +37,11 @@ class Mickey {
         this.fireSlashCD = new Clock(game, 6); //sec cd
         this.fireBreathLevel = 0;
         this.fireBreathCD = new Clock(game, 4); //sec cd
-        this.fireBladeLevel = 4;
+        this.fireBladeLevel = 0;
         this.fireBladeCD = new Clock(game, 4);
-        this.rasenganLevel = 0;
+        this.rasenganLevel = 1;
         this.rasenganCD = new Clock(game, 1);
-        this.laserLevel = 2;
+        this.laserLevel = 0;
         this.laserCD = new Clock(game, 2);
 
         this.fireSlashRange = 150;
@@ -173,10 +173,10 @@ class Mickey {
         //add attacks
         if (this.fireSlashLevel > 0 && this.fireSlashCD.doneTicking()) {
             const nearest = this.game.entityDistances[0];
-            if (nearest.dist < this.fireSlashRange) {
+            if (nearest && nearest.dist < this.fireSlashRange) {
                 this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
             } else {
-                this.fireBreathCD.forceDone();
+                this.fireSlashCD.forceDone();
             }
         }
 
@@ -195,21 +195,17 @@ class Mickey {
 
         if (this.rasenganLevel > 0 && this.rasenganCD.doneTicking()) {
             let nearest = this.game.entityDistances[0];
-            if (nearest.dist < this.rasenganRange) {
-                this.game.addAttackEntity(new Rasengan(
-                    this.game, this, this.BB.center().x - 40, this.BB.center().y - 50, this.rasenganLevel, nearest.e.BB.center(), 0
-                ));
+            if (nearest && nearest.dist < this.rasenganRange) {
+                for (let i = 0; i < this.rasenganLevel && i < this.game.entityDistances.length; i++) {
+                    nearest = this.game.entityDistances[i];
+                    if (nearest.dist > this.rasenganRange) break;
+    
+                    this.game.addAttackEntity(new Rasengan(
+                        this.game, this, this.BB.center().x - 40, this.BB.center().y - 50, this.rasenganLevel, nearest.e.BB.center(), 0
+                    ));
+                }
             } else {
                 this.rasenganCD.forceDone();
-            }
-
-            for (let i = 1; i < this.rasenganLevel && i < this.game.entityDistances.length; i++) {
-                nearest = this.game.entityDistances[i];
-                if (nearest.dist > this.rasenganRange) break;
-
-                this.game.addAttackEntity(new Rasengan(
-                    this.game, this, this.BB.center().x - 40, this.BB.center().y - 50, this.rasenganLevel, nearest.e.BB.center(), 0
-                ));
             }
         }
 

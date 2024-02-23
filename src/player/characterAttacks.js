@@ -7,7 +7,7 @@ class FireSlash {
         this.BB = new BoundingBox(mickey.x - ((mickey.width * 3) / 2.5), mickey.y - ((mickey.height * 3) / 2.5), mickey.width * 3 * this.sizeScale, mickey.height * 3 * this.sizeScale);
         this.attackAnimations = [];
         this.loadAttackAnimations();
-        this.kb = 2;
+        this.kb = 1.85;
     }
 
     loadAttackAnimations() {
