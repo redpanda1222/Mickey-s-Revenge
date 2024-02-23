@@ -37,11 +37,11 @@ class Mickey {
         this.fireSlashCD = new Clock(game, 6); //sec cd
         this.fireBreathLevel = 0;
         this.fireBreathCD = new Clock(game, 4); //sec cd
-        this.fireBladeLevel = 0;
+        this.fireBladeLevel = 4;
         this.fireBladeCD = new Clock(game, 4);
-        this.rasenganLevel = 1;
+        this.rasenganLevel = 0;
         this.rasenganCD = new Clock(game, 1);
-        this.laserLevel = 0;
+        this.laserLevel = 2;
         this.laserCD = new Clock(game, 2);
 
         this.fireSlashRange = 150;
@@ -103,11 +103,13 @@ class Mickey {
         this.fireBreathLevel = 0;
         this.fireBladeLevel = 0;
         this.rasenganLevel = 1;
+        this.laserLevel = 0;
 
-        this.fireSlashCD.reset()
-        this.fireBreathCD.reset()
-        this.fireBladeCD.reset()
-        this.rasenganCD.reset()
+        this.fireSlashCD.reset();
+        this.fireBreathCD.reset();
+        this.fireBladeCD.reset();
+        this.rasenganCD.reset();
+        this.laserCD.reset();
 
         this.immunityCurrent = 0;
         this.immune = false;
@@ -170,16 +172,16 @@ class Mickey {
         
         //add attacks
         if (this.fireSlashLevel > 0 && this.fireSlashCD.doneTicking()) {
-            this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
-        }
-
-        if (this.fireBreathLevel > 0 && this.fireBreathCD.doneTicking()) {
             const nearest = this.game.entityDistances[0];
-            if (nearest.dist < this.fireBreathRange) {
-                this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
+            if (nearest.dist < this.fireSlashRange) {
+                this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
             } else {
                 this.fireBreathCD.forceDone();
             }
+        }
+
+        if (this.fireBreathLevel > 0 && this.fireBreathCD.doneTicking()) {
+            this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
         }
 
         if (this.fireBladeLevel > 0 && this.fireBladeCD.doneTicking()) {

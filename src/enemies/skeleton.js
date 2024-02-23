@@ -28,7 +28,6 @@ class Skeleton {
         this.collideDmg = 2 * this.mickey.Level;
 
         this.flipLeft = false;
-        this.dmgTxt = new DamageText(game, this, 0, 10, 30);
 
         // for formations
         if (move) {
@@ -65,13 +64,14 @@ class Skeleton {
 
     takeDamage(damage, knockbackMultiplier, knockbackForce) {
         this.currentHP -= damage;
-        this.dmgTxt.show(damage);
+        this.game.addOtherEntity(new DamageText(this.game, this, damage, 10, 30));
         // unless knockbackForce is specified damage will knock away from mickey
         if (knockbackForce) {
             this.applyForce(knockbackForce);
         } else {
             const toMickeyRev = this.BB.center().sub(this.mickey.BB.center()).norm();
-            this.applyForce(toMickeyRev.mul(knockbackMultiplier));
+            const c = knockbackMultiplier ? knockbackMultiplier : 0;
+            this.applyForce(toMickeyRev.mul(c));
         }
     }
 
@@ -108,7 +108,6 @@ class Skeleton {
     }
 
     update() {
-        if (this.dmgTxt.visible) this.dmgTxt.update();
 
         if (this.lifespan) {
             if (this.totalElapsed > this.lifespan) {
@@ -137,7 +136,7 @@ class Skeleton {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
+            this.game.addOtherEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
@@ -165,8 +164,6 @@ class Skeleton {
             // draws bounding box
             this.BB.draw(ctx, this.game);
         }
-
-        if (this.dmgTxt.visible) this.dmgTxt.draw(ctx);
     };
 
     currentFrame() {

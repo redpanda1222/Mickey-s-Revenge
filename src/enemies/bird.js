@@ -64,8 +64,17 @@ class Bird {
         }
     }
 
-    takeDamage(damage) {
+    takeDamage(damage, knockbackMultiplier, knockbackForce) {
         this.currentHP -= damage;
+        this.game.addOtherEntity(new DamageText(this.game, this, damage, 10, 30));
+        // unless knockbackForce is specified damage will knock away from mickey
+        if (knockbackForce) {
+            this.applyForce(knockbackForce);
+        } else {
+            const toMickeyRev = this.BB.center().sub(this.mickey.BB.center()).norm();
+            const c = knockbackMultiplier ? knockbackMultiplier : 0;
+            this.applyForce(toMickeyRev.mul(c));
+        }
     }
 
     handleCollision(entity, scalarForce) {
@@ -126,7 +135,7 @@ class Bird {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
+            this.game.addOtherEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }

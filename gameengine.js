@@ -13,7 +13,7 @@ class GameEngine {
         this.entities = [];
         this.backgroundEntities = [];
         this.attackEntities = [];
-        this.gemEntities = [];
+        this.otherEntities = [];
         this.background = null;
 
         this.transition = null;
@@ -160,8 +160,8 @@ class GameEngine {
         this.attackEntities.push(entity);
     };
 
-    addGemEntity(entity) {
-        this.gemEntities.push(entity);
+    addOtherEntity(entity) {
+        this.otherEntities.push(entity);
     };
 
     update() {
@@ -179,7 +179,7 @@ class GameEngine {
 
         const entitiesCount = this.entities.length;
         const attackEntitiesCount = this.attackEntities.length;
-        const gemEntitiesCount = this.gemEntities.length;
+        const otherEntitiesCount = this.otherEntities.length;
         let i;
 
         // updating entities, execpt for mickey, which is at index 0
@@ -202,12 +202,12 @@ class GameEngine {
             }
         }
         // updating gems
-        for (i = gemEntitiesCount - 1; i >= 0; --i) {
-            if (this.gemEntities[i].removeFromWorld) {
-                this.gemEntities[i] = this.gemEntities[this.gemEntities.length - 1];
-                this.gemEntities.length--;
+        for (i = otherEntitiesCount - 1; i >= 0; --i) {
+            if (this.otherEntities[i].removeFromWorld) {
+                this.otherEntities[i] = this.otherEntities[this.otherEntities.length - 1];
+                this.otherEntities.length--;
             } else {
-                this.gemEntities[i].update();
+                this.otherEntities[i].update();
             }
         }
 
@@ -243,8 +243,8 @@ class GameEngine {
         let i;
 
         // Draw latest gem entities things first
-        for (i = this.gemEntities.length - 1; i >= 0; i--) {
-            this.gemEntities[i].draw(this.ctx, this);
+        for (i = this.otherEntities.length - 1; i >= 0; i--) {
+            this.otherEntities[i].draw(this.ctx, this);
         }
 
         // draw entities and background entities by their y-value

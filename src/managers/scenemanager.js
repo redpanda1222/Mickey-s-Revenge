@@ -37,7 +37,7 @@ class SceneManager {
         });
 
         this.game.backgroundEntities.length = 0;
-        this.game.gemEntities.length = 0;
+        this.game.otherEntities.length = 0;
     };
 
     loadScene(level, isTransition, isGameWin) {

@@ -7,6 +7,7 @@ class FireSlash {
         this.BB = new BoundingBox(mickey.x - ((mickey.width * 3) / 2.5), mickey.y - ((mickey.height * 3) / 2.5), mickey.width * 3 * this.sizeScale, mickey.height * 3 * this.sizeScale);
         this.attackAnimations = [];
         this.loadAttackAnimations();
+        this.kb = 2;
     }
 
     loadAttackAnimations() {
@@ -26,7 +27,7 @@ class FireSlash {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 10) {
-                entity.takeDamage(5 + (Math.floor(this.mickey.Level / 100)));
+                entity.takeDamage(5 + (Math.floor(this.mickey.Level / 100)), this.kb);
             }
         });
 
@@ -83,6 +84,7 @@ class FireBreath {
         this.width = 200;
         this.height = 100
         this.coolDown = 15;
+        this.kb = 1.1;
 
         this.offsetBB = { x: 0, y: 30, w: 0, h: -45 };
 
@@ -124,14 +126,14 @@ class FireBreath {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.takeDamage(4 * this.mickey.Level);
+                entity.takeDamage(4 * this.mickey.Level, this.kb);
             }
         });
         if (this.BB2 != null) {
             this.game.entities.forEach(entity => {
                 //check if the cooldown is less than 3, if so, deal damage upon collision
                 if (entity != this.mickey && this.BB2.collideBB(entity.BB) && this.coolDown <= 3) {
-                    entity.takeDamage(3 * this.mickey.Level);
+                    entity.takeDamage(3 * this.mickey.Level, this.kb);
                 }
             });
         }
@@ -412,6 +414,7 @@ class Fireblade extends Projectile {
         this.theta = theta;
         this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
 
+        this.kb = 5;
         this.attributes(level);
 
         this.rotSpeed = degreeToRad(this.projSpeed * (isClockwise ? 1 : -1));
@@ -517,7 +520,7 @@ class Laser {
     attributes() {
         switch(this.level) {
             case 1:
-                this.projDamage = 5;
+                this.projDamage = 8;
                 this.projDuration = 0.05;
                 this.r = 0;
                 this.g = 100;
@@ -527,7 +530,7 @@ class Laser {
                 this.db = 20;
                 break;
             case 2:
-                this.projDamage = 8;
+                this.projDamage = 12;
                 this.projDuration = 0.1;
                 this.r = 0;
                 this.g = 100;
@@ -537,7 +540,7 @@ class Laser {
                 this.db = 10;
                 break;
             case 3:
-                this.projDamage = 12;
+                this.projDamage = 16;
                 this.projDuration = 0.1;
                 this.r = 0;
                 this.g = 0;
@@ -547,7 +550,7 @@ class Laser {
                 this.db = 15;
                 break;
             case 4:
-                this.projDamage = 15;
+                this.projDamage = 20;
                 this.projDuration = 0.2;
                 this.r = 130;
                 this.g = 0;
@@ -557,7 +560,7 @@ class Laser {
                 this.db = 20;
                 break;
             default:
-                this.projDamage = 20;
+                this.projDamage = 25;
                 this.projDuration = 0.25;
                 this.r = 0;
                 this.g = 150;
@@ -590,7 +593,7 @@ class Laser {
             }
 
             if (entity !== this.mickey && (inter1 || inter2)) {
-                entity.takeDamage(this.projDamage);
+                entity.takeDamage(this.projDamage, this.kb);
             }
         });
     }
