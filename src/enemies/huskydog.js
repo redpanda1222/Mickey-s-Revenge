@@ -34,6 +34,8 @@ class Huskydog {
         // for formations
         if (move) {
             this.moveVec = new Vector2(move.x, move.y);
+            this.speed = 6; // must be at least 1
+            this.drag = -1 / this.speed; // dont question
             this.updateFacing();
         }
         this.lifespan = lifespan ? lifespan : null;

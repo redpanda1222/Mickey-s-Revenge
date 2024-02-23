@@ -24,8 +24,8 @@ class Spider {
         this.height = 64;
 
         // attributes
-        this.currentHP = 200 * this.mickey.Level;
-        this.collideDmg = 2 * this.mickey.Level;
+        this.currentHP = 200;
+        this.collideDmg = 2;
 
         this.flipLeft = false;
 

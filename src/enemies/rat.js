@@ -24,8 +24,8 @@ class Rat {
         this.height = 31;
 
         // attributes
-        this.currentHP = 150 * this.mickey.Level;
-        this.collideDmg = 2 * this.mickey.Level;
+        this.currentHP = 150;
+        this.collideDmg = 2;
 
         this.flipLeft = false;
 

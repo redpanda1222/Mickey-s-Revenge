@@ -15,7 +15,7 @@ class SceneManager {
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
-        this.MaxEnemies = 100;
+        this.MaxEnemies = 300;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -124,10 +124,6 @@ class SceneManager {
 
             // put entities here for testing
             // this.game.addEntity(this.huskyBoss);
-            this.game.addEntity(new Goblin(this.game, this.mickey, 0, 0));
-            this.game.addEntity(new Rat(this.game, this.mickey, 1000, 0));
-            this.game.addEntity(new Bat(this.game, this.mickey, 500, 900));
-            this.game.addEntity(new Spider(this.game, this.mickey, 0, 900));
 
             // stress test
             // for (let i = 0; i < 10; i++) {
@@ -166,7 +162,7 @@ class SceneManager {
                     this.bossSpawned = true;
                 }
             } else {
-                // this.spawnmanager.update(); 
+                this.spawnmanager.update(); 
             }
 
             this.upgradeScreen.update();

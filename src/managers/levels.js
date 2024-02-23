@@ -87,15 +87,15 @@ var levelOne = {
         },
         {
             time: 120,
-            spawnrate: 60,
-            spider: 5,
+            spawnrate: 50,
+            rat: 5,
             bird: 2,
             huskydog: 3,
             bat: 2
         },
         {
             time: 140,
-            spawnrate: 60,
+            spawnrate: 40,
             spider: 2,
             bird: 2,
             rat: 4,
@@ -104,17 +104,20 @@ var levelOne = {
         },
         {
             time: 160,
-            spawnrate: 60,
+            spawnrate: 40,
             skeletonmage: 2,
-            rat: 1,
+            rat: 3,
             bat: 5,
-            goblin: 4
+            goblin: 4,
+            spider: 1,
+            bird: 2,
+            huskydog: 1,
         }
     ],
 
     formations: [
         {
-            spawntime: [30, 60, 90], // when to spawn
+            spawntime: [20, 60, 90], // when to spawn
             moveVector: { x: 1, y: 0 }, // how formation moves (null = to mickey)
             despawnTime: 10, // when to despawn (null = no despawn)
 
@@ -197,22 +200,105 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [60],
+            spawntime: [40],
             moveVector: { x: -1, y: -1 },
             despawnTime: 10,
 
             // dog pack moving up-left 
-            skeleton: [
-                { x: PARAMS.WIDTH + 10, y: PARAMS.HEIGHT + 20 },
-                { x: PARAMS.WIDTH + 10 * 2, y: PARAMS.HEIGHT + 20 },
-                { x: PARAMS.WIDTH + 10 * 3, y: PARAMS.HEIGHT + 20 },
-                { x: PARAMS.WIDTH + 10 * 4, y: PARAMS.HEIGHT + 20 },
-                { x: PARAMS.WIDTH + 10 * 5, y: PARAMS.HEIGHT + 20 },
-                { x: PARAMS.WIDTH + 10 * 6, y: PARAMS.HEIGHT + 20 },
-                { x: PARAMS.WIDTH + 10 * 7, y: PARAMS.HEIGHT + 20 },
-                { x: PARAMS.WIDTH + 10 , y: PARAMS.HEIGHT + 20 }
+            huskydog: [
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 * 4 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 * 4 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 * 4 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 * 4 }
             ]
         },
+        {
+            spawntime: [50],
+            moveVector: { x: 1, y: 1 },
+            despawnTime: 10,
+
+            // dog pack moving up-left 
+            huskydog: [
+                { x: -5    , y: -5 },
+                { x: -5 * 2, y: -5 },
+                { x: -5 * 3, y: -5 },
+                { x: -5 * 4, y: -5 },
+                { x: -5    , y: -5 * 2 },
+                { x: -5 * 2, y: -5 * 2 },
+                { x: -5 * 3, y: -5 * 2 },
+                { x: -5 * 4, y: -5 * 2 },
+                { x: -5    , y: -5 * 3 },
+                { x: -5 * 2, y: -5 * 3 },
+                { x: -5 * 3, y: -5 * 3 },
+                { x: -5 * 4, y: -5 * 3 },
+                { x: -5    , y: -5 * 4 },
+                { x: -5 * 2, y: -5 * 4 },
+                { x: -5 * 3, y: -5 * 4 },
+                { x: -5 * 4, y: -5 * 4 }
+            ]
+        },
+        {
+            spawntime: [150],
+            moveVector: { x: -1.5, y: -2 },
+            despawnTime: 10,
+
+            // dog pack moving up-left 
+            huskydog: [
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 },
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 * 2 },
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 * 3 },
+                { x: PARAMS.WIDTH + 5    , y: PARAMS.HEIGHT + 5 * 4 },
+                { x: PARAMS.WIDTH + 5 * 2, y: PARAMS.HEIGHT + 5 * 4 },
+                { x: PARAMS.WIDTH + 5 * 3, y: PARAMS.HEIGHT + 5 * 4 },
+                { x: PARAMS.WIDTH + 5 * 4, y: PARAMS.HEIGHT + 5 * 4 }
+            ]
+        },
+        {
+            spawntime: [150],
+            moveVector: { x: 1.5, y: 2 },
+            despawnTime: 10,
+
+            // dog pack moving up-left 
+            huskydog: [
+                { x: -5    , y: -5 },
+                { x: -5 * 2, y: -5 },
+                { x: -5 * 3, y: -5 },
+                { x: -5 * 4, y: -5 },
+                { x: -5    , y: -5 * 2 },
+                { x: -5 * 2, y: -5 * 2 },
+                { x: -5 * 3, y: -5 * 2 },
+                { x: -5 * 4, y: -5 * 2 },
+                { x: -5    , y: -5 * 3 },
+                { x: -5 * 2, y: -5 * 3 },
+                { x: -5 * 3, y: -5 * 3 },
+                { x: -5 * 4, y: -5 * 3 },
+                { x: -5    , y: -5 * 4 },
+                { x: -5 * 2, y: -5 * 4 },
+                { x: -5 * 3, y: -5 * 4 },
+                { x: -5 * 4, y: -5 * 4 }
+            ]
+        }
     ]
 
 }

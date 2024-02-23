@@ -24,8 +24,8 @@ class Bat {
         this.height = 32;
 
         // attributes
-        this.currentHP = 100 * this.mickey.Level;
-        this.collideDmg = 2 * this.mickey.Level;
+        this.currentHP = 100;
+        this.collideDmg = 2;
 
         this.flipLeft = false;
 

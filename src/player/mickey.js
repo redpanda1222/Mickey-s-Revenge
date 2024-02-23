@@ -33,13 +33,13 @@ class Mickey {
 
 
         //Player Attack Stats
-        this.fireSlashLevel = 1;
+        this.fireSlashLevel = 0;
         this.fireSlashCD = new Clock(game, 6); //sec cd
         this.fireBreathLevel = 0;
         this.fireBreathCD = new Clock(game, 4); //sec cd
         this.fireBladeLevel = 0;
         this.fireBladeCD = new Clock(game, 4);
-        this.rasenganLevel = 0;
+        this.rasenganLevel = 1;
         this.rasenganCD = new Clock(game, 1);
         this.laserLevel = 0;
         this.laserCD = new Clock(game, 2);
