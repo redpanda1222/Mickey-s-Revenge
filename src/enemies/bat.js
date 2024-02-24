@@ -1,4 +1,4 @@
-class Skeleton {
+class Bat {
     constructor(game, mickey, x, y, move, lifespan) {
         this.game = game;
         this.mickey = mickey;
@@ -6,26 +6,26 @@ class Skeleton {
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
-        this.w = 60;
-        this.h = 60;
-        this.speed = 2.5; // must be at least 1
+        this.w = 64;
+        this.h = 64;
+        this.speed = 2; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
         this.elapsedTime = 0;
-        this.frameCount = 8;
-        this.frameDuration = 0.1;
+        this.frameCount = 3;
+        this.frameDuration = 0.2;
 
         this.totalTime = this.frameCount * this.frameDuration;
-        this.spritesheet = ASSET_MANAGER.getAsset("./assets/enemy/skeleton.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./assets/enemy/bat.png");
         this.xStart = 0;
-        this.yStart = 204
-        this.width = 64;
-        this.height = 68;
+        this.yStart = 0;
+        this.width = 32;
+        this.height = 32;
 
         // attributes
-        this.currentHP = 100 * this.mickey.Level;
-        this.collideDmg = 2 * this.mickey.Level;
+        this.currentHP = 100;
+        this.collideDmg = 2;
 
         this.flipLeft = false;
 
@@ -37,7 +37,7 @@ class Skeleton {
         this.lifespan = lifespan ? lifespan : null;
 
         //Rectangle bounding box
-        this.offsetBB = { x: 15, y: 2, w: -30, h: -15 };
+        this.offsetBB = { x: 13, y: 13, w: -30, h: -26 };
         this.BB = new BoundingBox(x + this.offsetBB.x, y + this.offsetBB.y, this.w + this.offsetBB.w, this.h + this.offsetBB.h);
     };
 
@@ -45,7 +45,7 @@ class Skeleton {
         // collision with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed + 1);
+                this.handleCollision(backEntity, this.speed + 0.25);
             }
         });
         // collision with other enemies
@@ -98,12 +98,12 @@ class Skeleton {
     updateFacing() {
         if (this.pos.x - this.mickey.x - 5 > 0) {
             this.flipLeft = true; // Flip the sprite if moving left
-            this.xStart = 515;
-            this.yStart = 73;
+            this.xStart = 96;
+            this.yStart = 32;
         } else {
             this.flipLeft = false; // Do not flip the sprite if moving right
             this.xStart = 0;
-            this.yStart = 204;
+            this.yStart = 0;
         }
     }
 
@@ -156,9 +156,6 @@ class Skeleton {
             this.width, this.height,
             this.pos.x - this.game.cameraX, this.pos.y - this.game.cameraY,
             this.w, this.h);
-
-        // set back to default
-        // ctx.globalCompositeOperation = "source-in";
 
         if (PARAMS.DEBUG) {
             // draws bounding box

@@ -26,7 +26,7 @@ class Huskydog {
         this.height = 60;
 
         // attributes
-        this.currentHP = 100;
+        this.currentHP = 120;
         this.collideDmg = 5;
 
         this.flipLeft = false;
@@ -34,6 +34,8 @@ class Huskydog {
         // for formations
         if (move) {
             this.moveVec = new Vector2(move.x, move.y);
+            this.speed = 6; // must be at least 1
+            this.drag = -1 / this.speed; // dont question
             this.updateFacing();
         }
         this.lifespan = lifespan ? lifespan : null;
@@ -51,19 +53,30 @@ class Huskydog {
             }
         });
         // collision with other enemies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+        for (let i = this.game.entities.length - 1; i > 0; --i) {
+            const entity = this.game.entities[i];
+            if (entity !== this && !entity.removeFromWorld && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 0.75);
             }
-        });
+        }
+
         // colliding with mickey and attacking mickey
         if (this.BB.collideBB(this.mickey.BB)) {
             this.mickey.takeDamage(this.collideDmg);
         }
     }
 
-    takeDamage(damage) {
+    takeDamage(damage, knockbackMultiplier, knockbackForce) {
         this.currentHP -= damage;
+        this.game.addOtherEntity(new DamageText(this.game, this, damage, 10, 30));
+        // unless knockbackForce is specified damage will knock away from mickey
+        if (knockbackForce) {
+            this.applyForce(knockbackForce);
+        } else {
+            const toMickeyRev = this.BB.center().sub(this.mickey.BB.center()).norm();
+            const c = knockbackMultiplier ? knockbackMultiplier : 0;
+            this.applyForce(toMickeyRev.mul(c));
+        }
     }
 
     handleCollision(entity, scalarForce) {
@@ -124,7 +137,7 @@ class Huskydog {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
+            this.game.addOtherEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
             this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
@@ -242,9 +255,19 @@ class GiantHuskydog {
         this.animations.push(new Animator(ASSET_MANAGER.getAsset("./assets/enemy/huskydog1.png"), this.width * 7, this.height * 3, this.width, this.height, 8, 0.1, 0, false, true));
     }
 
-    takeDamage(damage) {
+    takeDamage(damage, knockbackMultiplier, knockbackForce) {
         if (this.isAirborne) return;
+
         this.currentHP -= damage;
+        this.game.addOtherEntity(new DamageText(this.game, this, damage, 10, 30));
+        // unless knockbackForce is specified damage will knock away from mickey
+        if (knockbackForce) {
+            this.applyForce(knockbackForce);
+        } else {
+            const toMickeyRev = this.BB.center().sub(this.mickey.BB.center()).norm();
+            const c = knockbackMultiplier ? knockbackMultiplier : 0;
+            this.applyForce(toMickeyRev.mul(c));
+        }
     }
 
     checkCollision() {
@@ -401,7 +424,7 @@ class GiantHuskydog {
                 this.game.addAttackEntity(new Warning(this.game, this.landCenter.x, this.landCenter.y, 500, 500, 1.2,
                         new Shockwave(
                             this.game, this.mickey, false, this.landCenter.x, this.landCenter.y,
-                            10, 0.8, 1000,          // attributes (dmg, duration, pierce)
+                            30, 0.8, 1000,          // attributes (dmg, duration, pierce)
                             this.mickey.BB.center() // destination vector (x, y)
                 )));
             } else {

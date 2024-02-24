@@ -24,7 +24,7 @@ class SkeletonMage {
         this.height = 46;
 
         // attributes
-        this.currentHP = 100;
+        this.currentHP = 200;
         this.collideDmg = 5;
         this.fireBallDmg = 10;
         this.shootingRange = 400;
@@ -52,19 +52,30 @@ class SkeletonMage {
             }
         });
         // collision with other enemies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem)) {
+        for (let i = this.game.entities.length - 1; i > 0; --i) {
+            const entity = this.game.entities[i];
+            if (entity !== this && !entity.removeFromWorld && this.BB.collideBB(entity.BB)) {
                 this.handleCollision(entity, 0.75);
             }
-        });
+        }
+
         // colliding with mickey and attacking mickey
         if (this.BB.collideBB(this.mickey.BB)) {
             this.mickey.takeDamage(this.collideDmg);
         }
     }
 
-    takeDamage(damage) {
+    takeDamage(damage, knockbackMultiplier, knockbackForce) {
         this.currentHP -= damage;
+        this.game.addOtherEntity(new DamageText(this.game, this, damage, 10, 30));
+        // unless knockbackForce is specified damage will knock away from mickey
+        if (knockbackForce) {
+            this.applyForce(knockbackForce);
+        } else {
+            const toMickeyRev = this.BB.center().sub(this.mickey.BB.center()).norm();
+            const c = knockbackMultiplier ? knockbackMultiplier : 0;
+            this.applyForce(toMickeyRev.mul(c));
+        }
     }
 
     handleCollision(entity, scalarForce) {
@@ -136,8 +147,6 @@ class SkeletonMage {
         }
 
         if (this.currentHP <= 0) {
-            this.game.addGemEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 2));
-            this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
 

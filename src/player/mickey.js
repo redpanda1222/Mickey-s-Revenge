@@ -41,6 +41,11 @@ class Mickey {
         this.fireBladeCD = new Clock(game, 4);
         this.rasenganLevel = 1;
         this.rasenganCD = new Clock(game, 1);
+        this.laserLevel = 0;
+        this.laserCD = new Clock(game, 2);
+
+        this.fireSlashRange = 150;
+        this.rasenganRange = 300;
 
         // Killed enemies counter
         this.enemiesCounter = 0;
@@ -98,11 +103,13 @@ class Mickey {
         this.fireBreathLevel = 0;
         this.fireBladeLevel = 0;
         this.rasenganLevel = 1;
+        this.laserLevel = 0;
 
-        this.fireSlashCD.reset()
-        this.fireBreathCD.reset()
-        this.fireBladeCD.reset()
-        this.rasenganCD.reset()
+        this.fireSlashCD.reset();
+        this.fireBreathCD.reset();
+        this.fireBladeCD.reset();
+        this.rasenganCD.reset();
+        this.laserCD.reset();
 
         this.immunityCurrent = 0;
         this.immune = false;
@@ -140,11 +147,17 @@ class Mickey {
             this.y = Math.min(this.y + this.movementSpeed, maxY); 
             this.status = 1;
         }
+        // update bounding box
+        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
+        // this.game.cameraX = 0;
+        // this.game.cameraY = 0;
+        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
+        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
     }
 
     update() {
         this.elapsedTime += this.game.clockTick;
-        console.log(this.enemiesCounter);
+        //console.log(this.enemiesCounter);
         //console.log(this.experiencePoints);
         //console.log(this.Level);
         //update his level
@@ -155,49 +168,49 @@ class Mickey {
             this.sceneManager.upgradeScreen.visible = true;
         }
 
-        // // Store Mickey's previous position
-        // const prevX = this.x;
-        // const prevY = this.y;
-
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
-
         this.movement();
-        // update bounding box
-        this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
-
-
+        
         //add attacks
-        if (this.fireSlashLevel > 0) {
-            if (this.fireSlashCD.doneTicking()) {
+        if (this.fireSlashLevel > 0 && this.fireSlashCD.doneTicking()) {
+            const nearest = this.game.entityDistances[0];
+            if (nearest && nearest.dist < this.fireSlashRange) {
                 this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
+            } else {
+                this.fireSlashCD.forceDone();
             }
         }
 
-        if (this.fireBreathLevel > 0) {
-            if (this.fireBreathCD.doneTicking()) {
-                this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
-            }
+        if (this.fireBreathLevel > 0 && this.fireBreathCD.doneTicking()) {
+            this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
         }
 
         if (this.fireBladeLevel > 0 && this.fireBladeCD.doneTicking()) {
             for (let i = 0; i < this.fireBladeLevel; i++) {
                 this.game.addAttackEntity(new Fireblade(
                     this.game, this, true, this.BB.center().x, this.BB.center().y,
-                    50 * this.fireBladeLevel, this.fireBladeLevel + 2, 4,         // attributes (dmg, spd, duration)
+                    this.fireBladeLevel,
                     this, true, 100, degreeToRad(360 / this.fireBladeLevel * i)));
             }
         }
 
         if (this.rasenganLevel > 0 && this.rasenganCD.doneTicking()) {
-            for (let i = 0; i < this.rasenganLevel && i < this.game.entityDistances.length; i++) {
-                const nearest = this.game.entityDistances[i].e;
-                this.game.addAttackEntity(new Rasengan(
-                    this.game, this, true, this.BB.center().x - 40, this.BB.center().y - 50,
-                    50 * this.rasenganLevel, 5, 3, 10, // attributes (dmg, spd, duration, pierce)
-                    nearest.BB.center(), 0
-                ));
+            let nearest = this.game.entityDistances[0];
+            if (nearest && nearest.dist < this.rasenganRange) {
+                for (let i = 0; i < this.rasenganLevel && i < this.game.entityDistances.length; i++) {
+                    nearest = this.game.entityDistances[i];
+                    if (nearest.dist > this.rasenganRange) break;
+    
+                    this.game.addAttackEntity(new Rasengan(
+                        this.game, this, this.BB.center().x - 40, this.BB.center().y - 50, this.rasenganLevel, nearest.e.BB.center(), 0
+                    ));
+                }
+            } else {
+                this.rasenganCD.forceDone();
             }
+        }
+
+        if (this.laserLevel > 0 && this.laserCD.doneTicking()) {
+            this.game.addAttackEntity(new Laser(this.game, this, this.laserLevel));
         }
 
         // mickey only collide with background objects
