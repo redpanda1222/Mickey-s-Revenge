@@ -46,4 +46,8 @@ class Clock {
     reset() {
         this.elapsed = 0;
     }
+
+    forceDone() {
+        this.elapsed = this.timesUp;
+    }
 }

@@ -46,6 +46,34 @@ class SpawnManager {
                     }
                 }
 
+                if (wave.bat) {
+                    spawns.push(4);
+                    for (i = 0; i < wave.bat; i++) {
+                        weights.push(spawns.length - 1);
+                    }
+                }
+
+                if (wave.rat) {
+                    spawns.push(5);
+                    for (i = 0; i < wave.rat; i++) {
+                        weights.push(spawns.length - 1);
+                    }
+                }
+
+                if (wave.spider) {
+                    spawns.push(6);
+                    for (i = 0; i < wave.spider; i++) {
+                        weights.push(spawns.length - 1);
+                    }
+                }
+
+                if (wave.goblin) {
+                    spawns.push(7);
+                    for (i = 0; i < wave.goblin; i++) {
+                        weights.push(spawns.length - 1);
+                    }
+                }
+    
                 this.allWeights.push(weights);
                 this.allSpawns.push(spawns);
             });
@@ -71,6 +99,26 @@ class SpawnManager {
                 else if (f.skeletonmage) {
                     f.spawntime.forEach(t => {
                         this.formations.push(new BatchSpawns(t, 3, f.skeletonmage, f.moveVector, f.despawnTime));
+                    });
+                }
+                else if (f.bat) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 3, f.bat, f.moveVector, f.despawnTime));
+                    });
+                }
+                else if (f.rat) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 3, f.rat, f.moveVector, f.despawnTime));
+                    });
+                }
+                else if (f.spider) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 3, f.spider, f.moveVector, f.despawnTime));
+                    });
+                }
+                else if (f.goblin) {
+                    f.spawntime.forEach(t => {
+                        this.formations.push(new BatchSpawns(t, 3, f.goblin, f.moveVector, f.despawnTime));
                     });
                 }
             });
@@ -135,6 +183,18 @@ class SpawnManager {
                 break;
             case 3:
                 this.game.addEntity(new SkeletonMage(this.game, this.mickey, posX, posY, move, lifespan));
+                break;
+            case 4:
+                this.game.addEntity(new Bat(this.game, this.mickey, posX, posY, move, lifespan));
+                break;
+            case 5:
+                this.game.addEntity(new Rat(this.game, this.mickey, posX, posY, move, lifespan));
+                break;
+            case 6:
+                this.game.addEntity(new Spider(this.game, this.mickey, posX, posY, move, lifespan));
+                break;
+            case 7:
+                this.game.addEntity(new Goblin(this.game, this.mickey, posX, posY, move, lifespan));
                 break;
             default:
         }

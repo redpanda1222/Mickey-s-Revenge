@@ -67,5 +67,35 @@ class Gem {
             this.BB.draw(ctx, this.game);
         }
     }
+}
 
+class DamageText {
+    constructor(game, entity, damage, xOffset, yOffset) {
+        Object.assign(this, {game, entity, damage, xOffset, yOffset});
+        this.clock = new Clock(game, 0.4);
+        this.textSize = 20;
+        this.entityDead = false;
+        this.x = this.entity.pos.x;
+        this.y = this.entity.pos.y;
+    }
+
+    update() {
+        this.entityDead = !this.entityDead && !this.entity.removeFromWorld;
+
+        if (this.clock.doneTicking()) {
+            this.removeFromWorld = true;
+        }
+        this.yOffset -= 2;
+
+        if (!this.entityDead) {
+            this.x = this.entity.pos.x;
+            this.y = this.entity.pos.y;
+        }
+    }
+
+    draw(ctx) {
+        ctx.font = this.textSize + 'px Arial';
+        ctx.fillStyle = "red";
+        ctx.fillText("-" + this.damage, this.x + this.xOffset - this.game.cameraX, this.y + this.yOffset - this.game.cameraY);
+    }
 }
