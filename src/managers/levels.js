@@ -23,31 +23,67 @@ var levelOne = {
     ],
 
     verticalbarbedwires: [
-        { x: 200, y: 300 }
+        { x: 200, y: 300 },
+        { x: -76, y: -612 },
+        { x: -663, y: 762 },
     ],
 
     deadbodies: [
-        { x: 600, y: 102 }
+        { x: 600, y: 102 },
+        { x: -856, y: -936 },
+        { x: -925, y: -184 },
+        { x: -241, y: 1168 },
+        { x: -673, y: 1500 },
+        { x: 1443, y: 532 },
+        { x: 1550, y: -600 },
+        { x: 384, y: -928 },
+        { x: -100, y: 548 },
+        { x: 536, y: 672 },
+        { x: -240, y: -64 },
+        { x: -887, y: 462 },
     ],
 
     deadtrees: [
-        { x: 410, y: 222 }
+        { x: 410, y: 222 },
+        { x: -1030, y: -1080 },
+        { x: 936, y: 1016 },
+        { x: -292, y: 1359 },
+        { x: -736, y: 932 },
+        { x: -524, y: 184 },
+        { x: 477, y: 1170 },
+        { x: -59, y: 846 },
+        { x: 984, y: -68 },
+        { x: 718, y: -495 },
+        { x: 1118, y: 6 },
+        { x: 326, y: -607 },
     ],
 
     emptybarrels: [
-        { x: 283, y: 602 }
+        { x: 283, y: 602 },
+        { x: -308, y: 1115 },
+        { x: -144, y: 1119 },
+        { x: 1096, y: -828 },
+        { x: 1580, y: -56 },
+        { x: 1130, y: 758 },
     ],
 
     deserttowers: [
-        { x: 100, y: 100 }
+        { x: 100, y: 100 },
+        { x: -780, y: -744 },
+        { x: -460, y: 1280 },
+        { x: 638, y: 1166 },
     ],
 
     destroyeddeserttowers: [
-        { x: 500, y: 400 }
+        { x: 500, y: 400 },
+        { x: -624, y: 184 },
+        { x: 689, y: -502 },
     ],
 
     walmartstonehenges: [
-        { x: 220, y: 313 }
+        { x: 220, y: 313 },
+        { x: 1307, y: -292 },
+        { x: 1373, y: 1142 },
     ],
 
     waves: [
@@ -308,12 +344,13 @@ var levelOne = {
 
 };
 
-for (let i = 0; i < 25; i++) {
+// horizontal barbed wires
+for (let i = 0; i < 32; i++) {
     levelOne.barbedwires.push({x: -1000 + 83 * i, y: -1000});
-    levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1078});
+    //levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1078});
 }
 
-for (let i = 0; i < 25; i++) {
+for (let i = 0; i < 31; i++) {
     levelOne.verticalbarbedwires.push({x: -1000, y: -970 + 83 * i});
-    levelOne.verticalbarbedwires.push({x: 1025, y: -970 + 83 * i});
+    //levelOne.verticalbarbedwires.push({x: 1025, y: -970 + 83 * i});
 }
