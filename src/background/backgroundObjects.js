@@ -40,6 +40,15 @@ class BarbedWire extends BackgroundObject {
     }
 }
 
+class VerticalBarbedWire extends BackgroundObject {
+    constructor(game, x, y) {
+        super(game, x, y, 56, 83, 1);
+        this.updateSpritesheet("./assets/background/barbedwire2.png");
+        this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
+        this.updateBB(this.offsetBB);
+    }
+}
+
 class DesertTower extends BackgroundObject {
     constructor(game, x, y) {
         super(game, x, y, 311, 324, 0.5);
