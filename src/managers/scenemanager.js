@@ -131,6 +131,7 @@ class SceneManager {
             // }
         };
     };
+
     updateAudio() {
         var muteCheckbox = document.getElementById("mute").checked;
         var volume = document.getElementById("volume").value;
@@ -139,6 +140,11 @@ class SceneManager {
         ASSET_MANAGER.adjustVolume(volume);
         ASSET_MANAGER.autoRepeat("./audio/escape.mp3");
     };
+
+    updateCamera() {
+        this.game.cameraX = this.mickey.x - PARAMS.WIDTH / 2 + this.mickey.width / 2;
+        this.game.cameraY = this.mickey.y - PARAMS.HEIGHT / 2 + this.mickey.height / 2;
+    }
 
     update() {
         this.updateAudio();
@@ -183,6 +189,7 @@ class SceneManager {
         }
     
         this.updateAudio();
+        this.updateCamera();
         PARAMS.DEBUG = document.getElementById("debug").checked;
     };
 

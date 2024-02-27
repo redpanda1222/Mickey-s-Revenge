@@ -1,9 +1,7 @@
 class Mickey {
-    constructor(game, x, y, sceneManager) {
+    constructor(game, x, y) {
         this.game = game;
 
-        // this.game.mickey = this;
-        this.sceneManager = sceneManager;
         this.facing = 0;
         this.status = 0;
         this.attacking = false;
@@ -89,8 +87,6 @@ class Mickey {
     reset() {
         this.x = this.initialX;
         this.y = this.initialY;
-        this.cameraX = this.x;
-        this.cameraY = this.initialY;
 
         //CHARACTER STATS
         this.MaxHP = 100;
@@ -116,7 +112,7 @@ class Mickey {
 
         this.enemiesCounter = 0;
     }
-
+    
     movement() {
         // Define boundaries
         const minX = -1000;
@@ -149,10 +145,6 @@ class Mickey {
         }
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
-        // this.game.cameraX = 0;
-        // this.game.cameraY = 0;
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
     }
 
     update() {
