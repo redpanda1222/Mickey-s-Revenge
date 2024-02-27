@@ -117,6 +117,9 @@ class Mickey {
         const minY = -1000;
         const maxY = 1500;      // Maximum y-coordinate allowed
 
+        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
+        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
+
         this.status = 0;
         // the left boundary
         if (this.game.left && this.x > minX) {
@@ -158,9 +161,6 @@ class Mickey {
         // // Store Mickey's previous position
         // const prevX = this.x;
         // const prevY = this.y;
-
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
 
         this.movement();
         // update bounding box
