@@ -167,8 +167,6 @@ class SceneManager {
             this.game.cameraY = this.mickey.maxY - PARAMS.HEIGHT + this.mickey.height / 2;
         else if (this.game.cameraY < this.mickey.minY - this.mickey.height)
             this.game.cameraY = this.mickey.minY - this.mickey.height;
-        
-        console.log(this.game.cameraX + " " + this.game.cameraY);
     }
 
     update() {
