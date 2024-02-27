@@ -93,3 +93,12 @@ class WallmartStoneHenge extends BackgroundObject {
         this.updateBB(this.offsetBB);
     }
 }
+
+class WaterTexture extends BackgroundObject {
+    constructor(game, x, y) {
+        super(game, x, y, 450, 450, 1);
+        this.updateSpritesheet("./assets/background/waterTexture.png");
+        this.offsetBB = { x: 0, y: 0, w: 0, h: 0 };
+        this.updateBB(this.offsetBB);
+    }
+}
