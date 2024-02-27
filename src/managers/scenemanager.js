@@ -15,7 +15,7 @@ class SceneManager {
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
-        this.MaxEnemies = 100;
+        this.MaxEnemies = 300;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -37,7 +37,7 @@ class SceneManager {
         });
 
         this.game.backgroundEntities.length = 0;
-        this.game.gemEntities.length = 0;
+        this.game.otherEntities.length = 0;
     };
 
     loadScene(level, isTransition, isGameWin) {
@@ -68,6 +68,14 @@ class SceneManager {
                 for (i = 0; i < level.barbedwires.length; i++) {
                     obj = level.barbedwires[i];
                     this.game.addBackgroundEntity(new BarbedWire(this.game, obj.x, obj.y));
+                }
+            }
+
+            // vertical barbedwires
+            if (level.verticalbarbedwires) {
+                for (i = 0; i < level.verticalbarbedwires.length; i++) {
+                    obj = level.verticalbarbedwires[i];
+                    this.game.addBackgroundEntity(new VerticalBarbedWire(this.game, obj.x, obj.y));
                 }
             }
             
@@ -162,7 +170,7 @@ class SceneManager {
                     this.bossSpawned = true;
                 }
             } else {
-                this.spawnmanager.update(); 
+               this.spawnmanager.update(); 
             }
 
             this.upgradeScreen.update();
@@ -181,6 +189,7 @@ class SceneManager {
                 this.reset();
             }
         }
+        
     
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;
@@ -204,5 +213,5 @@ class SceneManager {
         if (this.menu.isInMenu) {
             this.menu.draw(ctx);
         }
-    };
+    }
 };

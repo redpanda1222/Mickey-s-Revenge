@@ -7,6 +7,7 @@ class FireSlash {
         this.BB = new BoundingBox(mickey.x - ((mickey.width * 3) / 2.5), mickey.y - ((mickey.height * 3) / 2.5), mickey.width * 3 * this.sizeScale, mickey.height * 3 * this.sizeScale);
         this.attackAnimations = [];
         this.loadAttackAnimations();
+        this.kb = 1.85;
     }
 
     loadAttackAnimations() {
@@ -26,7 +27,7 @@ class FireSlash {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 10) {
-                entity.currentHP -= 5 + (Math.floor(this.mickey.Level / 100));
+                entity.takeDamage(5 + (Math.floor(this.mickey.Level / 100)), this.kb);
             }
         });
 
@@ -83,6 +84,7 @@ class FireBreath {
         this.width = 200;
         this.height = 100
         this.coolDown = 15;
+        this.kb = 1.1;
 
         this.offsetBB = { x: 0, y: 30, w: 0, h: -45 };
 
@@ -124,14 +126,14 @@ class FireBreath {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.currentHP -= 4 * this.mickey.Level;
+                entity.takeDamage(4 * this.mickey.Level, this.kb);
             }
         });
         if (this.BB2 != null) {
             this.game.entities.forEach(entity => {
                 //check if the cooldown is less than 3, if so, deal damage upon collision
                 if (entity != this.mickey && this.BB2.collideBB(entity.BB) && this.coolDown <= 3) {
-                    entity.currentHP -= 3 *this.mickey.Level;
+                    entity.takeDamage(3 * this.mickey.Level, this.kb);
                 }
             });
         }
@@ -176,6 +178,7 @@ class Projectile {
     constructor(game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce) {
         Object.assign(this, { game, mickey, isFriendly, x, y, width, height, projDamage, projSpeed, projDuration, projPierce });
 
+        this.kb = 0;
         this.elapsed = 0;
         this.targetX = x;
         this.targetY = y;
@@ -198,7 +201,8 @@ class Projectile {
             for (let i = this.game.entities.length - 1; i > 0; --i) {
                 const entity = this.game.entities[i];
 
-                if (this.BB.collideBB(entity.BB) && entity !== this.mickey) {
+                if (this.BB.collideBB(entity.BB)) {
+                    if (this.kbAngle) this.kbForce = entity.BB.center().sub(this.BB.center()).norm().mul(this.kb);
                     this.handleCollision(entity);
                 } else {
                     this.prevHits.delete(entity);
@@ -220,7 +224,8 @@ class Projectile {
 
     handleCollision(entity) {
         if (!this.prevHits.has(entity)) {
-            entity.takeDamage(this.projDamage);
+            if (this.kbForce) entity.takeDamage(this.projDamage, this.kb, this.kbForce);
+            else              entity.takeDamage(this.projDamage, this.kb);
             this.prevHits.set(entity, true);
             this.projPierce--;
         }
@@ -298,8 +303,8 @@ class Warning {
 }
 
 class Rasengan extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, projPierce, targetLocation, aimOffsetRadians) {
-        super(game, mickey, isFriendly, x, y, 94, 93, projDamage, projSpeed, projDuration, projPierce);
+    constructor(game, mickey, x, y, level, targetLocation, aimOffsetRadians) {
+        super(game, mickey, true, x, y, 94, 93, 0, 0, 0, 0);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/rasenganBall.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
         this.sizeScale = 0.75;
@@ -311,6 +316,44 @@ class Rasengan extends Projectile {
 
         this.updateTargetLocation(targetLocation.x, targetLocation.y);
         this.targetDirection = Math.atan2(this.targetY - this.BB.center().y, this.targetX - this.BB.center().x) + aimOffsetRadians;
+
+        this.attributes(level);
+        this.kb = 5;
+        this.kbAngle = true;
+    }
+
+    attributes(level) {
+        switch(level) {
+            case 1:
+                this.projDamage = 50;
+                this.projDuration = 2;
+                this.projPierce = 3;
+                this.projSpeed = 5;
+                break;
+            case 2:
+                this.projDamage = 50;
+                this.projDuration = 2;
+                this.projPierce = 5;
+                this.projSpeed = 5;
+                break;
+            case 3:
+                this.projDamage = 50;
+                this.projDuration = 3;
+                this.projPierce = 5;
+                this.projSpeed = 6;
+                break;
+            case 4:
+                this.projDamage = 100;
+                this.projDuration = 3;
+                this.projPierce = 10;
+                this.projSpeed = 6;
+                break;
+            default:
+                this.projDamage = 100;
+                this.projDuration = 3;
+                this.projPierce = 10;
+                this.projSpeed = 6;
+        }
     }
 
     update() {
@@ -354,8 +397,8 @@ class Shockwave extends Projectile {
 }
 
 class Fireblade extends Projectile {
-    constructor(game, mickey, isFriendly, x, y, projDamage, projSpeed, projDuration, targetEntity, isClockwise, radius, theta) {
-        super(game, mickey, isFriendly, x, y, 80, 90, projDamage, projSpeed, projDuration, 4095);
+    constructor(game, mickey, isFriendly, x, y, level, targetEntity, isClockwise, radius, theta) {
+        super(game, mickey, isFriendly, x, y, 80, 90, 0, 0, 0, 4095);
 
         this.spritesheet = new Animator(ASSET_MANAGER.getAsset("./assets/attack/fireblade.png"), 0, 0, this.width, this.height, 4, 0.1, 0, false, false);
         this.sizeScale = 0.5;
@@ -371,9 +414,41 @@ class Fireblade extends Projectile {
         this.theta = theta;
         this.updateTargetLocation(targetEntity.BB.center().x, targetEntity.BB.center().y);
 
+        this.kb = 5;
+        this.attributes(level);
+
         this.rotSpeed = degreeToRad(this.projSpeed * (isClockwise ? 1 : -1));
         this.x = this.targetX + Math.cos(this.theta) * this.radius;
         this.y = this.targetY + Math.sin(this.theta) * this.radius;
+    }
+
+    attributes(level) {
+        switch(level) {
+            case 1:
+                this.projDamage = 50;
+                this.projDuration = 4;
+                this.projSpeed = 3;
+                break;
+            case 2:
+                this.projDamage = 67;
+                this.projDuration = 4;
+                this.projSpeed = 4;
+                break;
+            case 3:
+                this.projDamage = 100;
+                this.projDuration = 4;
+                this.projSpeed = 5;
+                break;
+            case 4:
+                this.projDamage = 100;
+                this.projDuration = 4;
+                this.projSpeed = 6;
+                break;
+            default:
+                this.projDamage = 100;
+                this.projDuration = 4;
+                this.projSpeed = 7;
+        }
     }
 
     update() {
@@ -421,3 +496,120 @@ class Blast extends Projectile {
     }
 }
 
+class Laser {
+    constructor(game, mickey, level) {
+        Object.assign(this, { game, mickey, level });
+        this.elapsed = 0;
+        const mouse = new Vector2(game.mouse.x, game.mouse.y).add(new Vector2(game.cameraX, game.cameraY));
+        const toMouse = mouse.sub(this.mickey.BB.center()).norm().mul(1023).add(this.mickey.BB.center());
+
+        let toMouseTan = mouse.sub(this.mickey.BB.center()).norm();
+        toMouseTan = new Vector2(toMouseTan.y * -1, toMouseTan.x).mul(4);
+
+        const toMouse1 = toMouse.add(toMouseTan);
+        const mic1 = this.mickey.BB.center().add(toMouseTan);
+        const toMouse2 = toMouse.add(toMouseTan.mul(-1));
+        const mic2 = this.mickey.BB.center().add(toMouseTan.mul(-1));
+
+        this.line1 = new Line2(mic1.x, mic1.y, toMouse1.x, toMouse1.y);
+        this.line2 = new Line2(mic2.x, mic2.y, toMouse2.x, toMouse2.y);
+
+        this.attributes();
+    }
+
+    attributes() {
+        switch(this.level) {
+            case 1:
+                this.projDamage = 8;
+                this.projDuration = 0.05;
+                this.r = 0;
+                this.g = 100;
+                this.b = 0;
+                this.dr = 40;
+                this.dg = -25;
+                this.db = 20;
+                break;
+            case 2:
+                this.projDamage = 12;
+                this.projDuration = 0.1;
+                this.r = 0;
+                this.g = 100;
+                this.b = 0;
+                this.dr = 45;
+                this.dg = 20;
+                this.db = 10;
+                break;
+            case 3:
+                this.projDamage = 16;
+                this.projDuration = 0.1;
+                this.r = 0;
+                this.g = 0;
+                this.b = 100;
+                this.dr = 97;
+                this.dg = 39;
+                this.db = 15;
+                break;
+            case 4:
+                this.projDamage = 20;
+                this.projDuration = 0.2;
+                this.r = 130;
+                this.g = 0;
+                this.b = 0;
+                this.dr = 10;
+                this.dg = 20;
+                this.db = 20;
+                break;
+            default:
+                this.projDamage = 25;
+                this.projDuration = 0.25;
+                this.r = 0;
+                this.g = 150;
+                this.b = 200;
+                this.dr = 15;
+                this.dg = 7.25;
+                this.db = 3.1;
+        }
+    }
+
+    update() {
+        if (this.elapsed > this.projDuration) {
+            this.removeFromWorld = true;
+            return;
+        }
+        this.elapsed += this.game.clockTick;
+
+        this.game.entities.forEach(entity => {
+            const inter1 = linearIntersection(entity.BB.getSides()[0], this.line1) ||
+                linearIntersection(entity.BB.getSides()[1], this.line1) ||
+                linearIntersection(entity.BB.getSides()[2], this.line1) ||
+                linearIntersection(entity.BB.getSides()[3], this.line1);
+
+            let inter2 = false;
+            if (!inter1) {
+                inter2 = linearIntersection(entity.BB.getSides()[0], this.line2) ||
+                    linearIntersection(entity.BB.getSides()[1], this.line2) ||
+                    linearIntersection(entity.BB.getSides()[2], this.line2) ||
+                    linearIntersection(entity.BB.getSides()[3], this.line2);
+            }
+
+            if (entity !== this.mickey && (inter1 || inter2)) {
+                entity.takeDamage(this.projDamage, this.kb);
+            }
+        });
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = rgb(this.r % 255, this.g % 255, this.b % 255);
+        this.r += this.dr;
+        this.g += this.dg;
+        this.b += this.db;
+        // line(ctx, this.line1.x1 - this.game.cameraX, this.line1.y1 - this.game.cameraY, this.line1.x2 - this.game.cameraX, this.line1.y2 - this.game.cameraY);
+        // line(ctx, this.line2.x1 - this.game.cameraX, this.line2.y1 - this.game.cameraY, this.line2.x2 - this.game.cameraX, this.line2.y2 - this.game.cameraY);
+        ctx.beginPath();
+        ctx.moveTo(this.line1.x1 - this.game.cameraX, this.line1.y1 - this.game.cameraY);
+        ctx.lineTo(this.line1.x2 - this.game.cameraX, this.line1.y2 - this.game.cameraY);
+        ctx.lineTo(this.line2.x2 - this.game.cameraX, this.line2.y2 - this.game.cameraY);
+        ctx.lineTo(this.line2.x1 - this.game.cameraX, this.line2.y1 - this.game.cameraY);
+        ctx.fill();
+    }
+}
