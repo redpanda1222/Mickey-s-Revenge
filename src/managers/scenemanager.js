@@ -126,6 +126,15 @@ class SceneManager {
                     this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
                 }
             }
+
+            // waterTexture
+            if (level.waterTexture) {
+                for (i = 0; i < level.waterTexture.length; i++) {
+                    obj = level.waterTexture[i];
+                    this.game.addBackgroundEntity(new WaterTexture(this.game, obj.x, obj.y));
+                }
+            }
+
             this.spawnmanager.loadWaves(level.waves, level.formations);
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey); // mickey is always the first entity in game.entities

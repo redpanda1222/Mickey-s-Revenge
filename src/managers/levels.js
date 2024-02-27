@@ -41,6 +41,7 @@ var levelOne = {
         { x: 536, y: 672 },
         { x: -240, y: -64 },
         { x: -887, y: 462 },
+        { x: 1500, y: -1114 },
     ],
 
     deadtrees: [
@@ -84,6 +85,11 @@ var levelOne = {
         { x: 220, y: 313 },
         { x: 1307, y: -292 },
         { x: 1373, y: 1142 },
+    ],
+
+    waterTexture: [
+        { x: 1650, y: -1380 },
+        { x: 2080, y: -1380 },
     ],
 
     waves: [
@@ -347,10 +353,15 @@ var levelOne = {
 // horizontal barbed wires
 for (let i = 0; i < 32; i++) {
     levelOne.barbedwires.push({x: -1000 + 83 * i, y: -1000});
-    //levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1078});
+    levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1560});
 }
 
 for (let i = 0; i < 31; i++) {
     levelOne.verticalbarbedwires.push({x: -1000, y: -970 + 83 * i});
     //levelOne.verticalbarbedwires.push({x: 1025, y: -970 + 83 * i});
+}
+
+for (let i = 0; i <= 6; i++) {
+    levelOne.waterTexture.push({x: 1650, y: -930 + (450 * i)});
+    levelOne.waterTexture.push({x: 2080, y: -930 + (450 * i)});
 }

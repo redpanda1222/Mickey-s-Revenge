@@ -39,7 +39,7 @@ class Gem {
                     //this.mickey.currentHP = this.mickey.MaxHP - this.mickey.currentHP;
                     this.mickey.currentHP = this.mickey.MaxHP;
                 }else {
-                    this.mickey.currentHP += this.mickey.MaxHP*0.3;
+                    this.mickey.currentHP += this.mickey.MaxHP*0.2;
                 }
             }
             
