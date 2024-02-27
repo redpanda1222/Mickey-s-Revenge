@@ -127,6 +127,11 @@ class SceneManager {
                 }
             }
             this.spawnmanager.loadWaves(level.waves, level.formations);
+
+            this.mickey.minX = level.minBoundaryX;
+            this.mickey.maxX = level.maxBoundaryX;
+            this.mickey.minY = level.minBoundaryY;
+            this.mickey.maxY = level.maxBoundaryY;
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey); // mickey is always the first entity in game.entities
 
@@ -152,6 +157,18 @@ class SceneManager {
     updateCamera() {
         this.game.cameraX = this.mickey.x - PARAMS.WIDTH / 2 + this.mickey.width / 2;
         this.game.cameraY = this.mickey.y - PARAMS.HEIGHT / 2 + this.mickey.height / 2;
+
+        if (this.game.cameraX > this.mickey.maxX - PARAMS.WIDTH + this.mickey.width * 2)
+            this.game.cameraX = this.mickey.maxX - PARAMS.WIDTH + this.mickey.width * 2;
+        else if (this.game.cameraX < this.mickey.minX - this.mickey.width)
+            this.game.cameraX = this.mickey.minX - this.mickey.width;
+
+        if (this.game.cameraY > this.mickey.maxY - PARAMS.HEIGHT + this.mickey.height / 2)
+            this.game.cameraY = this.mickey.maxY - PARAMS.HEIGHT + this.mickey.height / 2;
+        else if (this.game.cameraY < this.mickey.minY - this.mickey.height)
+            this.game.cameraY = this.mickey.minY - this.mickey.height;
+        
+        console.log(this.game.cameraX + " " + this.game.cameraY);
     }
 
     update() {
@@ -196,7 +213,6 @@ class SceneManager {
             }
         }
         
-    
         this.updateAudio();
         this.updateCamera();
         PARAMS.DEBUG = document.getElementById("debug").checked;

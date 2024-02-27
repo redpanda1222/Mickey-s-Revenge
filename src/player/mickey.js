@@ -114,33 +114,27 @@ class Mickey {
     }
     
     movement() {
-        // Define boundaries
-        const minX = -1000;
-        const maxX = 1600;      // Maximum x-coordinate allowed
-        const minY = -1000;
-        const maxY = 1500;      // Maximum y-coordinate allowed
-
         this.status = 0;
         // the left boundary
-        if (this.game.left && this.x > minX) {
-            this.x = Math.max(this.x - this.movementSpeed, minX);
+        if (this.game.left && this.x > this.minX) {
+            this.x = Math.max(this.x - this.movementSpeed, this.minX);
             this.facing = 1;
             this.status = 1;
         }
         // right boundary
-        if (this.game.right && this.x < maxX) {
-            this.x = Math.min(this.x + this.movementSpeed, maxX);
+        if (this.game.right && this.x < this.maxX) {
+            this.x = Math.min(this.x + this.movementSpeed, this.maxX);
             this.facing = 0;
             this.status = 1;
         }
         // the top boundary
-        if (this.game.up && this.y > minY) {
-            this.y = Math.max(this.y - this.movementSpeed, minY); 
+        if (this.game.up && this.y > this.minY) {
+            this.y = Math.max(this.y - this.movementSpeed, this.minY); 
             this.status = 1;
         }
         // the bottom boundary
-        if (this.game.down && this.y < maxY) {
-            this.y = Math.min(this.y + this.movementSpeed, maxY); 
+        if (this.game.down && this.y < this.maxY) {
+            this.y = Math.min(this.y + this.movementSpeed, this.maxY); 
             this.status = 1;
         }
         // update bounding box
@@ -157,7 +151,7 @@ class Mickey {
             this.Level += 1; //add level if experience points met
             //should we reset player's exp points?
             this.experiencePoints = 0;
-            this.sceneManager.upgradeScreen.visible = true;
+            this.game.camera.upgradeScreen.visible = true;
         }
 
         this.movement();

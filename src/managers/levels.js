@@ -2,6 +2,12 @@
 var levelOne = {
     music: "./audio/escape.mp3",
 
+    // Define boundaries
+    minBoundaryX: -PARAMS.WIDTH, 
+    maxBoundaryX: PARAMS.WIDTH * 2, // Maximum x-coordinate allowed
+    minBoundaryY: -PARAMS.HEIGHT * 2,
+    maxBoundaryY: PARAMS.HEIGHT * 2, // Maximum y-coordinate allowed
+
     // background tiles (entities walk on)
     tileGrid:
         [
@@ -45,7 +51,7 @@ var levelOne = {
 
     deadtrees: [
         { x: 410, y: 222 },
-        { x: -1030, y: -1080 },
+        { x: -1000, y: -1080 },
         { x: 936, y: 1016 },
         { x: -292, y: 1359 },
         { x: -736, y: 932 },
@@ -345,12 +351,12 @@ var levelOne = {
 };
 
 // horizontal barbed wires
-for (let i = 0; i < 32; i++) {
-    levelOne.barbedwires.push({x: -1000 + 83 * i, y: -1000});
+for (let i = 0; i < 40; i++) {
+    levelOne.barbedwires.push({x: -1000 + 83 * i, y: -PARAMS.HEIGHT * 2});
     //levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1078});
 }
 
-for (let i = 0; i < 31; i++) {
-    levelOne.verticalbarbedwires.push({x: -1000, y: -970 + 83 * i});
+for (let i = 0; i < 38; i++) {
+    levelOne.verticalbarbedwires.push({x: -1000, y: -PARAMS.HEIGHT * 2 + 20 + 83 * i});
     //levelOne.verticalbarbedwires.push({x: 1025, y: -970 + 83 * i});
 }
