@@ -361,6 +361,7 @@ for (let i = 0; i < 31; i++) {
     //levelOne.verticalbarbedwires.push({x: 1025, y: -970 + 83 * i});
 }
 
+// water boundary
 for (let i = 0; i <= 6; i++) {
     levelOne.waterTexture.push({x: 1650, y: -930 + (450 * i)});
     levelOne.waterTexture.push({x: 2080, y: -930 + (450 * i)});
