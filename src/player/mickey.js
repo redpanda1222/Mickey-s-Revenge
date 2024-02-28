@@ -1,9 +1,7 @@
 class Mickey {
-    constructor(game, x, y, sceneManager) {
+    constructor(game, x, y) {
         this.game = game;
 
-        // this.game.mickey = this;
-        this.sceneManager = sceneManager;
         this.facing = 0;
         this.status = 0;
         this.attacking = false;
@@ -89,8 +87,6 @@ class Mickey {
     reset() {
         this.x = this.initialX;
         this.y = this.initialY;
-        this.cameraX = this.x;
-        this.cameraY = this.initialY;
 
         //CHARACTER STATS
         this.MaxHP = 100;
@@ -116,46 +112,33 @@ class Mickey {
 
         this.enemiesCounter = 0;
     }
-
+    
     movement() {
-        // Define boundaries
-        const minX = -1000;
-        const maxX = 1600;      // Maximum x-coordinate allowed
-        const minY = -1000;
-        const maxY = 1500;      // Maximum y-coordinate allowed
-
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
-
         this.status = 0;
         // the left boundary
-        if (this.game.left && this.x > minX) {
-            this.x = Math.max(this.x - this.movementSpeed, minX);
+        if (this.game.left && this.x > this.minX) {
+            this.x = Math.max(this.x - this.movementSpeed, this.minX);
             this.facing = 1;
             this.status = 1;
         }
         // right boundary
-        if (this.game.right && this.x < maxX) {
-            this.x = Math.min(this.x + this.movementSpeed, maxX);
+        if (this.game.right && this.x < this.maxX) {
+            this.x = Math.min(this.x + this.movementSpeed, this.maxX);
             this.facing = 0;
             this.status = 1;
         }
         // the top boundary
-        if (this.game.up && this.y > minY) {
-            this.y = Math.max(this.y - this.movementSpeed, minY); 
+        if (this.game.up && this.y > this.minY) {
+            this.y = Math.max(this.y - this.movementSpeed, this.minY); 
             this.status = 1;
         }
         // the bottom boundary
-        if (this.game.down && this.y < maxY) {
-            this.y = Math.min(this.y + this.movementSpeed, maxY); 
+        if (this.game.down && this.y < this.maxY) {
+            this.y = Math.min(this.y + this.movementSpeed, this.maxY); 
             this.status = 1;
         }
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
-        // this.game.cameraX = 0;
-        // this.game.cameraY = 0;
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
     }
 
     update() {
@@ -168,7 +151,7 @@ class Mickey {
             this.Level += 1; //add level if experience points met
             //should we reset player's exp points?
             this.experiencePoints = 0;
-            this.sceneManager.upgradeScreen.visible = true;
+            this.game.camera.upgradeScreen.visible = true;
         }
 
         // // Store Mickey's previous position
