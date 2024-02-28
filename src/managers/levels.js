@@ -94,8 +94,8 @@ var levelOne = {
     ],
 
     waterTexture: [
-        { x: 1650, y: -1380 },
-        { x: 2080, y: -1380 },
+        { x: 1950, y: -1680 },
+        { x: 2380, y: -1680 },
     ],
 
     waves: [
@@ -357,7 +357,7 @@ var levelOne = {
 };
 
 // horizontal barbed wires
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 36; i++) {
     levelOne.barbedwires.push({x: -1000 + 83 * i, y: -PARAMS.HEIGHT * 2});
     levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1560});
 }
@@ -369,6 +369,6 @@ for (let i = 0; i < 38; i++) {
 
 // water boundary
 for (let i = 0; i <= 6; i++) {
-    levelOne.waterTexture.push({x: 1950, y: -930 + (450 * i)});
-    levelOne.waterTexture.push({x: 2380, y: -930 + (450 * i)});
+    levelOne.waterTexture.push({x: 1950, y: -1230 + (450 * i)});
+    levelOne.waterTexture.push({x: 2380, y: -1230 + (450 * i)});
 }
