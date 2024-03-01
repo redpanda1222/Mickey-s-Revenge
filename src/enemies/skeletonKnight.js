@@ -23,11 +23,11 @@ class SkeletonKnight {
         this.width = 32;
         this.height = 43;
 
-        this.MaxHP = 5000;
-        this.currentHP = 5000;
+        this.MaxHP = 3000;
+        this.currentHP = 3000;
 
         // damage
-        this.collideDamage = 5;
+        this.collideDamage = 15;
 
         // Laser ball properties
         this.laserCooldown = 0; // Cooldown for firing laser balls
@@ -251,7 +251,7 @@ class LaserBall {
         this.dy /= this.distance;
 
         this.speed = 8;
-        this.collideDamage = 10;
+        this.collideDamage = 20;
 
         // animation
         this.elapsedTime = 0;
