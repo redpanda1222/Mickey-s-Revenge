@@ -26,7 +26,7 @@ class Mickey {
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
-        this.movementSpeed = 4;
+        this.movementSpeed = 240;
         this.pickupRadius = 70;
         this.Level = 1;
         this.experiencePoints = 0;
@@ -130,24 +130,24 @@ class Mickey {
         this.status = 0;
         // the left boundary
         if (this.game.left && this.x > minX) {
-            this.x = Math.max(this.x - this.movementSpeed, minX);
+            this.x = Math.max(this.x - this.movementSpeed * this.game.clockTick, minX);
             this.facing = 1;
             this.status = 1;
         }
         // right boundary
         if (this.game.right && this.x < maxX) {
-            this.x = Math.min(this.x + this.movementSpeed, maxX);
+            this.x = Math.min(this.x + this.movementSpeed * this.game.clockTick, maxX);
             this.facing = 0;
             this.status = 1;
         }
         // the top boundary
         if (this.game.up && this.y > minY) {
-            this.y = Math.max(this.y - this.movementSpeed, minY); 
+            this.y = Math.max(this.y - this.movementSpeed * this.game.clockTick, minY); 
             this.status = 1;
         }
         // the bottom boundary
         if (this.game.down && this.y < maxY) {
-            this.y = Math.min(this.y + this.movementSpeed, maxY); 
+            this.y = Math.min(this.y + this.movementSpeed * this.game.clockTick, maxY); 
             this.status = 1;
         }
         // update bounding box
