@@ -189,9 +189,9 @@ class GiantHuskydog {
         this.animations = [];
         this.loadAnimations();
 
-        this.MaxHP = 5000;
-        this.currentHP = 5000;
-        this.collideDmg = 5;
+        this.MaxHP = 3000;
+        this.currentHP = 3000;
+        this.collideDmg = 15;
 
         this.flipLeft = false;
 

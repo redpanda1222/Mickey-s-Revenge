@@ -28,6 +28,7 @@ class GameEngine {
         this.right = false;
         this.down = false;
         this.up = false;
+        this.dash = false;
 
         this.cameraX = 0;
         this.cameraY = 0;
@@ -99,6 +100,9 @@ class GameEngine {
                 case "ArrowDown":
                 case "KeyS":
                     that.down = true;
+                    break;
+                case "Space":
+                    that.dash = true;
                     break;
             }
         }
