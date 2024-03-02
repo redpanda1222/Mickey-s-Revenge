@@ -91,6 +91,33 @@ class Mickey {
         //ASSET_MANAGER.playAsset("./audio/hurt.mp3");
     }
 
+    performDash() {
+        // Start dash
+        this.dashTimer = this.dashDuration;
+        this.dashCooldownTimer = this.dashCooldown;
+    }
+
+    resetDash() {
+        // Reset dash properties
+        this.dashTimer = 0;
+    }
+
+    dashMovement() {
+        // Move Mickey during dash
+        if (this.game.up) {
+            this.y -= this.dashSpeed;
+        }
+        if (this.game.down) {
+            this.y += this.dashSpeed;
+        }
+        if (this.game.left) {
+            this.x -= this.dashSpeed;
+        }
+        if (this.game.right) {
+            this.x += this.dashSpeed;
+        }
+    }
+
     reset() {
         this.x = this.initialX;
         this.y = this.initialY;
