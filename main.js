@@ -5,6 +5,7 @@ const imageQueue = [
 	"./assets/background/sand.png",
 	"./assets/background/sandtile.png",
 	"./assets/background/barbedwire1.png",
+	"./assets/background/barbedwire2.png",
 	"./assets/background/deadbodies1.png",
 	"./assets/background/deadtree.png",
 	"./assets/background/desertsand.png",
@@ -23,6 +24,10 @@ const imageQueue = [
 	"./assets/enemy/skeleton.png",
 	"./assets/enemy/skeletonknight.png",
 	"./assets/enemy/skeletonmage.png",
+	"./assets/enemy/monster-spider.png",
+	"./assets/enemy/bat.png",
+	"./assets/enemy/rat.png",
+	"./assets/enemy/goblinsmasher.png",
 	"./assets/miscellaneous/gems.png",
 	"./assets/attack/fireslash.png",
 	"./assets/attack/fireslash2.png",
@@ -43,6 +48,10 @@ const imageQueue = [
 	"./assets/attack/lasers.png",
 	"./audio/kitchen.mp3",
 	"./audio/escape.mp3",
+	"./audio/constantfire.mp3",
+	"./audio/energy-gloves.mp3",
+	"./audio/energypulse.mp3",
+	"./audio/fireball.mp3",
 	"./audio/hurt.mp3"
 ];
 

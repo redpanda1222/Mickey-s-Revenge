@@ -39,5 +39,15 @@ class BoundingBox {
         ctx.strokeStyle = "red";
         ctx.lineWidth = 2;
         ctx.strokeRect(this.x - game.cameraX, this.y - game.cameraY, this.width, this.height);
+        // const s = this.getSides();
+        // line(ctx, s[0].x1, s[0].y1, s[0].x2, s[0].y2);
+        // line(ctx, s[1].x1, s[1].y1, s[1].x2, s[1].y2);
+    }
+
+    getSides() {
+        return [new Line2(this.x, this.y, this.x, this.y + this.height), // left
+                new Line2(this.x, this.y, this.x + this.width, this.y),  // top
+                new Line2(this.x + this.width, this.y, this.x + this.width, this.y + this.height), // right
+                new Line2(this.x, this.y + this.height, this.x + this.width, this.y + this.height)]; // bot
     }
 };

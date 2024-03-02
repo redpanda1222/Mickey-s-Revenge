@@ -82,7 +82,7 @@ const centerRect = (ctx, x, y, w, h, fill, border) => {
         ctx.strokeRect(x - w / 2, y - h / 2, w, h);
     } else {
         if (fill) ctx.fillRect(x - w / 2, y - h / 2, w, h);
-        else      ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+        else ctx.strokeRect(x - w / 2, y - h / 2, w, h);
     }
 }
 
@@ -129,4 +129,34 @@ class Vector2 {
     norm() {
         return this.div(this.mag());
     }
+}
+
+class Line2 {
+    constructor(x1, y1, x2, y2) {
+        Object.assign(this, { x1, y1, x2, y2 });
+    }
+}
+
+/**
+ * @param {Line2} line1 
+ * @param {Line2} line2 
+ * @returns Whether there is intersection between 2 lines of Line2 class
+ */
+const linearIntersection = (line1, line2) => {
+    // calculate the direction of the lines
+    const uA = ((line2.x2 - line2.x1) * (line1.y1 - line2.y1) - (line2.y2 - line2.y1) * (line1.x1 - line2.x1)) / 
+               ((line2.y2 - line2.y1) * (line1.x2 - line1.x1) - (line2.x2 - line2.x1) * (line1.y2 - line1.y1));
+
+    if (!(uA >= 0 && uA <= 1)) return false;
+               
+    const uB = ((line1.x2 - line1.x1) * (line1.y1 - line2.y1) - (line1.y2 - line1.y1) * (line1.x1 - line2.x1)) / 
+               ((line2.y2 - line2.y1) * (line1.x2 - line1.x1) - (line2.x2 - line2.x1) * (line1.y2 - line1.y1));
+
+    return uB >= 0 && uB <= 1;
+    // if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+    //     const intersectionX = line1.x1 + (uA * (line1.x2 - line1.x1));
+    //     const intersectionY = line1.y1 + (uA * (line1.y2 - line1.y1));
+    //     return { x: intersectionX, y: intersectionY };
+    // }
+    // return null;
 }

@@ -9,7 +9,7 @@ class SkeletonKnight {
         this.acc = new Vector2(0, 0);
         this.w = 150;
         this.h = 150;
-        this.speed = 3.5;
+        this.speed = 3.5 * 60;
         this.drag = -1 / (this.speed); // dont question
 
         this.elapsedTime = 0;
@@ -48,8 +48,17 @@ class SkeletonKnight {
         this.pos.y = y;
     }
 
-    takeDamage(damage) {
+    takeDamage(damage, knockbackMultiplier, knockbackForce) {
         this.currentHP -= damage;
+        this.game.addOtherEntity(new DamageText(this.game, this, damage, 10, 30));
+        // unless knockbackForce is specified damage will knock away from mickey
+        if (knockbackForce) {
+            this.applyForce(knockbackForce);
+        } else {
+            const toMickeyRev = this.BB.center().sub(this.mickey.BB.center()).norm();
+            const c = knockbackMultiplier ? knockbackMultiplier : 0;
+            this.applyForce(toMickeyRev.mul(c));
+        }
     }
 
     handleCollision(entity, scalarForce) {
@@ -60,7 +69,7 @@ class SkeletonKnight {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel);
+        this.pos = this.pos.add(this.vel.mul(this.game.clockTick));
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel
@@ -119,15 +128,16 @@ class SkeletonKnight {
             }
         });
         // collision detection & resolution with other enemmies
-        this.game.entities.forEach(entity => {
-            if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem) && !(entity instanceof LaserBall)) {
-                this.handleCollision(entity, 0.75);
-            }
-            // colliding with mickey and attacking mickey
-            if (entity == this.mickey && this.BB.collideBB(entity.BB)) {
-                this.mickey.takeDamage(this.collideDamage);
-            }
-        }); 
+        // this.game.entities.forEach(entity => {
+        //     if (this.BB.collideBB(entity.BB) && entity !== this && entity !== this.mickey && !(entity instanceof Gem) && !(entity instanceof LaserBall)) {
+        //         this.handleCollision(entity, 0.75);
+        //     }
+        // }); 
+
+        // colliding with mickey and attacking mickey
+        if (this.BB.collideBB(this.mickey.BB)) {
+            this.mickey.takeDamage(this.collideDamage);
+        }
 
         if (this.pos.x - this.mickey.x + 20> 0) {
             this.xStart = 0;
