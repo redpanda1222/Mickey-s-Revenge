@@ -164,7 +164,9 @@ class FireBreath {
             }
         }
 
-        if (this.elapsedTime > 1) this.removeFromWorld = true;
+        if (this.elapsedTime > 1) {
+            this.removeFromWorld = true
+        }
 
         if (PARAMS.DEBUG) {
             // draws bounding box

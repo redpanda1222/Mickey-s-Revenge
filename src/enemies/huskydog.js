@@ -8,7 +8,7 @@ class Huskydog {
         this.acc = new Vector2(0, 0);
         this.w = 50;
         this.h = 50;
-        this.speed = 3.2 * 60; // must be at least 1
+        this.speed = 4 * 60; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -179,7 +179,7 @@ class GiantHuskydog {
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
-        this.speed = 1;
+        this.speed = 60;
         this.drag = -1 / (this.speed); // dont question
         this.spdMul = 1;
 
@@ -290,7 +290,7 @@ class GiantHuskydog {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel.mul(this.spdMul));
+        this.pos = this.pos.add(this.vel.mul(this.spdMul*this.game.clockTick));
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel

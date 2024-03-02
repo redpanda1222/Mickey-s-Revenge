@@ -52,6 +52,7 @@ const imageQueue = [
 	"./audio/energy-gloves.mp3",
 	"./audio/energypulse.mp3",
 	"./audio/fireball.mp3",
+	"./audio/energyball.mp3",
 	"./audio/hurt.mp3"
 ];
 

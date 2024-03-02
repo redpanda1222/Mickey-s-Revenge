@@ -84,6 +84,7 @@ class SkeletonKnight {
     fireLaser() {
         // Create and add laser ball entities to the game world
         this.game.addAttackEntity(new LaserBall(this.game, this, this.mickey));
+        ASSET_MANAGER.playAsset("./audio/energyball.mp3");
     }
 
     spawnSkeletons() {

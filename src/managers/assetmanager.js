@@ -89,6 +89,12 @@ class AssetManager {
         
     };
 
+    pauseAsset(path) {
+        let audio = this.cache[path];
+        audio.currentTime = 0;
+        audio.pause();
+    };
+
     muteAudio(mute) {
         // console.log("Muting audio: " + mute);
         for (var key in this.cache) {

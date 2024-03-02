@@ -182,6 +182,7 @@ class Mickey {
             const nearest = this.game.entityDistances[0];
             if (nearest && nearest.dist < this.fireSlashRange) {
                 this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
+                ASSET_MANAGER.playAsset("./audio/fireball.mp3")
             } else {
                 this.fireSlashCD.forceDone();
             }
@@ -191,6 +192,7 @@ class Mickey {
             this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
             ASSET_MANAGER.playAsset("./audio/constantfire.mp3");
         }
+
 
         if (this.fireBladeLevel > 0 && this.fireBladeCD.doneTicking()) {
             for (let i = 0; i < this.fireBladeLevel; i++) {
