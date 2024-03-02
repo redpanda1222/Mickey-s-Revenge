@@ -9,7 +9,7 @@ class SkeletonKnight {
         this.acc = new Vector2(0, 0);
         this.w = 150;
         this.h = 150;
-        this.speed = 3.5;
+        this.speed = 3.5 * 60;
         this.drag = -1 / (this.speed); // dont question
 
         this.elapsedTime = 0;
@@ -69,7 +69,7 @@ class SkeletonKnight {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel);
+        this.pos = this.pos.add(this.vel.mul(this.game.clockTick));
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel

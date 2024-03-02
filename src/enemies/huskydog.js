@@ -8,7 +8,7 @@ class Huskydog {
         this.acc = new Vector2(0, 0);
         this.w = 50;
         this.h = 50;
-        this.speed = 3.2; // must be at least 1
+        this.speed = 3.2 * 60; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -34,7 +34,7 @@ class Huskydog {
         // for formations
         if (move) {
             this.moveVec = new Vector2(move.x, move.y);
-            this.speed = 6; // must be at least 1
+            this.speed = 6 * 60; // must be at least 1
             this.drag = -1 / this.speed; // dont question
             this.updateFacing();
         }
@@ -49,7 +49,7 @@ class Huskydog {
         // collision with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed + 1);
+                this.handleCollision(backEntity, this.speed * this.game.clockTick + 1);
             }
         });
         // collision with other enemies
@@ -87,7 +87,7 @@ class Huskydog {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel);
+        this.pos = this.pos.add(this.vel.mul(this.game.clockTick));
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel

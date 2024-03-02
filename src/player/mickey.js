@@ -83,7 +83,7 @@ class Mickey {
         }
         this.immune = true
         this.currentHP -= damage;
-        // ASSET_MANAGER.playAsset("./audio/hurt.mp3");
+        //ASSET_MANAGER.playAsset("./audio/hurt.mp3");
     }
 
     reset() {
@@ -189,6 +189,7 @@ class Mickey {
 
         if (this.fireBreathLevel > 0 && this.fireBreathCD.doneTicking()) {
             this.game.addAttackEntity(new FireBreath(this.game, this, 1, this.fireBreathLevel));
+            ASSET_MANAGER.playAsset("./audio/constantfire.mp3");
         }
 
         if (this.fireBladeLevel > 0 && this.fireBladeCD.doneTicking()) {
@@ -210,6 +211,7 @@ class Mickey {
                     this.game.addAttackEntity(new Rasengan(
                         this.game, this, this.BB.center().x - 40, this.BB.center().y - 50, this.rasenganLevel, nearest.e.BB.center(), 0
                     ));
+                    ASSET_MANAGER.playAsset("./audio/energypulse.mp3");
                 }
             } else {
                 this.rasenganCD.forceDone();
@@ -218,6 +220,7 @@ class Mickey {
 
         if (this.laserLevel > 0 && this.laserCD.doneTicking()) {
             this.game.addAttackEntity(new Laser(this.game, this, this.laserLevel));
+            ASSET_MANAGER.playAsset("./audio/energy-gloves.mp3");
         }
 
         // mickey only collide with background objects

@@ -48,6 +48,10 @@ const imageQueue = [
 	"./assets/attack/lasers.png",
 	"./audio/kitchen.mp3",
 	"./audio/escape.mp3",
+	"./audio/constantfire.mp3",
+	"./audio/energy-gloves.mp3",
+	"./audio/energypulse.mp3",
+	"./audio/fireball.mp3",
 	"./audio/hurt.mp3"
 ];
 

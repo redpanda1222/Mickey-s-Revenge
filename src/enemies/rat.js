@@ -8,7 +8,7 @@ class Rat {
         this.acc = new Vector2(0, 0);
         this.w = 64;
         this.h = 64;
-        this.speed = 2.8; // must be at least 1
+        this.speed = 2.8 * 60; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -83,7 +83,7 @@ class Rat {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel);
+        this.pos = this.pos.add(this.vel.mul(this.game.clockTick));
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel
