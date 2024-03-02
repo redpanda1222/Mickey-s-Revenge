@@ -27,7 +27,7 @@ class Huskydog {
 
         // attributes
         this.currentHP = 120;
-        this.collideDmg = 5;
+        this.collideDmg = 2;
 
         this.flipLeft = false;
 
@@ -189,9 +189,9 @@ class GiantHuskydog {
         this.animations = [];
         this.loadAnimations();
 
-        this.MaxHP = 5000;
-        this.currentHP = 5000;
-        this.collideDmg = 5;
+        this.MaxHP = 3000;
+        this.currentHP = 3000;
+        this.collideDmg = 15;
 
         this.flipLeft = false;
 

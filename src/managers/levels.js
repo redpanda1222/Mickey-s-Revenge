@@ -2,6 +2,12 @@
 var levelOne = {
     music: "./audio/escape.mp3",
 
+    // Define boundaries
+    minBoundaryX: -PARAMS.WIDTH, 
+    maxBoundaryX: PARAMS.WIDTH * 2, // Maximum x-coordinate allowed
+    minBoundaryY: -PARAMS.HEIGHT * 2,
+    maxBoundaryY: PARAMS.HEIGHT * 2, // Maximum y-coordinate allowed
+
     // background tiles (entities walk on)
     tileGrid:
         [
@@ -41,11 +47,12 @@ var levelOne = {
         { x: 536, y: 672 },
         { x: -240, y: -64 },
         { x: -887, y: 462 },
+        { x: 1500, y: -1114 },
     ],
 
     deadtrees: [
         { x: 410, y: 222 },
-        { x: -1030, y: -1080 },
+        { x: -1000, y: -1080 },
         { x: 936, y: 1016 },
         { x: -292, y: 1359 },
         { x: -736, y: 932 },
@@ -84,6 +91,11 @@ var levelOne = {
         { x: 220, y: 313 },
         { x: 1307, y: -292 },
         { x: 1373, y: 1142 },
+    ],
+
+    waterTexture: [
+        { x: 1950, y: -1680 },
+        { x: 2380, y: -1680 },
     ],
 
     waves: [
@@ -345,12 +357,18 @@ var levelOne = {
 };
 
 // horizontal barbed wires
-for (let i = 0; i < 32; i++) {
-    levelOne.barbedwires.push({x: -1000 + 83 * i, y: -1000});
-    //levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1078});
+for (let i = 0; i < 36; i++) {
+    levelOne.barbedwires.push({x: -1000 + 83 * i, y: -PARAMS.HEIGHT * 2});
+    levelOne.barbedwires.push({x: -1000 + 83 * i, y: 1560});
 }
 
-for (let i = 0; i < 31; i++) {
-    levelOne.verticalbarbedwires.push({x: -1000, y: -970 + 83 * i});
+for (let i = 0; i < 38; i++) {
+    levelOne.verticalbarbedwires.push({x: -1000, y: -PARAMS.HEIGHT * 2 + 20 + 83 * i});
     //levelOne.verticalbarbedwires.push({x: 1025, y: -970 + 83 * i});
+}
+
+// water boundary
+for (let i = 0; i <= 6; i++) {
+    levelOne.waterTexture.push({x: 1950, y: -1230 + (450 * i)});
+    levelOne.waterTexture.push({x: 2380, y: -1230 + (450 * i)});
 }

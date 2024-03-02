@@ -24,7 +24,8 @@ class Skeleton {
         this.height = 68;
 
         // attributes
-        this.currentHP = 100 * this.mickey.Level;
+        //this.currentHP = 50 * this.mickey.Level;
+        this.currentHP = 50;
         this.collideDmg = 2 * this.mickey.Level;
 
         this.flipLeft = false;

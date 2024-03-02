@@ -1,9 +1,7 @@
 class Mickey {
-    constructor(game, x, y, sceneManager) {
+    constructor(game, x, y) {
         this.game = game;
 
-        // this.game.mickey = this;
-        this.sceneManager = sceneManager;
         this.facing = 0;
         this.status = 0;
         this.attacking = false;
@@ -47,6 +45,13 @@ class Mickey {
         this.fireSlashRange = 150;
         this.rasenganRange = 300;
 
+        // Dash properties
+        this.dashSpeed = 6; // Adjust dash speed as needed
+        this.dashDuration = 0.3; // Duration of dash in seconds
+        this.dashCooldown = 6; // Cooldown time for dash in seconds
+        this.dashTimer = 0; // Timer to track dash duration
+        this.dashCooldownTimer = 0; // Timer to track dash cooldown
+
         // Killed enemies counter
         this.enemiesCounter = 0;
 
@@ -89,8 +94,6 @@ class Mickey {
     reset() {
         this.x = this.initialX;
         this.y = this.initialY;
-        this.cameraX = this.x;
-        this.cameraY = this.initialY;
 
         //CHARACTER STATS
         this.MaxHP = 100;
@@ -116,17 +119,8 @@ class Mickey {
 
         this.enemiesCounter = 0;
     }
-
+    
     movement() {
-        // Define boundaries
-        const minX = -1000;
-        const maxX = 1600;      // Maximum x-coordinate allowed
-        const minY = -1000;
-        const maxY = 1500;      // Maximum y-coordinate allowed
-
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
-
         this.status = 0;
         // the left boundary
         if (this.game.left && this.x > minX) {
@@ -152,10 +146,6 @@ class Mickey {
         }
         // update bounding box
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
-        // this.game.cameraX = 0;
-        // this.game.cameraY = 0;
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
     }
 
     update() {
@@ -168,14 +158,41 @@ class Mickey {
             this.Level += 1; //add level if experience points met
             //should we reset player's exp points?
             this.experiencePoints = 0;
-            this.sceneManager.upgradeScreen.visible = true;
+            this.game.camera.upgradeScreen.visible = true;
         }
 
         // // Store Mickey's previous position
         // const prevX = this.x;
         // const prevY = this.y;
 
+        // Update dash cooldown timer
+        if (this.dashCooldownTimer > 0) {
+            this.dashCooldownTimer -= this.game.clockTick;
+        }
+
+        // Dash logic
+        if (this.game.dash && this.dashCooldownTimer <= 0) {
+            // Perform dash
+            this.performDash();
+            this.game.dash = false;
+        } else {
+            this.game.dash = false;
+        }
+
+        // Update dash timer
+        if (this.dashTimer > 0) {
+            this.dashTimer -= this.game.clockTick;
+            if (this.dashTimer <= 0) {
+                // Dash duration is over, reset dash properties
+                this.resetDash();
+            } else {
+                // Update Mickey's position during dash
+                this.dashMovement();
+            }
+        }
+
         this.movement();
+        //console.log(this.game.dash);
         
         //add attacks
         if (this.fireSlashLevel > 0 && this.fireSlashCD.doneTicking()) {
@@ -256,6 +273,24 @@ class Mickey {
             // draws bounding box
             this.BB.draw(ctx, this.game);
         }
+
+        // Draw dash cooldown indicator
+        if (this.dashCooldownTimer > 0) {
+            const camX = this.x - this.game.cameraX - 12;
+            const camY = this.y - this.game.cameraY + this.height + 10;
+
+            // Draw cooldown indicator background
+            ctx.fillStyle = 'black';
+            ctx.fillRect(camX, camY, 80, 5);
+
+            // Calculate cooldown progress
+            const cooldownProgress = 1 - (this.dashCooldownTimer / this.dashCooldown);
+
+            // Draw cooldown progress bar
+            ctx.fillStyle = 'gray';
+            ctx.fillRect(camX, camY, 80 * cooldownProgress, 5);
+        }
+
         // draw line to nearest target
         // if (this.game.entityDistances.length > 0) {
         //     const nearest = this.game.entityDistances[0].e;

@@ -15,7 +15,7 @@ class SceneManager {
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
-        this.MaxEnemies = 300;
+        this.MaxEnemies = 100;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -126,7 +126,21 @@ class SceneManager {
                     this.game.addBackgroundEntity(new EmptyBarrel(this.game, obj.x, obj.y));
                 }
             }
+
+            // waterTexture
+            if (level.waterTexture) {
+                for (i = 0; i < level.waterTexture.length; i++) {
+                    obj = level.waterTexture[i];
+                    this.game.addBackgroundEntity(new WaterTexture(this.game, obj.x, obj.y));
+                }
+            }
+
             this.spawnmanager.loadWaves(level.waves, level.formations);
+
+            this.mickey.minX = level.minBoundaryX;
+            this.mickey.maxX = level.maxBoundaryX;
+            this.mickey.minY = level.minBoundaryY;
+            this.mickey.maxY = level.maxBoundaryY;
             this.mickey.removeFromWorld = false;
             this.game.addEntity(this.mickey); // mickey is always the first entity in game.entities
 
@@ -139,6 +153,7 @@ class SceneManager {
             // }
         };
     };
+
     updateAudio() {
         var muteCheckbox = document.getElementById("mute").checked;
         var volume = document.getElementById("volume").value;
@@ -147,6 +162,21 @@ class SceneManager {
         ASSET_MANAGER.adjustVolume(volume);
         ASSET_MANAGER.autoRepeat("./audio/escape.mp3");
     };
+
+    updateCamera() {
+        this.game.cameraX = this.mickey.x - PARAMS.WIDTH / 2 + this.mickey.width / 2;
+        this.game.cameraY = this.mickey.y - PARAMS.HEIGHT / 2 + this.mickey.height / 2;
+
+        if (this.game.cameraX > this.mickey.maxX - PARAMS.WIDTH + this.mickey.width * 2)
+            this.game.cameraX = this.mickey.maxX - PARAMS.WIDTH + this.mickey.width * 2;
+        else if (this.game.cameraX < this.mickey.minX - this.mickey.width)
+            this.game.cameraX = this.mickey.minX - this.mickey.width;
+
+        if (this.game.cameraY > this.mickey.maxY - PARAMS.HEIGHT + this.mickey.height / 2)
+            this.game.cameraY = this.mickey.maxY - PARAMS.HEIGHT + this.mickey.height / 2;
+        else if (this.game.cameraY < this.mickey.minY - this.mickey.height)
+            this.game.cameraY = this.mickey.minY - this.mickey.height;
+    }
 
     update() {
         this.updateAudio();
@@ -190,8 +220,8 @@ class SceneManager {
             }
         }
         
-    
         this.updateAudio();
+        this.updateCamera();
         PARAMS.DEBUG = document.getElementById("debug").checked;
     };
 
