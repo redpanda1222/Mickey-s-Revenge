@@ -141,6 +141,7 @@ class SkeletonMage {
         // Check if enough time has passed to fire another FireBall
         if (this.timeSinceLastFireball >= this.fireballDelay && distance <= this.shootingRange) {
             this.game.addAttackEntity(new FireBall(this.game, this, this.mickey));
+            
             this.timeSinceLastFireball = 0; // Reset the timer
         } else {
             this.timeSinceLastFireball += this.game.clockTick; // Increment the timer
@@ -220,8 +221,8 @@ class FireBall {
     }
 
     update() {
-        this.x += this.dx * this.speed;
-        this.y += this.dy * this.speed;
+        this.x += this.dx * this.speed * this.game.clockTick;
+        this.y += this.dy * this.speed * this.game.clockTick;
         this.elapsedTime += this.game.clockTick;
         this.BB.updateBB(this.x + this.offsetBB.x, this.y + this.offsetBB.y);
 
