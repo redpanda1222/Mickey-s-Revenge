@@ -120,9 +120,11 @@ class Mickey {
     movement() {
         // Define boundaries
         const minX = -1000;
-        const maxX = 1600;      // Maximum x-coordinate allowed
+        // Maximum x-coordinate allowed
+        const maxX = 1600;
         const minY = -1000;
-        const maxY = 1500;      // Maximum y-coordinate allowed
+        // Maximum y-coordinate allowed
+        const maxY = 1500;
 
         this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
         this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
