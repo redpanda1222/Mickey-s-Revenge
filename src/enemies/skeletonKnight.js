@@ -290,6 +290,7 @@ class LaserBall {
         if (this.BB.collideBB(this.mickey.BB)) {
             this.mickey.takeDamage(this.collideDamage);
             this.removeFromWorld = true; 
+            ASSET_MANAGER.pauseAsset("./audio/energyball.mp3");
         }
     }
 

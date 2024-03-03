@@ -133,8 +133,9 @@ class Skeleton {
         // drag force to limit velocity
         let v = this.vel.mag();
         if (v !== 0) {
-            this.applyForce(this.vel.norm().mul(this.drag * v));
+            this.applyForce(this.vel.norm().mul(this.drag * v ));
         }
+           
 
         if (this.currentHP <= 0) {
             this.game.addOtherEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 0));

@@ -199,7 +199,7 @@ class FireBall {
         this.dx /= this.distance;
         this.dy /= this.distance;
 
-        this.speed = 3*60;
+        this.speed = 5*60;
 
         this.elapsedTime = 0;
         this.frameDuration = 0.3;

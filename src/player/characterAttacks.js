@@ -57,7 +57,8 @@ class FireSlash {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
                 this.attackAnimations[4].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[5].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+                this.
+                attackAnimations[5].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
         } else if (this.Level == 4) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
@@ -67,7 +68,14 @@ class FireSlash {
             }
         }
 
-        if (this.elapsedTime > 1) this.removeFromWorld = true;
+        if (Math.round((this.elapsedTime * 10) % 2) === 0) {
+            ASSET_MANAGER.playAsset("./audio/short-fireball-woosh.mp3");
+        }
+
+        if (this.elapsedTime > 1) {
+            this.removeFromWorld = true;
+            ASSET_MANAGER.pauseAsset("./audio/short-fireball-woosh.mp3");
+        }
 
         if (PARAMS.DEBUG) {
             // draws bounding box
@@ -126,7 +134,7 @@ class FireBreath {
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
             if (entity != this.mickey && this.BB.collideBB(entity.BB) && this.coolDown <= 3) {
-                entity.takeDamage(4 * this.mickey.Level, this.kb);
+                entity.takeDamage(3 * this.mickey.Level, this.kb);
             }
         });
         if (this.BB2 != null) {
@@ -166,6 +174,7 @@ class FireBreath {
 
         if (this.elapsedTime > 1) {
             this.removeFromWorld = true
+            ASSET_MANAGER.pauseAsset("./audio/constantfire.mp3");
         }
 
         if (PARAMS.DEBUG) {

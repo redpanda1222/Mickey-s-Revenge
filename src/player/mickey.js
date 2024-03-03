@@ -25,7 +25,7 @@ class Mickey {
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
         this.movementSpeed = 240;
-        this.pickupRadius = 70;
+        this.pickupRadius = 80;
         this.Level = 1;
         this.experiencePoints = 0;
 
@@ -237,7 +237,6 @@ class Mickey {
             const nearest = this.game.entityDistances[0];
             if (nearest && nearest.dist < this.fireSlashRange) {
                 this.game.addAttackEntity(new FireSlash(this.game, this, 1.4, this.fireSlashLevel));
-                ASSET_MANAGER.playAsset("./audio/fireball.mp3")
             } else {
                 this.fireSlashCD.forceDone();
             }

@@ -4,7 +4,7 @@ class AssetManager {
         this.errorCount = 0;
         this.cache = [];
         this.downloadQueue = [];
-  
+
     };
 
     queueDownload(path) {
@@ -113,6 +113,12 @@ class AssetManager {
                 asset.volume = volume;
             }
         }
+
+        //scuffed update audio
+        let audio = this.cache["./audio/energyball.mp3"];
+        audio.volume = 0.05;
+        let audio2 = this.cache["./audio/explosionsfx.mp3"];
+        audio2.volume = 1.0;
     };
 
     pauseBackgroundMusic() {

@@ -15,7 +15,7 @@ class SceneManager {
         this.huskyBoss = new GiantHuskydog(this.game, this.mickey, 0, 0);
         this.skeletonBoss = new SkeletonKnight(this.game, this.mickey, 0, 0);
         this.bossSpawned = false;
-        this.MaxEnemies = 100;
+        this.MaxEnemies = 300;
 
         // preload
         this.game.background = new Background(this.game, false);
@@ -199,6 +199,7 @@ class SceneManager {
                     this.game.addEntity(this.skeletonBoss);
                     this.bossSpawned = true;
                 }
+                this.spawnmanager.update(); 
             } else {
                this.spawnmanager.update(); 
             }

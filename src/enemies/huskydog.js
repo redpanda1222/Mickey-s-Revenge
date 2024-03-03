@@ -330,6 +330,7 @@ class GiantHuskydog {
         }
         else if (this.isBarking) {
             if (this.firingClock.doneTicking()) {
+                ASSET_MANAGER.playAsset("./audio/fire-door-opening.wav");
                 this.game.addAttackEntity(new Blast(
                     this.game, this.mickey, false, this.BB.center().x - (this.flipLeft ? 70 : 0), this.BB.center().y - 50,
                     10, 5, 4, 1,             // attributes (dmg, spd, duration, pierce)
@@ -364,7 +365,7 @@ class GiantHuskydog {
             this.isDashing = true;
         }
         else if (this.isDashing) {
-            let dashForce = toMickey.mul(4);  // You can adjust the force multiplier as needed
+            let dashForce = toMickey.mul(20);  // You can adjust the force multiplier as needed
             this.applyForce(dashForce);
 
             // You can also add logic to control the duration of the dash if needed
@@ -409,6 +410,7 @@ class GiantHuskydog {
                     this.jumpY = 0;
                     this.isLanded = true;
                     this.isLanding = false;
+                    ASSET_MANAGER.playAsset("./audio/explosionsfx.mp3");
                 }
             } else if (this.isAirborne) {
                 if (this.airBorneClock.doneTicking()) {

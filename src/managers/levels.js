@@ -126,13 +126,13 @@ var levelOne = {
         },
         {
             time: 80,
-            spawnrate: 60,
+            spawnrate: 70,
             skeletonmage: 1,
             spider: 3
         },
         {
             time: 100,
-            spawnrate: 60,
+            spawnrate: 70,
             spider: 5,
             bird: 2,
             huskydog: 3,
@@ -140,7 +140,7 @@ var levelOne = {
         },
         {
             time: 120,
-            spawnrate: 50,
+            spawnrate: 80,
             rat: 5,
             bird: 2,
             huskydog: 3,
@@ -148,7 +148,7 @@ var levelOne = {
         },
         {
             time: 140,
-            spawnrate: 40,
+            spawnrate: 90,
             spider: 2,
             bird: 2,
             rat: 4,
@@ -157,7 +157,7 @@ var levelOne = {
         },
         {
             time: 160,
-            spawnrate: 40,
+            spawnrate: 90,
             skeletonmage: 2,
             rat: 3,
             bat: 5,
@@ -165,12 +165,143 @@ var levelOne = {
             spider: 1,
             bird: 2,
             huskydog: 1,
-        }
+        },
+        {
+            time: 170,
+            spawnrate: 90,
+            skeletonmage: 2,
+            rat: 3,
+            bat: 1,
+            goblin: 5,
+            spider: 5,
+            bird: 2,
+            huskydog: 1,
+        },
+        {
+            time: 180,
+            spawnrate: 90,
+            skeletonmage: 4,
+            rat: 3,
+            bat: 5,
+            goblin: 4,
+            spider: 2,
+            bird: 5,
+            huskydog: 1,
+        },
+        {
+            time: 190,
+            spawnrate: 100,
+            spider: 5,
+            bird: 2,
+            huskydog: 3,
+            bat: 2
+        },
+        {
+            time: 200,
+            spawnrate: 110,
+            spider: 2,
+            bird: 2,
+            rat: 4,
+            bat: 5,
+            goblin: 5
+        },
+        {
+            time: 210,
+            spawnrate: 110,
+            spider: 2,
+            bird: 2,
+            rat: 4,
+            bat: 5,
+            goblin: 5
+        },
+        {
+            time: 220,
+            spawnrate: 90,
+            skeletonmage: 4,
+            rat: 3,
+            bat: 5,
+            goblin: 4,
+            spider: 2,
+            bird: 3,
+            huskydog: 2,
+        },
+        {
+            time: 230,
+            spawnrate: 90,
+            skeletonmage: 4,
+            rat: 3,
+            bat: 5,
+            goblin: 4,
+            spider: 2,
+            bird: 3,
+            huskydog: 2,
+        },
+        {
+            time: 240,
+            spawnrate: 90,
+            skeletonmage: 5,
+            rat: 3,
+            bat: 5,
+            goblin: 4,
+            spider: 2,
+            bird: 3,
+            huskydog: 2,
+        },
+        {
+            time: 260,
+            spawnrate: 100,
+            skeletonmage: 5,
+            rat: 3,
+            bat: 5,
+            goblin: 4,
+            spider: 2,
+            bird: 3,
+            huskydog: 2,
+        },
+        {
+            time: 260,
+            spawnrate: 100,
+            skeletonmage: 5,
+            rat: 1,
+            bat: 1,
+            goblin: 1,
+            spider: 1,
+            bird: 3,
+            huskydog: 1,
+        },
+        {
+            time: 280,
+            spawnrate: 100,
+            huskydog: 1
+        },
+        {
+            time: 280,
+            spawnrate: 100,
+            huskydog: 1,
+            skeletonmage: 5,
+            bird: 3,
+        },
+        {
+            time: 290,
+            spawnrate: 100,
+            skeletonmage: 5,
+            rat: 1,
+            bat: 1,
+            goblin: 1,
+            spider: 1,
+            bird: 3,
+            huskydog: 1,
+        },
+        {
+            time: 300,
+            spawnrate: 100,
+            skeleton: 1
+        },
     ],
 
     formations: [
         {
-            spawntime: [20, 60, 90], // when to spawn
+            spawntime: [20, 60, 90, 120, 180, 360, 390, 410, 440], // when to spawn
             moveVector: { x: 1, y: 0 }, // how formation moves (null = to mickey)
             despawnTime: 10, // when to despawn (null = no despawn)
 
@@ -189,7 +320,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [60, 90],
+            spawntime: [60, 90, 360, 400],
             moveVector: { x: -1, y: 0 },
             despawnTime: 10,
 
@@ -207,7 +338,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [60],
+            spawntime: [60, 100, 180, 200, 240, 300, 410],
             moveVector: { x: 0, y: -1 },
             despawnTime: 10,
 
@@ -224,7 +355,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [110],
+            spawntime: [110, 150, 190, 210, 230, 250, 270, 310, 410, 510],
             moveVector: { x: 0, y: 0 },
             despawnTime: 10,
 
@@ -253,7 +384,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [40],
+            spawntime: [40, 140, 240, 340, 440, 540],
             moveVector: { x: -1, y: -1 },
             despawnTime: 10,
 
@@ -278,7 +409,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [50],
+            spawntime: [50, 150, 350, 550],
             moveVector: { x: 1, y: 1 },
             despawnTime: 10,
 
@@ -303,7 +434,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [150],
+            spawntime: [150, 170, 200, 250, 350, 550],
             moveVector: { x: -1.5, y: -2 },
             despawnTime: 10,
 
@@ -328,7 +459,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [150],
+            spawntime: [150, 200, 240, 270, 300, 390, 590],
             moveVector: { x: 1.5, y: 2 },
             despawnTime: 10,
 
