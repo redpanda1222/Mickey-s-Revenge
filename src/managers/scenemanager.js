@@ -148,9 +148,9 @@ class SceneManager {
             // this.game.addEntity(this.huskyBoss);
 
             // stress test
-            // for (let i = 0; i < 10; i++) {
-            //     this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
-            // }
+            for (let i = 0; i < 1; i++) {
+                this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
+            }
         };
     };
 
@@ -200,7 +200,7 @@ class SceneManager {
                     this.bossSpawned = true;
                 }
             } else {
-               this.spawnmanager.update(); 
+               // this.spawnmanager.update(); 
             }
 
             this.upgradeScreen.update();
