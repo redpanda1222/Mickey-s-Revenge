@@ -118,7 +118,7 @@ var levelOne = {
         },
         {
             time: 60,
-            spawnrate: 30, 
+            spawnrate: 50, 
             skeleton: 5,
             bird: 2,
             huskydog: 3,
@@ -126,13 +126,13 @@ var levelOne = {
         },
         {
             time: 80,
-            spawnrate: 70,
+            spawnrate: 40,
             skeletonmage: 1,
             spider: 3
         },
         {
             time: 100,
-            spawnrate: 70,
+            spawnrate: 30,
             spider: 5,
             bird: 2,
             huskydog: 3,
@@ -140,7 +140,7 @@ var levelOne = {
         },
         {
             time: 120,
-            spawnrate: 80,
+            spawnrate: 20,
             rat: 5,
             bird: 2,
             huskydog: 3,
@@ -148,7 +148,7 @@ var levelOne = {
         },
         {
             time: 140,
-            spawnrate: 90,
+            spawnrate: 25,
             spider: 2,
             bird: 2,
             rat: 4,
@@ -157,7 +157,7 @@ var levelOne = {
         },
         {
             time: 160,
-            spawnrate: 90,
+            spawnrate: 15,
             skeletonmage: 2,
             rat: 3,
             bat: 5,
@@ -168,7 +168,7 @@ var levelOne = {
         },
         {
             time: 170,
-            spawnrate: 90,
+            spawnrate: 15,
             skeletonmage: 2,
             rat: 3,
             bat: 1,
@@ -179,7 +179,7 @@ var levelOne = {
         },
         {
             time: 180,
-            spawnrate: 90,
+            spawnrate: 15,
             skeletonmage: 4,
             rat: 3,
             bat: 5,
@@ -190,7 +190,7 @@ var levelOne = {
         },
         {
             time: 190,
-            spawnrate: 100,
+            spawnrate: 10,
             spider: 5,
             bird: 2,
             huskydog: 3,
@@ -198,7 +198,7 @@ var levelOne = {
         },
         {
             time: 200,
-            spawnrate: 110,
+            spawnrate: 10,
             spider: 2,
             bird: 2,
             rat: 4,
@@ -207,38 +207,49 @@ var levelOne = {
         },
         {
             time: 210,
-            spawnrate: 110,
+            spawnrate: 10,
             spider: 2,
-            bird: 2,
+            bird: 4,
             rat: 4,
             bat: 5,
             goblin: 5
         },
         {
             time: 220,
-            spawnrate: 90,
+            spawnrate: 10,
             skeletonmage: 4,
             rat: 3,
             bat: 5,
             goblin: 4,
             spider: 2,
-            bird: 3,
-            huskydog: 2,
+            bird: 5,
+            huskydog: 5,
         },
         {
             time: 230,
-            spawnrate: 90,
+            spawnrate: 15,
             skeletonmage: 4,
-            rat: 3,
+            rat: 5,
             bat: 5,
             goblin: 4,
-            spider: 2,
-            bird: 3,
+            spider: 5,
+            bird: 5,
             huskydog: 2,
         },
         {
             time: 240,
-            spawnrate: 90,
+            spawnrate: 15,
+            skeletonmage: 5,
+            rat: 3,
+            bat: 5,
+            goblin: 4,
+            spider: 2,
+            bird: 5,
+            huskydog: 2,
+        },
+        {
+            time: 260,
+            spawnrate: 10,
             skeletonmage: 5,
             rat: 3,
             bat: 5,
@@ -249,18 +260,7 @@ var levelOne = {
         },
         {
             time: 260,
-            spawnrate: 100,
-            skeletonmage: 5,
-            rat: 3,
-            bat: 5,
-            goblin: 4,
-            spider: 2,
-            bird: 3,
-            huskydog: 2,
-        },
-        {
-            time: 260,
-            spawnrate: 100,
+            spawnrate: 10,
             skeletonmage: 5,
             rat: 1,
             bat: 1,
@@ -271,19 +271,20 @@ var levelOne = {
         },
         {
             time: 280,
-            spawnrate: 100,
-            huskydog: 1
+            spawnrate: 10,
+            bird: 5,
+            huskydog: 3
         },
         {
             time: 280,
-            spawnrate: 100,
+            spawnrate: 10,
             huskydog: 1,
             skeletonmage: 5,
             bird: 3,
         },
         {
             time: 290,
-            spawnrate: 100,
+            spawnrate: 10,
             skeletonmage: 5,
             rat: 1,
             bat: 1,
@@ -294,14 +295,25 @@ var levelOne = {
         },
         {
             time: 300,
-            spawnrate: 100,
+            spawnrate: 15,
             skeleton: 1
         },
+        {
+            time: 310,
+            spawnrate: 15,
+            skeletonmage: 4,
+            rat: 3,
+            bat: 5,
+            goblin: 4,
+            spider: 4,
+            bird: 5,
+            huskydog: 2,
+        }
     ],
 
     formations: [
         {
-            spawntime: [20, 60, 90, 120, 180, 360, 390, 410, 440], // when to spawn
+            spawntime: [20, 60, 110, 120, 180, 220, 240, 280, 300, 340, 360, 390, 410, 440], // when to spawn
             moveVector: { x: 1, y: 0 }, // how formation moves (null = to mickey)
             despawnTime: 10, // when to despawn (null = no despawn)
 
@@ -320,7 +332,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [60, 90, 360, 400],
+            spawntime: [20, 60, 110, 120, 180, 220, 240, 280, 300, 340, 360, 390, 410, 440],
             moveVector: { x: -1, y: 0 },
             despawnTime: 10,
 
@@ -338,7 +350,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [60, 100, 180, 200, 240, 300, 410],
+            spawntime: [20, 60, 110, 120, 180, 220, 240, 280, 300, 340, 360, 390, 410, 440],
             moveVector: { x: 0, y: -1 },
             despawnTime: 10,
 
@@ -355,7 +367,7 @@ var levelOne = {
             ]
         },
         {
-            spawntime: [110, 150, 190, 210, 230, 250, 270, 310, 410, 510],
+            spawntime: [110, 150, 190, 210, 230, 250, 270, 290, 310, 340, 370, 410, 510],
             moveVector: { x: 0, y: 0 },
             despawnTime: 10,
 
