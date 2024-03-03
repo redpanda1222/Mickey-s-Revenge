@@ -24,6 +24,8 @@ class Mickey {
         //CHARACTER STATS
         this.MaxHP = 100;
         this.currentHP = this.MaxHP;
+        this.movementSpeed = 4;
+        this.pickupRadius = 70;
         this.movementSpeed = 240;
         this.pickupRadius = 80;
         this.Level = 1;
@@ -148,38 +150,27 @@ class Mickey {
     }
     
     movement() {
-        // Define boundaries
-        const minX = -1000;
-        // Maximum x-coordinate allowed
-        const maxX = 1600;
-        const minY = -1000;
-        // Maximum y-coordinate allowed
-        const maxY = 1500;
-
-        this.game.cameraX = this.x - PARAMS.WIDTH / 2 + this.width / 2;
-        this.game.cameraY = this.y - PARAMS.HEIGHT / 2 + this.height / 2;
-
         this.status = 0;
         // the left boundary
-        if (this.game.left && this.x > minX) {
-            this.x = Math.max(this.x - this.movementSpeed * this.game.clockTick, minX);
+        if (this.game.left && this.x > this.minX) {
+            this.x = Math.max(this.x - this.movementSpeed, this.minX);
             this.facing = 1;
             this.status = 1;
         }
         // right boundary
-        if (this.game.right && this.x < maxX) {
-            this.x = Math.min(this.x + this.movementSpeed * this.game.clockTick, maxX);
+        if (this.game.right && this.x < this.maxX) {
+            this.x = Math.min(this.x + this.movementSpeed, this.maxX);
             this.facing = 0;
             this.status = 1;
         }
         // the top boundary
-        if (this.game.up && this.y > minY) {
-            this.y = Math.max(this.y - this.movementSpeed * this.game.clockTick, minY); 
+        if (this.game.up && this.y > this.minY) {
+            this.y = Math.max(this.y - this.movementSpeed, this.minY); 
             this.status = 1;
         }
         // the bottom boundary
-        if (this.game.down && this.y < maxY) {
-            this.y = Math.min(this.y + this.movementSpeed * this.game.clockTick, maxY); 
+        if (this.game.down && this.y < this.maxY) {
+            this.y = Math.min(this.y + this.movementSpeed, this.maxY); 
             this.status = 1;
         }
         // update bounding box

@@ -5,6 +5,11 @@ class GameEngine {
         // What you will use to draw
         // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
+        this.delta = 0;
+        this.desiredFps = 60;
+        this.now = 0;
+        this.past = Date.now();
+        this.framesPerMs = 1000 / this.desiredFps;
 
         // Everything that will be updated and drawn each frame
         this.entityDistances = [];
@@ -299,10 +304,18 @@ class GameEngine {
     };
 
     loop() {
-        this.clockTick = this.timer.tick();
-        this.update();
-        this.draw();
-        this.click = null;
+        this.now = Date.now();
+        this.delta += (this.now - this.past) / this.framesPerMs;
+        this.past = this.now;
+
+        while (this.delta >= 1) {
+            this.delta--;
+            this.clockTick = this.timer.tick();
+            // console.log(this.clockTick);
+            this.update();
+            this.draw();
+            this.click = null;
+        }
     };
 
 };

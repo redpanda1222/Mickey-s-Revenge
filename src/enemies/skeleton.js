@@ -8,7 +8,7 @@ class Skeleton {
         this.acc = new Vector2(0, 0);
         this.w = 60;
         this.h = 60;
-        this.speed = 120; // must be at least 1
+        this.speed = 2; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -84,7 +84,7 @@ class Skeleton {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel.mul(this.game.clockTick));
+        this.pos = this.pos.add(this.vel);
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel
