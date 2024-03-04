@@ -1,0 +1,17 @@
+@import url('https://bootswatch.com/5/litera/bootstrap.min.css');
+
+body {
+    text-align: center;
+    background-color: #1c1717;
+    color: white;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container > div {
+    flex: 1;
+    margin-right: 10px;
+}

@@ -1,17 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
-
-<style>
-    body {
-        text-align: center;
-        background-color: #1c1717;
-        color: white;
-    }
-</style>
-
 <head>
     <meta charset="utf-8">
     <title>Mickey's Revenge</title>
+    <link rel="stylesheet" type="text/css" href="game.css">
 
     <script type="text/javascript" src="./src/managers/assetmanager.js"></script>
     <script type="text/javascript" src="./src/util/timer.js"></script>
@@ -22,7 +14,7 @@
     <script type="text/javascript" src="./src/managers/levels.js"></script>
     <script type="text/javascript" src="./src/managers/spawnmanager.js"></script>
     <script type="text/javascript" src="./src/managers/scenemanager.js"></script>
-    
+
     <script type="text/javascript" src="./src/background/background.js"></script>
     <script type="text/javascript" src="./src/background/backgroundObjects.js"></script>
     <script type="text/javascript" src="./src/background/menu.js"></script>
@@ -47,13 +39,33 @@
 </head>
 
 <body>
-    <canvas id="gameWorld" width="1024" height="768" style="background: white; border: 1px solid black" tabindex="0"
-        autofocus></canvas>
+    <div class="container">
+        <div>
+            <canvas id="gameWorld" width="1024" height="768" style="background: white; border: 1px solid black"
+                tabindex="0" autofocus></canvas>
 
-    <div>
-        <input type="checkbox" id="debug"> Debug<input type="checkbox" id="mute" > Mute <input type="range" id="volume" min="0" max="1" value="0.5" step=".05">
-        Volume
-        <span> | ESC to PAUSE</span>
+            <div>
+                <input type="checkbox" id="debug"> Debug<input type="checkbox" id="mute"> Mute <input type="range"
+                    id="volume" min="0" max="1" value="0.5" step=".05">
+                Volume
+                <span> | ESC to PAUSE</span>
+            </div>
+        </div>
+        <div class="card text-white bg-primary mb-3" style="max-width: 50rem;">
+            <div class="card-header">Controls</div>
+            <div class="card-body">
+                <h4 class="card-title">Movement</h4>
+                <p class="card-text">Walk: W A S D</p>
+                <p class="card-text">Dash: Space</p>
+                <br>
+                <h4 class="card-title">Abilities</h4>
+                <p class="card-text">(Starter) RASENGAN: automatic; single target</p>
+                <p class="card-text">FIRE SLASH: automatic; multi target</p>
+                <p class="card-text">FIRE BREATH: automatic; multi target</p>
+                <p class="card-text">LAZER: use mouse to aim; multi target</p>
+                <p class="card-text">FIRE BLADE: automatic; multi target</p>
+            </div>
+        </div>
     </div>
 </body>
 
