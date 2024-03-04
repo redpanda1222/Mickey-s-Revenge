@@ -153,7 +153,7 @@ class Mickey {
         this.status = 0;
         // the left boundary
         if (this.game.left && this.x > this.minX) {
-            this.x = Math.max(this.x - this.movementSpeed, this.minX);
+            this.x = Math.max(this.x - this.movementSpeed, this.minX);  //TODO: multiply by game.clockTick if we figure out how to implement the same movement for the enemies
             this.facing = 1;
             this.status = 1;
         }

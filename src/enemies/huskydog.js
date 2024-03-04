@@ -8,7 +8,7 @@ class Huskydog {
         this.acc = new Vector2(0, 0);
         this.w = 50;
         this.h = 50;
-        this.speed = 4 * 60; // must be at least 1
+        this.speed = 4; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -87,7 +87,7 @@ class Huskydog {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel.mul(this.game.clockTick));
+        this.pos = this.pos.add(this.vel);
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel
@@ -179,7 +179,7 @@ class GiantHuskydog {
         this.pos = new Vector2(x, y);
         this.vel = new Vector2(0, 0);
         this.acc = new Vector2(0, 0);
-        this.speed = 60;
+        this.speed = 4;
         this.drag = -1 / (this.speed); // dont question
         this.spdMul = 1;
 
@@ -290,7 +290,7 @@ class GiantHuskydog {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel.mul(this.spdMul*this.game.clockTick));
+        this.pos = this.pos.add(this.vel);
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel
@@ -365,7 +365,7 @@ class GiantHuskydog {
             this.isDashing = true;
         }
         else if (this.isDashing) {
-            let dashForce = toMickey.mul(20);  // You can adjust the force multiplier as needed
+            let dashForce = toMickey.mul(4);  // You can adjust the force multiplier as needed
             this.applyForce(dashForce);
 
             // You can also add logic to control the duration of the dash if needed

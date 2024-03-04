@@ -19,7 +19,7 @@ class Skeleton {
         this.totalTime = this.frameCount * this.frameDuration;
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/enemy/skeleton.png");
         this.xStart = 0;
-        this.yStart = 204
+        this.yStart = 204;
         this.width = 64;
         this.height = 68;
 
@@ -46,7 +46,7 @@ class Skeleton {
         // collision with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed * this.game.clockTick + 1);
+                this.handleCollision(backEntity, this.speed + 1);
             }
         });
         // collision with other enemies

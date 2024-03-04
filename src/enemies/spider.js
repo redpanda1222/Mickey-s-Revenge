@@ -8,7 +8,7 @@ class Spider {
         this.acc = new Vector2(0, 0);
         this.w = 75;
         this.h = 64;
-        this.speed = 1.75 * 60; // must be at least 1
+        this.speed = 1.75; // must be at least 1
         this.drag = -1 / this.speed; // dont question
 
         this.totalElapsed = 0;
@@ -45,7 +45,7 @@ class Spider {
         // collision with background objects
         this.game.backgroundEntities.forEach(backEntity => {
             if (this.BB.collideBB(backEntity.BB)) {
-                this.handleCollision(backEntity, this.speed * this.game.clockTick + 0.25);
+                this.handleCollision(backEntity, this.speed + 0.25);
             }
         });
         // collision with other enemies
@@ -83,7 +83,7 @@ class Spider {
 
     move() {
         this.vel = this.vel.add(this.acc);
-        this.pos = this.pos.add(this.vel.mul(this.game.clockTick));
+        this.pos = this.pos.add(this.vel);
         // update bounding box
         this.BB.updateBB(this.pos.x + this.offsetBB.x, this.pos.y + this.offsetBB.y);
         // reset net accel
