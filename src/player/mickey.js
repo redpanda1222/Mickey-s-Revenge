@@ -26,7 +26,7 @@ class Mickey {
         this.currentHP = this.MaxHP;
         this.movementSpeed = 4;
         this.pickupRadius = 70;
-        this.movementSpeed = 240;
+        this.movementSpeed = 4;
         this.pickupRadius = 80;
         this.Level = 1;
         this.experiencePoints = 0;

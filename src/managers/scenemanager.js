@@ -147,10 +147,10 @@ class SceneManager {
             // put entities here for testing
             // this.game.addEntity(this.huskyBoss);
 
-            // stress test
-            for (let i = 0; i < 1; i++) {
-                this.game.addEntity(new Skeleton(this.game, this.mickey, i * 2, 0));
-            }
+            // // stress test
+            // for (let i = 0; i < 30; i++) {
+            //     this.game.addEntity(new Skeleton(this.game, this.mickey, Math.random(50,300) * 2, 0));
+            // }
         };
     };
 
@@ -201,7 +201,7 @@ class SceneManager {
                 }
                 this.spawnmanager.update(); 
             } else {
-               // this.spawnmanager.update(); 
+                this.spawnmanager.update(); 
             }
 
             this.upgradeScreen.update();

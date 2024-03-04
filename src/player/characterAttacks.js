@@ -336,7 +336,7 @@ class Rasengan extends Projectile {
     attributes(level) {
         switch(level) {
             case 1:
-                this.projDamage = 1;
+                this.projDamage = 50;
                 this.projDuration = 2;
                 this.projPierce = 3;
                 this.projSpeed = 5;
