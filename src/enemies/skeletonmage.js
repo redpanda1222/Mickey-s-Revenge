@@ -25,8 +25,8 @@ class SkeletonMage {
 
         // attributes
         this.currentHP = 200;
-        this.collideDmg = 5;
-        this.fireBallDmg = 10;
+        this.collideDmg = 5 + Math.floor(this.mickey.enemiesCounter/50);
+        this.fireBallDmg = 10 + Math.floor(this.mickey.enemiesCounter/50);
         this.shootingRange = 400;
 
         this.fireballDelay = 3; // Delay in seconds before firing another FireBall
@@ -148,6 +148,8 @@ class SkeletonMage {
         }
 
         if (this.currentHP <= 0) {
+            this.game.addOtherEntity(new Gem(this.game, this.mickey, this.pos.x, this.pos.y, 1));
+            this.mickey.enemiesCounter++;
             this.removeFromWorld = true;
         }
 

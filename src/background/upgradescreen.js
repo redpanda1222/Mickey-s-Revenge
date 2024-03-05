@@ -28,7 +28,7 @@ class UpgradeScreen {
         this.mickey = sceneManager.mickey;
         this.visible = false;
 
-        this.upgrades = ["Fire Slash Upgrade", "Fire Breath Upgrade", "Rasengan Upgrade", "Fire Blade Upgrade", "Increased Health: +100", "Laser Upgrade"];
+        this.upgrades = ["Fire Slash Upgrade", "Fire Breath Upgrade", "Rasengan Upgrade", "Fire Blade Upgrade", "Increased Health: +15", "Laser Upgrade"];
 
         this.generateUpgrades();
 
@@ -75,9 +75,9 @@ class UpgradeScreen {
         else if (Upgrade == "Laser Upgrade" && this.mickey.laserLevel < this.laserMaxLevel) {
             this.mickey.laserLevel += 1;
         }
-        else if (Upgrade == "Increased Health: +100") {
-            this.mickey.MaxHP += 100;
-            this.mickey.currentHP += 100;
+        else if (Upgrade == "Increased Health: +15") {
+            this.mickey.MaxHP += 15;
+            this.mickey.currentHP += 15;
         }
         this.upgrade1 = null;
         this.upgrade2 = null;

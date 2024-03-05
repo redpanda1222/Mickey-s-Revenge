@@ -27,7 +27,7 @@ class Huskydog {
 
         // attributes
         this.currentHP = 120;
-        this.collideDmg = 2;
+        this.collideDmg = 2 + Math.floor(this.mickey.enemiesCounter/50);
 
         this.flipLeft = false;
 

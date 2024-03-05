@@ -25,7 +25,7 @@ class Bat {
 
         // attributes
         this.currentHP = 100;
-        this.collideDmg = 2;
+        this.collideDmg = 2 + Math.floor(this.mickey.enemiesCounter/60);
 
         this.flipLeft = false;
 
