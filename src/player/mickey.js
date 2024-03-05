@@ -33,7 +33,7 @@ class Mickey {
 
 
         //Player Attack Stats
-        this.fireSlashLevel = 1;
+        this.fireSlashLevel = 0;
         this.fireSlashCD = new Clock(game, 6); //sec cd
         this.fireBreathLevel = 0;
         this.fireBreathCD = new Clock(game, 4); //sec cd
