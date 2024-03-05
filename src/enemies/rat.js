@@ -25,7 +25,7 @@ class Rat {
 
         // attributes
         this.currentHP = 150;
-        this.collideDmg = 2 + Math.floor(this.mickey.enemiesCounter/50);
+        this.collideDmg = 2 + Math.floor(this.mickey.enemiesCounter/60);
 
         this.flipLeft = false;
 

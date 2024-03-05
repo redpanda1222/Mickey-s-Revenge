@@ -26,7 +26,7 @@ class Skeleton {
         // attributes
         //this.currentHP = 50 * this.mickey.Level;
         this.currentHP = 50;
-        this.collideDmg = 2 + Math.floor(this.mickey.enemiesCounter/50);
+        this.collideDmg = 2 + Math.floor(this.mickey.enemiesCounter/60);
 
         this.flipLeft = false;
 

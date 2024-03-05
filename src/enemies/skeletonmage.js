@@ -25,8 +25,8 @@ class SkeletonMage {
 
         // attributes
         this.currentHP = 200;
-        this.collideDmg = 5 + Math.floor(this.mickey.enemiesCounter/50);
-        this.fireBallDmg = 10 + Math.floor(this.mickey.enemiesCounter/50);
+        this.collideDmg = 5 + Math.floor(this.mickey.enemiesCounter/60);
+        this.fireBallDmg = 10 + Math.floor(this.mickey.enemiesCounter/60);
         this.shootingRange = 400;
 
         this.fireballDelay = 3; // Delay in seconds before firing another FireBall

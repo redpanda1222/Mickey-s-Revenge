@@ -27,7 +27,7 @@ class Bird {
 
         // attributes
         this.currentHP = 70;
-        this.collideDmg = 5 + Math.floor(this.mickey.enemiesCounter/50);
+        this.collideDmg = 5 + Math.floor(this.mickey.enemiesCounter/60);
 
         this.flipLeft = false;
 
