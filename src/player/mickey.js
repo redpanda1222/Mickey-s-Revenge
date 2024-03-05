@@ -49,7 +49,7 @@ class Mickey {
 
         // Dash properties
         this.dashSpeed = 6; // Adjust dash speed as needed
-        this.dashDuration = 0.3; // Duration of dash in seconds
+        this.dashDuration = 0.5; // Duration of dash in seconds
         this.dashCooldown = 6; // Cooldown time for dash in seconds
         this.dashTimer = 0; // Timer to track dash duration
         this.dashCooldownTimer = 0; // Timer to track dash cooldown
@@ -105,6 +105,7 @@ class Mickey {
     }
 
     dashMovement() {
+        this.immune = true
         // Move Mickey during dash
         if (this.game.up) {
             this.y -= this.dashSpeed;
@@ -214,6 +215,7 @@ class Mickey {
             if (this.dashTimer <= 0) {
                 // Dash duration is over, reset dash properties
                 this.resetDash();
+                this.immune = false
             } else {
                 // Update Mickey's position during dash
                 this.dashMovement();
@@ -345,6 +347,7 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
+        if (this.immune) ctx.fillStyle = 'gray';
         if (healthRatio >= 0) { ctx.fillRect(camX, camY, healthBarSize, 10) }
         else { ctx.fillRect(camX, camY, 0, 10) }
     }

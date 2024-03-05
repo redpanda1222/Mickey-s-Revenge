@@ -2,6 +2,8 @@ const ASSET_MANAGER = new AssetManager();
 const gameEngine = new GameEngine();
 
 const imageQueue = [
+	"./audio/suspense.wav",
+	"./audio/pianoambience.wav",
 	"./assets/background/sand.png",
 	"./assets/background/sandtile.png",
 	"./assets/background/barbedwire1.png",

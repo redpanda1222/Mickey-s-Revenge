@@ -24,21 +24,27 @@ class TransitionScreen {
                 this.fading = 0.0084;
             } else if (this.elapsed > 6) {
                 this.message = "All he has now, is MORE REVENGE!!!";
+                ASSET_MANAGER.pauseAsset("./audio/pianoambience.wav");
             } else if (this.elapsed > 4) {
                 this.message = "Minnie cannot come back";
             } else if (this.elapsed > 2) {
                 this.message = "But at what cost";
             } else {
                 this.message = "Mickey finally got his revenge";
+                ASSET_MANAGER.playAsset("./audio/pianoambience.wav");
             }
         } else if (this.scene) {
-            if (this.elapsed > 1) {
+            if (this.elapsed > 6) {
                 this.game.transition = null;
                 this.game.camera.loadScene(this.scene, false);
-            } else if (this.elapsed > 0.5) {
+                ASSET_MANAGER.pauseAsset("./audio/suspense.wav");
+            } else if (this.elapsed > 5) {
                 this.message = "Now he's seeking revenge!!!";
-            } else {
+            } else if (this.elapsed > 3) {
                 this.message = "Mickey lost Minnie to those damn monsters";
+            } else {
+                ASSET_MANAGER.playAsset("./audio/suspense.wav");
+                this.message = "In the darkest of all timelines";
             }
         } else {
             if (this.elapsed > 2) {
