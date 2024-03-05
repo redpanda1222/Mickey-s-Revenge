@@ -117,16 +117,16 @@ class FireBreath {
     update() {
         if (this.Level == 1) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.BB.updateBB(this.mickey.x + (this.width / 2) + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+                this.BB.updateBB(this.mickey.x + this.mickey.width + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
                 this.BB.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             }
         } else if (this.Level == 2) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.BB.updateBB(this.mickey.x + (this.width / 2) + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+                this.BB.updateBB(this.mickey.x + this.mickey.width + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
                 this.BB2.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
-                this.BB.updateBB(this.mickey.x + (this.width / 2) + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
+                this.BB.updateBB(this.mickey.x + this.mickey.width + this.offsetBB.x, this.mickey.y + this.offsetBB.y);
                 this.BB2.updateBB(this.mickey.x - this.width - this.offsetBB.x, this.mickey.y + this.offsetBB.y);
             }
         }
@@ -158,16 +158,16 @@ class FireBreath {
         this.elapsedTime += this.game.clockTick;
         if (this.Level == 1) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width / 2 - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.mickey.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
                 this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
             }
         } else if (this.Level == 2) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width / 2 - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.mickey.width- this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
                 this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.width / 2 - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x + this.mickey.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
                 this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - this.width - this.game.cameraX, this.mickey.y - this.game.cameraY, this.width * this.sizeScale, this.height * this.sizeScale);
             }
         }

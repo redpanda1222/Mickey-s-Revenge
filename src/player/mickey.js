@@ -33,7 +33,7 @@ class Mickey {
 
 
         //Player Attack Stats
-        this.fireSlashLevel = 0;
+        this.fireSlashLevel = 1;
         this.fireSlashCD = new Clock(game, 6); //sec cd
         this.fireBreathLevel = 0;
         this.fireBreathCD = new Clock(game, 4); //sec cd
@@ -347,7 +347,7 @@ class Mickey {
         if (healthRatio <= 0.75) ctx.fillStyle = 'orange';
         if (healthRatio <= 0.50) ctx.fillStyle = 'red';
         if (healthRatio <= 0.25) ctx.fillStyle = 'maroon';
-        if (this.immune) ctx.fillStyle = 'gray';
+        if (this.dashTimer > 0) ctx.fillStyle = 'gray';
         if (healthRatio >= 0) { ctx.fillRect(camX, camY, healthBarSize, 10) }
         else { ctx.fillRect(camX, camY, 0, 10) }
     }
