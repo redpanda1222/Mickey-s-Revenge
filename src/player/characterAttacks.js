@@ -4,7 +4,7 @@ class FireSlash {
         this.elapsedTime = 0;
         this.removeFromWorld = false;
         this.coolDown = 30;
-        this.BB = new BoundingBox(mickey.x - ((mickey.width * 3) / 2.5), mickey.y - ((mickey.height * 3) / 2.5), mickey.width * 3 * this.sizeScale, mickey.height * 3 * this.sizeScale);
+        this.BB = new BoundingBox(mickey.x - (mickey.width * 2), mickey.y - (mickey.height * 1.5), mickey.width * 3 * this.sizeScale, mickey.height * 3 * this.sizeScale);
         this.attackAnimations = [];
         this.loadAttackAnimations();
         this.kb = 1.85;
@@ -22,7 +22,7 @@ class FireSlash {
     }
 
     update() {
-        this.BB.updateBB(this.mickey.x - ((this.mickey.width * 3) / 2.5), this.mickey.y - ((this.mickey.height * 3) / 2.5));
+        this.BB.updateBB(this.mickey.x - (this.mickey.width * 2), this.mickey.y - (this.mickey.height * 1.5));
 
         this.game.entities.forEach(entity => {
             //check if the cooldown is less than 3, if so, deal damage upon collision
@@ -43,26 +43,25 @@ class FireSlash {
         this.elapsedTime += this.game.clockTick;
         if (this.Level == 1) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+                this.attackAnimations[0].drawFrame(this.game.clockTick, ctx, this.mickey.x - (this.mickey.width * 2) - this.game.cameraX, this.mickey.y - (this.mickey.height * 1.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
-                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+                this.attackAnimations[1].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - (this.mickey.height * 1.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
         } else if (this.Level == 2) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[2].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+                this.attackAnimations[2].drawFrame(this.game.clockTick, ctx, this.mickey.x - (this.mickey.width * 2) - this.game.cameraX, this.mickey.y - (this.mickey.height * 1.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
                 this.attackAnimations[3].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
         } else if (this.Level == 3) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[4].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+                this.attackAnimations[4].drawFrame(this.game.clockTick, ctx, this.mickey.x - (this.mickey.width * 2) - this.game.cameraX, this.mickey.y - (this.mickey.height * 1.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
-                this.
-                attackAnimations[5].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+                this.attackAnimations[5].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
         } else if (this.Level == 4) {
             if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 0) {
-                this.attackAnimations[6].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
+                this.attackAnimations[6].drawFrame(this.game.clockTick, ctx, this.mickey.x - (this.mickey.width * 2) - this.game.cameraX, this.mickey.y - (this.mickey.height * 1.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             } else if (Math.floor(this.elapsedTime % 3) == 0 && this.mickey.facing == 1) {
                 this.attackAnimations[7].drawFrame(this.game.clockTick, ctx, this.mickey.x - ((this.mickey.width * 3) / 2.5) - this.game.cameraX, this.mickey.y - ((this.mickey.height * 3) / 2.5) - this.game.cameraY, this.mickey.width * 3 * this.sizeScale, this.mickey.height * 3 * this.sizeScale);
             }
